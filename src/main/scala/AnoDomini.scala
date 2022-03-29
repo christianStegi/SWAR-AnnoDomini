@@ -5,6 +5,17 @@ import module.TableGenerator
 import view.Tui
 
 import scala.io.StdIn.readLine
+
+
+def NumberOfPlayers(num: Int) : 2 | 3 | 4 ={
+  num match
+    case 2 => 2
+    case 3 => 3
+    case 4 => 4
+    case _ => 2
+}
+
+
 object AnoDomini {
 
   val controller = new Controller(TableGenerator().createTable)
@@ -13,7 +24,7 @@ object AnoDomini {
 
   // val scanner = new Scanner(System.in)
 
-  def main(args:Array[String]):Unit = {
+  def main(args:Array[String]):Unit = 
 
     println("Willkommen bei AnoDomini!")
     // create scanner for player input
@@ -21,13 +32,13 @@ object AnoDomini {
 
     // ask for prefered deck (start with default random deck)
 
-
     // generate deck
 
     // ask for amount of players
-    println("how many players?")
-    input = readLine()
-    controller.createTestTable(input.toInt)
+    println("how many players? (2, 3 or 4")
+    input = readLine
+    val numPlayers: 2 | 3 | 4 = NumberOfPlayers(input.toInt)
+    controller.createTestTable(numPlayers)
     // if only one player: switch into Singleplayer mode
     // not implemented yet
 
@@ -41,9 +52,6 @@ object AnoDomini {
 
       // check if player has won (no more cards in players hand)
       tui.confirmWinner()
-
-  }
-
 
 
 }
