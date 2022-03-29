@@ -31,7 +31,8 @@ object AnoDomini {
     // if only one player: switch into Singleplayer mode
     // not implemented yet
 
-    do{
+    while(input != "q")
+    do 
       // show table + current player
       tui.giveOptions()
       input = readLine()
@@ -40,7 +41,7 @@ object AnoDomini {
 
       // check if player has won (no more cards in players hand)
       tui.confirmWinner()
-    }while(input != "q")
+
   }
 
 
