@@ -61,7 +61,7 @@ object AnnoDomini {
     // generate deck
 
     // ask for amount of players
-    println("how many players? (2, 3 or 4")
+    println("how many players? (2, 3 or 4)")
     input = readLine
     val numPlayers: 2 | 3 | 4 = NumberOfPlayers(input.toInt)
     controller.createTestTable(numPlayers)
@@ -78,6 +78,6 @@ object AnnoDomini {
 
       // check if player has won (no more cards in players hand)
       tui.confirmWinner()
-
+    // TODO: change it to a recusion
 
 }

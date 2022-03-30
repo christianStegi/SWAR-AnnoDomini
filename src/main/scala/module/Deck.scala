@@ -13,12 +13,15 @@ case class Deck(cards:List[Card]=Nil) {
   def shuffle: Deck = Deck(Random.shuffle(cards))
 
   def deckHead: Card = drawCard(1)._1.head
+  // def deckHead(n:Int): Card = drawCard(n)._1
   def deckTail: List[Card] = drawCard(1)._2
 
   // these are for easing the creation of table class objects:
-  def playDeck: Deck = Deck(this.deckTail) // allows to create table object directly, w
+  def playDeck: Deck = Deck(this.deckTail) // allows to create table object directly, Is currently not used
 
   def length: Int = cards.length
 
   override def toString: String = cards.map(c => c.toString).toString().replaceAll("List", "Deck").replaceAll(",", "")
+  // TODO: check why you made the toString like that
+  // is this ever shown?
 }

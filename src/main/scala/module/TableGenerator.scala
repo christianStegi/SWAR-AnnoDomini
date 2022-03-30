@@ -9,6 +9,7 @@ case class TableGenerator(noOfPlayers:Int=1, noOfCards:Int=30, CardsPerPlayer: I
     Table(
       players,
       List(deck.drawCard(noOfPlayers*CardsPerPlayer)._2.head), Deck(deck.drawCard(noOfPlayers*CardsPerPlayer)._2.tail)
+      // TODO: make a version of this, that isn'T as confusing
     )}
 
   def genPlayers(deck:Deck, n:Int = noOfPlayers):List[Player] = {

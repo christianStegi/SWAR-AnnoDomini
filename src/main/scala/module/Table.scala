@@ -48,6 +48,7 @@ case class Table(players:List[Player], table:List[Card], deck:Deck) {
     table == sortedList
   }
   def playerDoubtsCards:Table = {
+    // TODO: change to match case and put stuff in different functions for better overview
     if(allCardsInOrder){
       val newDeck = playerDrawsCard(currentPlayer) (2)._2
       val changedPlayer = playerDrawsCard(currentPlayer) (2)._1
