@@ -25,6 +25,7 @@ case class Table(players:List[Player], table:List[Card], deck:Deck) {
       giveCards(deck.drawCard(numOfCards)._1), Deck(deck.drawCard(numOfCards)._2))
 
   def playerPlacesCard(takeThisCard:Int) (placeCardAt:Int): Table = {
+
     val playerCard = takePlayerCard(takeThisCard)._1
     val player = takePlayerCard(takeThisCard)._2
     Table(getNextPlayer(player), placeCard(playerCard) (placeCardAt), this.deck)

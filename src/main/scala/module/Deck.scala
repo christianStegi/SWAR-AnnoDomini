@@ -2,7 +2,6 @@ package module
 import scala.util.Random
 
 case class Deck(cards:List[Card]=Nil) {
-  // TODO: get coverage to 100%
   // def drawCard: (Card, List[Card]) = (cards.head, cards.tail)
   def drawCard(n: Int) : (List[Card], List[Card]) = cards.splitAt(n)
   // TODO: check if draw Card should return a Deck right away

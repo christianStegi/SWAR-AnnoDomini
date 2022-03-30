@@ -4,7 +4,7 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class TableGeneratorSpec extends AnyWordSpec(){
   "Table generator" when  {
-    "new" should{
+    "new" should {
       val tb = TableGenerator(2, 40)
       "have a number of Players " in {
         assert(tb.noOfPlayers.isInstanceOf[Int])
