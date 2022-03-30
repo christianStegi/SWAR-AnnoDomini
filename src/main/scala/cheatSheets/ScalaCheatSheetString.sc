@@ -7,6 +7,8 @@ This does have no effect on the game itself
 // some basics:
 
 val string = "Hello World"
+val string2 = s"This is. $string"
+val string3 = "This is. $string"
 
 string.length  // 11
 string.isEmpty  // false

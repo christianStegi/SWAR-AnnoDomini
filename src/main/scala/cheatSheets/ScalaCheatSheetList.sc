@@ -5,9 +5,10 @@ This does have no effect on the game itself
  */
 
 // List declaration
-val list = List(1, 2, 3, 8)
+val list = List(1, 2, 3, 8, 1, 6, 4)
 val list2 = 1::2::3::4::Nil
 val list3 = List.fill(5)(0)
+val list4 = list2:::list
 
 // basic Functions
 list.head // 1
@@ -43,6 +44,7 @@ array
 // check it for further information
 
 list.zipWithIndex
+list
 
 // Higher order methods: (Those also work on arrays!!!!)
 // use the given function on every element of the list
@@ -61,6 +63,7 @@ list.flatMap(i => Array.fill(i)(i))  // creates a list of int, instead of a list
 
 // filter out certain elements:
 list.filter(i => i%2==0)  // gives back all even numbers
+list.filter(_%2==0)
 list.filter(i => i%2==1)  // gives back all uneven numbers
 
 list.filterNot(i => i%2==0) // gibes back all uneven numbers
@@ -69,13 +72,13 @@ list.filterNot(i => i%2==0) // gibes back all uneven numbers
 list.partition(_%2==0)  // (List[Int], List[Int]) = (List(2, 8),List(1, 3))
 // this returns a tuple of two collections,
 // the first has all the values that applied to the filter
-// the second all has the values that didn't
+// the second has the values that didn't
 
 
 
 // of course they can be combined!!!
 list.filter(i => i%2==0).map(_*2)
-list.filter(i => i%2==0).map(_*2).filter(i => i < 10)
+list.filter(i => i%2==0).map(_*2).filter(i => i <= 8)
 
 // count elements that apply to given filter
 list.count(_%2==0)
@@ -91,6 +94,8 @@ list.dropWhile(_==1)
 list3.dropWhile(_==0)
 
 // we also have the same for take:
+list
+list.filter(_<5)
 list.takeWhile(_<5)
 list.takeWhile(_<1)
 
@@ -122,23 +127,24 @@ list3.indexWhere(_==0)  // returns 0
 //noinspection SimplifiableFoldOrReduce
 list.reduceLeft(_+_)  // would do the same as sum
 list.sum
+list.reduceLeft(_+_)
 list.reduceLeft((a,b) => {println(a+", "+b); a+b})
 // this still sums up all the values, but also prints the in between steps
 list.reduceRight((a,b) => {println(a+", "+b); a+b})
 // same as above, but works in the opposite direction)
 // same example with subtraction, but this time the outcome will change!
-list.reduceLeft((a,b) => {println(a+", "+b); a-b})  // -12
-list.reduceRight((a,b) => {println(a+", "+b); a-b})  // -6
+list.reduceLeft((a,b) => {println(a+", "+b); a-b})  // -23
+list.reduceRight((a,b) => {println(a+", "+b); a-b})  // -7
 
 // fold: does the same as reduce, but it will
 // take the value it gives as the first value of the function
 //noinspection SimplifiableFoldOrReduce
-list.foldLeft(0)(_+_)  // 14, the same as reduceLeft(_+_)
-list.foldLeft(1)(_+_)  // 15, because it does the above math but starts with one as first value in addition to what the List has
-list.foldLeft(10)(_+_)  // 24
+list.foldLeft(0)(_+_)  // 25, the same as reduceLeft(_+_)
+list.foldLeft(1)(_+_)  // 26, because it does the above math but starts with one as first value in addition to what the List has
+list.foldLeft(10)(_+_)  // 35
 
-list.foldLeft("")(_+_) // "1238", turns the list into a string because of the empty string given
-list.foldLeft(0.0)(_+_)  // 14.0
+list.foldLeft("")(_+_) // "1238164", turns the list into a string because of the empty string given
+list.foldLeft(0.0)(_+_)  // 25.0
 
 // TODO: add Iterator examples
 // TODO: maybe move those into their own cheat sheet, idk.
