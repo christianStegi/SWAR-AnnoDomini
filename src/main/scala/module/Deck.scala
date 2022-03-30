@@ -11,7 +11,8 @@ case class Deck(cards:List[Card]=Nil) {
 
   def shuffle: Deck = Deck(Random.shuffle(cards))
 
-  def deckHead: Card = drawCard(1)._1.head
+  def deckHeadAsList: List[Card] = drawCard(1)._1
+  def deckHeadAsCard: Card =  drawCard(1)._1.head
   // def deckHead(n:Int): Card = drawCard(n)._1
   def deckTail: List[Card] = drawCard(1)._2
 

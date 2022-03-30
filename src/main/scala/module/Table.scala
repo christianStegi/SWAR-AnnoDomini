@@ -1,6 +1,6 @@
 package module
 
-case class Table(players:List[Player], table:List[Card], deck:Deck) {
+case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCards:Int=3) {
   def showTable: String = "The board:\n" + table.toString() + "\n"
   def showAllPlayers: String = players.toString() // might not be needed, the other players cards should not be visible
   def showCurrentPlayer: String = currentPlayer.toString
@@ -20,7 +20,7 @@ case class Table(players:List[Player], table:List[Card], deck:Deck) {
     // position table.length = far right, supposed to be latest date
     table.splitAt(position)._1 ::: card :: table.splitAt(position)._2
   }
-  def playerDrawsCard(player: Player) (numOfCards:Int=1): (Player, Deck) =
+  def playerDrawsCard(player: Player, numOfCards:Int=1): (Player, Deck) =
     (player.
       giveCards(deck.drawCard(numOfCards)._1), Deck(deck.drawCard(numOfCards)._2))
 
@@ -33,39 +33,37 @@ case class Table(players:List[Player], table:List[Card], deck:Deck) {
   }
 
 
-  def getNextPlayer(changedCurPlayer:Player=currentPlayer): List[Player] = {
-    // just put the current player at the end of the list,
-    // allows for current player to be changed (e.g. placed a card)
-    players.tail ::: List(changedCurPlayer)
+  // TODO: make compatible with 1 Player session
+  def getNextPlayer(player:Player=currentPlayer, keepCurrentPlayer:Boolean=false): List[Player] = {
+    keepCurrentPlayer match
+      case false => players.tail ::: List(player)
+      case true => changePrevPlayer(player)
   }
+
   def changePrevPlayer(changedPlayer:Player): List[Player] = {
-    players.splitAt(1)._1 ::: List(changedPlayer)  ::: players.splitAt(2)._2
+    currentPlayer :: changedPlayer :: players.splitAt(2)._2
   }
-
-
 
   def allCardsInOrder: Boolean = {
     val sortedList = table.sortWith(_.year < _.year)
     table == sortedList
   }
+
+
   def playerDoubtsCards:Table = {
     // TODO: change to match case and put stuff in different functions for better overview
-    if(allCardsInOrder){
-      val newDeck = playerDrawsCard(currentPlayer) (2)._2
-      val changedPlayer = playerDrawsCard(currentPlayer) (2)._1
-      Table(
-        getNextPlayer(changedPlayer), // current player draws 2 cards and gets to the end of the list
-        List(newDeck.deckHead), // new table, with 1 card on it
-        Deck(newDeck.deckTail) // new deck, with the drawn cards removed
-      )
-    } else{
-      val newDeck = playerDrawsCard(previousPlayer) (3)._2
-      val changedPlayer = playerDrawsCard(previousPlayer) (3)._1
-      Table(
-        changePrevPlayer(changedPlayer),
-        List(newDeck.deckHead), // new table, with 1 card on it
-        Deck(newDeck.deckTail) // new deck, with the drawn cards removed
-      )
-    }
+    allCardsInOrder match
+      case true => punishPlayer(currentPlayer, punishmentCards-1)
+      case false => punishPlayer(previousPlayer, punishmentCards)
+  }
+
+  def punishPlayer(player: Player, numOfCards: Int): Table ={
+    val changedPlayer = playerDrawsCard(player, numOfCards)._1
+    val newDeck = playerDrawsCard(player, numOfCards)._2
+    Table(
+      getNextPlayer(changedPlayer, numOfCards==punishmentCards),
+      newDeck.deckHeadAsList,
+      newDeck.playDeck
+    )
   }
 }

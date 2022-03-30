@@ -18,7 +18,7 @@ class DeckSpec extends AnyWordSpec{
       -> removed the methodoverloading for drawCard, because it stopped working in Scala 3 (ambiguous overload)
       TODO: repair methodoverlaod, as it is kinda handy and I wanna know why it stopped working
         */
-      
+
       assert(deck.drawCard(4)._1.isInstanceOf[List[Card]])
       assert(deck.drawCard(4)._2.isInstanceOf[List[Card]])
       assert(deck.drawCard(4)._1.length == 4)
@@ -33,7 +33,7 @@ class DeckSpec extends AnyWordSpec{
       assert(deck.cards.length == deck.shuffle.cards.length)
     }
     "Have a function deckHead" in {
-      assert(deck.deckHead.isInstanceOf[Card])
+      assert(deck.deckHeadAsCard.isInstanceOf[Card])
     }
     "Have a function deckTail" in {
       assert(deck.deckTail.isInstanceOf[List[Card]])
