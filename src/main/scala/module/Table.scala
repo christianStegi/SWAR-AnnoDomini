@@ -28,6 +28,7 @@ case class Table(players:List[Player], table:List[Card], deck:Deck) {
     val playerCard = takePlayerCard(takeThisCard)._1
     val player = takePlayerCard(takeThisCard)._2
     Table(getNextPlayer(player), placeCard(playerCard) (placeCardAt), this.deck)
+    // TODO: this could be done with copy, check if it makes sense and implement if reasonable
   }
 
 
