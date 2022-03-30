@@ -11,10 +11,13 @@ class DeckSpec extends AnyWordSpec{
       assert(deck.cards.isInstanceOf[List[Card]])
     }
     "Have a function draw Card" in {
-      assert(deck.drawCard._1.isInstanceOf[Card])
+      /*
+      assert(deck.drawCard(1)._1.isInstanceOf[Card])
       assert(deck.drawCard._1 == deck.cards.head)
       assert(deck.drawCard._2.isInstanceOf[List[Card]])
-
+      -> removed the methodoverloading for drawCard, because it stopped working in Scala 3 (ambiguous overload)
+      TODO: repair methodoverlaod, as it is kinda handy and I wanna know why it stopped working
+      */
       assert(deck.drawCard(4)._1.isInstanceOf[List[Card]])
       assert(deck.drawCard(4)._2.isInstanceOf[List[Card]])
       assert(deck.drawCard(4)._1.length == 4)

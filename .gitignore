@@ -1,6 +1,8 @@
 # Intellij
 .idea/
 target/
+.bsp/
+# -> this plus the sbt.json file was auto created by idea, not sure if it should be shared or not, so I ignored it
 
 # Maven
 log/
