@@ -12,8 +12,22 @@ def NumberOfPlayers(num: Int) : 2 | 3 | 4 ={
     case 2 => 2
     case 3 => 3
     case 4 => 4
-    case _ => 2
+    case _ => correctNumber(num)
 }
+
+def correctNumber(num: Int) : 2 | 3 | 4 = {
+  var returnNum = 3
+  if  (num <= 2)  returnNum = 2
+  else if (num >= 4) returnNum = 4
+  returnNum match
+    case 2 => 2
+    case 4 => 4
+    case _ => 3
+    // TODO: check if this can be simplyfied with higher functions
+}
+// TODO: add method to check numbers of Players
+// TODO: add method to view all players at once
+// TODO: add better Input errorhandling
 
 
 object AnoDomini {
