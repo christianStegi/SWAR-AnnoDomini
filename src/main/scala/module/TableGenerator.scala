@@ -13,7 +13,7 @@ case class TableGenerator(noOfPlayers:Int=1, noOfCards:Int=30, CardsPerPlayer: I
     )}
 
   def genPlayers(deck:Deck, n:Int = noOfPlayers):List[Player] = {
-    if(n == 1) List(Player("Player " + n, deck.drawCard(CardsPerPlayer)._1))
+    if(n <= 1) List(Player("Player " + n, deck.drawCard(CardsPerPlayer)._1))
     else List(Player("Player " + n, deck.drawCard(CardsPerPlayer)._1)) ::: genPlayers(Deck(deck.drawCard(CardsPerPlayer)._2), n-1)
   }
 }
