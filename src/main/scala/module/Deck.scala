@@ -15,6 +15,9 @@ case class Deck(cards:List[Card]=Nil) {
   def deckHeadAsCard: Card =  drawCard(1)._1.head
   // def deckHead(n:Int): Card = drawCard(n)._1
   def deckTail: List[Card] = drawCard(1)._2
+  // TODO: Add Options: if the Deck has no more cards, add Cards from extradeck
+  // (necessary for both deckHead and the deckTail
+
 
   // these are for easing the creation of table class objects:
   def playDeck: Deck = Deck(this.deckTail) // allows to create table object directly, Is currently not used
