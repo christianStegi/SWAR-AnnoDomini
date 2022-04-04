@@ -22,9 +22,13 @@ class Controller(var table:Table) extends Observable{
     notifyObservers()
   }
 
+  def showAllPlayers(): String ={
+    table.showAllPlayers
+    // TODO: I don'T think this is compliant to the MVC Model, might have to change this one
+  }
+
   def confirmWinner: Any = {
     if table.playerWon then "congratulations, player: " + table.previousPlayer + " has won!"
-    
   }
 
   def getCard(index:Int): Card = table.takePlayerCard(index)._1

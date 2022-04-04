@@ -13,15 +13,17 @@ class Tui(controller: Controller) extends Observer{
     input match {
       case "q" => println("End game.")
       case "d" => controller.doubt()
-      case "p" => this.placeCard()
-      case _ => this.wrongInput()
+      case "p" => placeCard()
+      case "l" => showAllPlayers()
+      case _ => wrongInput()
     }
   }
   def giveOptions(): Unit = {
     println("what will you do?" +
       "\n p = place card " +
       "\n d = doubt" +
-      "\n q = quit game")
+      "\n q = quit game" +
+    "\n l = look at all Players")
   }
 
   def placeCard(): Unit = {
@@ -36,6 +38,9 @@ class Tui(controller: Controller) extends Observer{
     controller.placeCard(card, place)
   }
 
+  def showAllPlayers(): Unit = {
+    println(controller.showAllPlayers())
+  }
 
   def wrongInput(): Unit = {
     println("Didn't understand your input, please type again.")
