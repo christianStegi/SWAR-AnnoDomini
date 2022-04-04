@@ -12,8 +12,13 @@ val list4 = list2:::list
 
 // basic Functions
 list.head // 1
-list.tail // (2, 3, 8)
-list.last // 8
+list.tail // List(2, 3, 8, 1, 6, 4)
+list.last // 4
+list.drop(3) // get list without the first n elements
+list.drop(1) // the same as tail
+list.dropRight(3) // get list without the last n elements
+list.dropRight(1) // the list without last element
+
 
 list.length
 list.size

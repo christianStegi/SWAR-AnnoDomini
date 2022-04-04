@@ -8,7 +8,7 @@ case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCa
     showTable + players.map(p => p.name + ": (" + p.checkNumOfCards + ")\n").toString()
 
   def currentPlayer: Player = players.head
-  def previousPlayer: Player = players.tail.head
+  def previousPlayer: Player = players.last
   def getNumOfPlayers: Int = players.length
 
   def playerWon: Boolean = previousPlayer.hasWon
@@ -41,7 +41,7 @@ case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCa
   }
 
   def changePrevPlayer(changedPlayer:Player): List[Player] = {
-    currentPlayer :: changedPlayer :: players.splitAt(2)._2
+    currentPlayer :: players.tail.dropRight(1) ::: List(changedPlayer)
   }
 
   def allCardsInOrder: Boolean = {
