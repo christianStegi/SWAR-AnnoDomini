@@ -1,0 +1,16 @@
+Hat ein Spieler gewonnen, also keine Karten mehr auf der Hand, so wird das vom Programm nicht bemerkt.
+-> noch implementieren.
+
+---------------------------------------------------
+case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCards:Int=3) {
+
+table ist der Stapel, der aufgedeckt auf dem Tisch liegt, zu dem man seine Karten korrekt sortiert hinzulegen muss.
+deck ist der Stapel, von dem Karten gezogen werden.
+
+---------------------------------------------------
+
+Manchmal sind die Methoden-Namen nicht so passend. Daher manchmal verwirrend, den Code zu lesen, da die Methode etwas 
+anderes oder noch viel mehr macht, als mit dem Methodennamen angedeutet.
+Sollen wir das Umbenennen??
+Pro: bessere Lesbarkeit des Codes. damit auch eventuell leichter, Tests zu schreiben.
+Con: Sarah muss sich wieder neu in den Code reindenken.

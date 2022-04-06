@@ -1,5 +1,7 @@
 package module
 
+val cardsPlayedThusOutOfGame: List[Card] = List.empty
+
 case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCards:Int=3) {
   def showTable: String = "The board:\n" + table.toString() + "\n"
   def showAllPlayers: String = players.toString() // might not be needed, the other players cards should not be visible
@@ -21,6 +23,13 @@ case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCa
     table.splitAt(position)._1 ::: card :: table.splitAt(position)._2
   }
   def playerDrawsCard(player: Player, numOfCards:Int=1): (Player, Deck) =
+    if (deck.length == 0) 
+    then
+        //neues Deck anlegen aus den bereits gespielten Karten.
+        //Problem: nicht bekannt, welche Karten bisher schon gespielt wurden.
+        //bisherige "table"-Liste muss jedesmal bei Verwerfen (in punishPlayer) zu einer Merk-Liste 
+        //hinzugefügt werden.
+        ???
     (player.
       giveCards(deck.drawCard(numOfCards)._1), Deck(deck.drawCard(numOfCards)._2))
 
@@ -54,7 +63,20 @@ case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCa
     // TODO: change to match case and put stuff in different functions for better overview
     allCardsInOrder match
       case true => punishPlayer(currentPlayer, punishmentCards-1)
-      case false => punishPlayer(previousPlayer, punishmentCards)
+      case false =>
+          //hier bisher gespielte Karten merken. Nötig, wenn deck keine Karten mehr hat und man eine neues Deck 
+          //aus den bereits gespielten Karten machen muss.
+          //um die Liste veränderbar zu halten: ausserhalb der Table-Class definiert. var statt val?! Listbuffer statt List?
+          //Use a ListBuffer when you want a “List” you can modify
+          //https://alvinalexander.com/scala/how-add-elements-to-a-list-in-scala-listbuffer-immutable/
+          
+          table::cardsPlayedThusOutOfGame
+          
+
+          punishPlayer(previousPlayer, punishmentCards)
+      
+
+
   }
 
   def punishPlayer(player: Player, numOfCards: Int): Table ={
