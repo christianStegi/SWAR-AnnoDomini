@@ -1,14 +1,18 @@
 package module
 import scala.util.Random
 
-case class Deck(cards:List[Card]=Nil) {
+case class Deck(cards:List[Card]=Nil, extraCards:List[Card]=Nil) {
   // def drawCard: (Card, List[Card]) = (cards.head, cards.tail)
   def drawCard(n: Int) : (List[Card], List[Card]) = cards.splitAt(n)
   // TODO: check if draw Card should return a Deck right away
 
   def addCard(c:Card): Deck = Deck(c :: cards)
   def addCard(d:Deck): Deck = Deck(cards ::: d.cards)
+  def addCard(l:List[Card]): Deck = Deck(cards ::: l)
 
+  def addToExtraCards(c:Card): List[Card] = c :: extraCards
+  def addToExtraCards(l:List[Card]): List[Card] = l ::: extraCards
+  
   def shuffle: Deck = Deck(Random.shuffle(cards))
 
   def deckHeadAsList: List[Card] = drawCard(1)._1
