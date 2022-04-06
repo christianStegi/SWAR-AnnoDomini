@@ -21,7 +21,7 @@ case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCa
     table.splitAt(position)._1 ::: card :: table.splitAt(position)._2
   }
   def playerDrawsCard(player: Player, numOfCards:Int=1): (Player, Deck) =
-    (player.giveCards(deck.drawCard(numOfCards)._1), deck.copy(cards = deck.drawCard(numOfCards)._2) )
+    (player.giveCards(deck.drawCard(numOfCards)._1), deck.drawCard(numOfCards)._2)
 
   def playerPlacesCard(takeThisCard:Int) (placeCardAt:Int): Table = {
     val playerCard = takePlayerCard(takeThisCard)._1
