@@ -21,14 +21,14 @@ case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCa
     table.splitAt(position)._1 ::: card :: table.splitAt(position)._2
   }
   def playerDrawsCard(player: Player, numOfCards:Int=1): (Player, Deck) =
-    (player.giveCards(deck.drawCard(numOfCards)._1), Deck(deck.drawCard(numOfCards)._2))
+    (player.giveCards(deck.drawCard(numOfCards)._1), deck.drawCard(numOfCards)._2)
 
   def playerPlacesCard(takeThisCard:Int) (placeCardAt:Int): Table = {
     val playerCard = takePlayerCard(takeThisCard)._1
     val player = takePlayerCard(takeThisCard)._2
-    Table(getNextPlayer(player), placeCard(playerCard) (placeCardAt), this.deck)
-    // TODO: this could be done with copy, check if it makes sense and implement if reasonable
+    copy(players=getNextPlayer(player), table=placeCard(playerCard) (placeCardAt))
   }
+
 
   // TODO: make compatible with 1 Player session
   def getNextPlayer(player:Player=currentPlayer, keepCurrentPlayer:Boolean=false): List[Player] = {
@@ -46,6 +46,8 @@ case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCa
     val sortedList = table.sortWith(_.year < _.year)
     table == sortedList
   }
+
+
   def playerDoubtsCards:Table = {
     // TODO: change to match case and put stuff in different functions for better overview
     allCardsInOrder match
@@ -56,10 +58,11 @@ case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCa
   def punishPlayer(player: Player, numOfCards: Int): Table ={
     val changedPlayer = playerDrawsCard(player, numOfCards)._1
     val newDeck = playerDrawsCard(player, numOfCards)._2
-    Table(
-      getNextPlayer(changedPlayer, numOfCards==punishmentCards),
-      newDeck.deckHeadAsList,
-      newDeck.playDeck
-    )
+    copy(
+      players=getNextPlayer(changedPlayer, numOfCards==punishmentCards),
+      table=newDeck.deckHeadAsList,
+      newDeck.copy(extraCards = newDeck.addToExtraCards(table) )
+      )
+
   }
 }

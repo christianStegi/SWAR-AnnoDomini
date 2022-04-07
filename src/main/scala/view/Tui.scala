@@ -28,7 +28,7 @@ class Tui(controller: Controller) extends Observer{
 
   def placeCard(): Unit = {
     println(controller.tableToString)
-    println("wich card?")
+    println("which card?")
     val card = readLine().toInt
 
     println("you selected: " +
