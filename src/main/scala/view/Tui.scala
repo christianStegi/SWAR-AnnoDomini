@@ -64,6 +64,7 @@ class Tui(controller: Controller) extends Observer{
     function
     //confirmWinner()
     handlePlayerInput()
+    // TODO: This could be handled with a Command Pattern instead, might be better?
   }
 
   def giveOptions(): Unit = {
@@ -97,6 +98,7 @@ class Tui(controller: Controller) extends Observer{
   def confirmWinner(): Unit = {
     println(controller.confirmWinner)
   }
+  
   override def update(): Unit = println(controller.tableToString)
 
 

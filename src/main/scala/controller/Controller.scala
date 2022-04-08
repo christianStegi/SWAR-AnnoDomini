@@ -1,6 +1,8 @@
 package controller
-import module.{Table, TableGenerator, Card}
+import module.{Card, Table, TableGenerator}
+import util.UndoManager
 import util.Observable
+
 
 
 class Controller(var table:Table) extends Observable{
@@ -13,7 +15,7 @@ class Controller(var table:Table) extends Observable{
   def tableToString: String = table.showTable + table.showCurrentPlayer
 
   def placeCard(card:Int, place:Int): Unit ={
-    table = table.playerPlacesCard(card) (place)
+    table = table.playerPlacesCard(card, place)
     notifyObservers()
   }
 
@@ -33,4 +35,13 @@ class Controller(var table:Table) extends Observable{
 
   def getCard(index:Int): Card = table.takePlayerCard(index)._1
 
+  def undo(): Unit ={
+    // undoManager.undoStep()
+    notifyObservers()
+  }
+
+  def redo(): Unit ={
+    // undoManager.redoStep()
+    notifyObservers()
+  }
 }

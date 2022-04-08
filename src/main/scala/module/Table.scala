@@ -23,7 +23,7 @@ case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCa
   def playerDrawsCard(player: Player, numOfCards:Int=1): (Player, Deck) =
     (player.giveCards(deck.drawCard(numOfCards)._1), deck.drawCard(numOfCards)._2)
 
-  def playerPlacesCard(takeThisCard:Int) (placeCardAt:Int): Table = {
+  def playerPlacesCard(takeThisCard:Int, placeCardAt:Int): Table = {
     val playerCard = takePlayerCard(takeThisCard)._1
     val player = takePlayerCard(takeThisCard)._2
     copy(players=getNextPlayer(player), table=placeCard(playerCard) (placeCardAt))
