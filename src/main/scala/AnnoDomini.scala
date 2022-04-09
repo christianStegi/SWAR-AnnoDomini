@@ -28,7 +28,6 @@ object AnnoDomini {
 
   val controller = new Controller(TableGenerator().createTable)
   val tui = new Tui(controller)
-  controller.notifyObservers()
 
   // val scanner = new Scanner(System.in)
 
