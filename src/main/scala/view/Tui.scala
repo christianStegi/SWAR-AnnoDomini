@@ -56,6 +56,8 @@ class Tui(controller: Controller) extends Observer{
       case "d" => doAMove(controller.doubt())
       case "p" => doAMove(placeCard())
       case "l" => doAMove(showAllPlayers())
+      case "u" => doAMove(controller.undo())
+      case "r" => doAMove(controller.redo())
       case _ => wrongInput()
     }
   }
@@ -71,6 +73,8 @@ class Tui(controller: Controller) extends Observer{
     println("what will you do?" +
       "\n p = place card " +
       "\n d = doubt" +
+      "\n u = undo recent step" +
+      "\n r = redo"+
       "\n q = quit game" +
       "\n l = look at all Players")
   }
@@ -93,6 +97,7 @@ class Tui(controller: Controller) extends Observer{
 
   def wrongInput(): Unit = {
     println("Didn't understand your input, please type again.")
+    handlePlayerInput()
   }
 
   def confirmWinner(): Unit = {
