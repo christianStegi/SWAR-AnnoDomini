@@ -1,5 +1,8 @@
 package module
 
+import module.playerModule.Player
+import module.cardModule.Card
+import module.deckModule.{Deck, Deckgenerator}
 import org.scalatest.wordspec.AnyWordSpec
 
 class PlayerSpec extends AnyWordSpec{
@@ -21,7 +24,6 @@ class PlayerSpec extends AnyWordSpec{
         assert(player.showHand.isInstanceOf[String])
         assert(player.showHand.contains("[Card No. 10]\n"))
 
-        assert(player.checkNumOfCards.isInstanceOf[Int])
         assert(player.checkNumOfCards == 5)
       }
       "cannot yet have won" in {

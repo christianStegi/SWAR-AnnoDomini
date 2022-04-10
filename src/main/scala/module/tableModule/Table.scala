@@ -1,43 +1,54 @@
-package module
+package module.tableModule
 
-case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCards:Int=3) {
+import module.playerModule.Player
+import module.deckModule.{Deck, Deckgenerator}
+import module.cardModule.Card
+
+case class Table(players: List[Player], table: List[Card], deck: Deck, punishmentCards: Int = 3) {
   def showTable: String = "The board:\n" + table.toString() + "\n"
+
   def showAllPlayers: String = players.toString() // might not be needed, the other players cards should not be visible
+
   def showCurrentPlayer: String = currentPlayer.toString
+
   def showStatus: String =
     showTable + players.map(p => p.name + ": (" + p.checkNumOfCards + ")\n").toString()
 
   def currentPlayer: Player = players.head
+
   def previousPlayer: Player = players.last
+
   def getNumOfPlayers: Int = players.length
 
   def playerWon: Boolean = previousPlayer.hasWon
 
-  def takePlayerCard(index:Int):(Card,Player) = currentPlayer.getCard(index)
-  def placeCard(card: Card) (position: Int): List[Card] = {
+  def takePlayerCard(index: Int): (Card, Player) = currentPlayer.getCard(index)
+
+  def placeCard(card: Card)(position: Int): List[Card] = {
     // place card at given position
     // position 0 = far left, supposed to be earliest date
     // position table.length = far right, supposed to be latest date
     table.splitAt(position)._1 ::: card :: table.splitAt(position)._2
   }
-  def playerDrawsCard(player: Player, numOfCards:Int=1): (Player, Deck) =
+
+  def playerDrawsCard(player: Player, numOfCards: Int = 1): (Player, Deck) =
     (player.giveCards(deck.drawCard(numOfCards)._1), deck.drawCard(numOfCards)._2)
 
-  def playerPlacesCard(takeThisCard:Int, placeCardAt:Int): Table = {
+  def playerPlacesCard(takeThisCard: Int, placeCardAt: Int): Table = {
     val playerCard = takePlayerCard(takeThisCard)._1
     val player = takePlayerCard(takeThisCard)._2
-    copy(players=getNextPlayer(player), table=placeCard(playerCard) (placeCardAt))
+    copy(players = getNextPlayer(player), table = placeCard(playerCard)(placeCardAt))
   }
 
 
   // TODO: make compatible with 1 Player session
-  def getNextPlayer(player:Player=currentPlayer, keepCurrentPlayer:Boolean=false): List[Player] = {
+  def getNextPlayer(player: Player = currentPlayer, keepCurrentPlayer: Boolean = false): List[Player] = {
     keepCurrentPlayer match
       case false => players.tail ::: List(player)
       case true => changePrevPlayer(player)
   }
 
-  def changePrevPlayer(changedPlayer:Player): List[Player] = {
+  def changePrevPlayer(changedPlayer: Player): List[Player] = {
     currentPlayer :: players.tail.dropRight(1) ::: List(changedPlayer)
   }
 
@@ -48,21 +59,21 @@ case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCa
   }
 
 
-  def playerDoubtsCards:Table = {
+  def playerDoubtsCards: Table = {
     // TODO: change to match case and put stuff in different functions for better overview
     allCardsInOrder match
-      case true => punishPlayer(currentPlayer, punishmentCards-1)
+      case true => punishPlayer(currentPlayer, punishmentCards - 1)
       case false => punishPlayer(previousPlayer, punishmentCards)
   }
 
-  def punishPlayer(player: Player, numOfCards: Int): Table ={
+  def punishPlayer(player: Player, numOfCards: Int): Table = {
     val changedPlayer = playerDrawsCard(player, numOfCards)._1
     val newDeck = playerDrawsCard(player, numOfCards)._2
     copy(
-      players=getNextPlayer(changedPlayer, numOfCards==punishmentCards),
-      table=newDeck.deckHeadAsList,
-      newDeck.copy(extraCards = newDeck.addToExtraCards(table) )
-      )
+      players = getNextPlayer(changedPlayer, numOfCards == punishmentCards),
+      table = newDeck.deckHeadAsList,
+      newDeck.copy(extraCards = newDeck.addToExtraCards(table))
+    )
 
   }
 }

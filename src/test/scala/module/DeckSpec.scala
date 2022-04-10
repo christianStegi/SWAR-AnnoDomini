@@ -1,5 +1,7 @@
 package module
 
+import module.cardModule.Card
+import module.deckModule.{Deck, Deckgenerator}
 import org.scalatest.wordspec.AnyWordSpec
 
 class DeckSpec extends AnyWordSpec{

@@ -1,6 +1,7 @@
 package module
 
 
+import module.cardModule.Card
 import org.scalatest.wordspec.AnyWordSpec
 
 class CardSpec extends AnyWordSpec {

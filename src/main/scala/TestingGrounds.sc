@@ -1,4 +1,4 @@
-import module.Deckgenerator
+import module.deckModule.Deckgenerator
 
 case class Card(text: String, year: Int) {
   def showYear:String = year.toString

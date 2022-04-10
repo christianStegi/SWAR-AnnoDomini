@@ -1,7 +1,7 @@
 //import java.util.Scanner
 
 import controller.Controller
-import module.TableGenerator
+import module.tableModule.TableGenerator
 import view.Tui
 
 import scala.io.StdIn.readLine
