@@ -20,7 +20,6 @@ class Controller(var table:Table) extends Observable{
 
   def placeCard(card:Int, place:Int): Unit ={
     undoManager.doStep(PlaceCardCommand(card, place, this, table.copy()))
-    table = table.playerPlacesCard(card, place)
     notifyObservers()
   }
 

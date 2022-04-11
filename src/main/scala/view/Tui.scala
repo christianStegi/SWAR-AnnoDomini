@@ -4,6 +4,7 @@ import controller.Controller
 import util.Observer
 
 import scala.io.StdIn.readLine
+import scala.util.{Try, Success, Failure}
 
 def NumberOfPlayers(num: Int) : 2 | 3 | 4 ={
   num match
@@ -23,7 +24,6 @@ def correctNumber(num: Int) : 2 | 3 | 4 = {
   // TODO: check if this can be simplyfied with higher functions
 }
 
-
 class Tui(controller: Controller) extends Observer{
 
   controller.add(this)
@@ -35,7 +35,7 @@ class Tui(controller: Controller) extends Observer{
 
     // select how many Players
     println("how many players? (2, 3 or 4)")
-    val numOfPlayers: 2 | 3 | 4 = NumberOfPlayers(readLine().toInt)
+    val numOfPlayers: 2 | 3 | 4 = NumberOfPlayers(handleIntegerInput())
     controller.createTestTable(numOfPlayers)
     // if only one player: switch into Singleplayer mode
 
@@ -82,14 +82,28 @@ class Tui(controller: Controller) extends Observer{
   def placeCard(): Unit = {
     println(controller.tableToString)
     println("which card?")
-    val card = readLine().toInt
+    val cardInput = handleIntegerInput()
 
     println("you selected: " +
-      controller.getCard(card).toString +
+      controller.getCard(cardInput).toString +
       "where should it be placed?")
-    val place = readLine().toInt
-    controller.placeCard(card, place)
+    val placeInput = handleIntegerInput()
+    controller.placeCard(cardInput, placeInput)
   }
+
+  def handleIntegerInput(): Int ={
+    val input = readLine()
+    val fs = myToInt(input)
+    fs match {
+      case Success(n) => n
+      case Failure(s) => {
+        println("Please inupt an Integer!")
+        handleIntegerInput()
+      }
+    }
+  }
+
+  def myToInt(string: String): Try[Int] = Try(Integer.parseInt(string.trim))
 
   def showAllPlayers(): Unit = {
     println(controller.showAllPlayers())

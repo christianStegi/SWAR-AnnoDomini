@@ -8,8 +8,18 @@ case class Player(name: String = "Player", hand: List[Card]) {
 
   def checkNumOfCards: Int = hand.length
 
-  def getCard(n: Int): (Card, Player) = (hand(n), copy(hand = hand.diff(List(hand(n)))))
+  def getCard(n: Int): (Card, Player) = {
+    (hand(handleBadNumber(n)), copy(hand = hand.diff(List(hand(handleBadNumber(n))))))
+  }
   // TODO: add Option: if none the player won.
+
+  def handleBadNumber(i:Int): Int = {
+    i match {
+      case x if(x >= hand.size) => position = hand.size -1
+      case x if(x < 0) => position = 0
+      case _ => position = i
+    }
+  }
 
   def giveCards(newCards: List[Card]): Player = copy(hand = hand ::: newCards)
 
