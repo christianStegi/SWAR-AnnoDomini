@@ -52,12 +52,9 @@ case class Table(players:List[Player], table:List[Card], deck:Deck, punishmentCa
     allCardsInOrder match
       case true => punishPlayer(currentPlayer, punishmentCards-1)
       case false => punishPlayer(previousPlayer, punishmentCards)
-      
-
-
   }
 
-  def punishPlayer(player: Player, numOfCards: Int): Table ={
+  def punishPlayer(player: Player, numOfCards: Int): Table = {
     val changedPlayer = playerDrawsCard(player, numOfCards)._1
     val newDeck = playerDrawsCard(player, numOfCards)._2
     copy(
