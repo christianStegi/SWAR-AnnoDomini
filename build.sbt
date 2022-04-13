@@ -15,7 +15,7 @@ libraryDependencies += "net.codingwell" %% "scala-guice" % "5.0."
 
 // File IO:
 // XML import:
-libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.0.1"
+libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.1.0"
 // JSon import:
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.8.15"
 
