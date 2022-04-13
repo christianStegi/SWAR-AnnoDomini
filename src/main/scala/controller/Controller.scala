@@ -1,9 +1,15 @@
 package controller
-import module.{Table, TableGenerator, Card}
-import util.Observable
+import controller.commands.{DoubtCommand, PlaceCardCommand}
+import module.cardModule.Card
+import module.tableModule.{Table, TableGenerator}
+import util.{Observable, UndoManager}
+
 
 
 class Controller(var table:Table) extends Observable{
+
+  val undoManager = new UndoManager
+
   def createTestTable(noOfPlayers:Int): Unit = {
     val tb = TableGenerator(noOfPlayers, 40)
     table = tb.createTable
@@ -13,12 +19,12 @@ class Controller(var table:Table) extends Observable{
   def tableToString: String = table.showTable + table.showCurrentPlayer
 
   def placeCard(card:Int, place:Int): Unit ={
-    table = table.playerPlacesCard(card) (place)
+    undoManager.doStep(PlaceCardCommand(card, place, this, table.copy()))
     notifyObservers()
   }
 
   def doubt():Unit = {
-    table = table.playerDoubtsCards
+    undoManager.doStep(DoubtCommand(this, table.copy()))
     notifyObservers()
   }
 
@@ -33,4 +39,13 @@ class Controller(var table:Table) extends Observable{
 
   def getCard(index:Int): Card = table.takePlayerCard(index)._1
 
+  def undo(): Unit ={
+    undoManager.undoStep
+    notifyObservers()
+  }
+
+  def redo(): Unit ={
+    undoManager.redoStep
+    notifyObservers()
+  }
 }

@@ -1,6 +1,7 @@
 package module
 
 
+import module.cardModule.Card
 import org.scalatest.wordspec.AnyWordSpec
 
 class CardSpec extends AnyWordSpec {
@@ -12,7 +13,6 @@ class CardSpec extends AnyWordSpec {
         }
         "have a year" which{
           "is an Integeger" in {
-            assert(card.year.isInstanceOf[Int])
             assert(card.year == 10)
           }
           "has a String representation" in {

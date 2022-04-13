@@ -1,7 +1,7 @@
 //import java.util.Scanner
 
 import controller.Controller
-import module.TableGenerator
+import module.tableModule.TableGenerator
 import view.Tui
 
 import scala.io.StdIn.readLine
@@ -28,7 +28,6 @@ object AnnoDomini {
 
   val controller = new Controller(TableGenerator().createTable)
   val tui = new Tui(controller)
-  controller.notifyObservers()
 
   // val scanner = new Scanner(System.in)
 

@@ -1,5 +1,7 @@
 package module
 
+import module.cardModule.Card
+import module.deckModule.{Deck, Deckgenerator}
 import org.scalatest.wordspec.AnyWordSpec
 
 class DeckSpec extends AnyWordSpec{
@@ -20,7 +22,7 @@ class DeckSpec extends AnyWordSpec{
         */
 
       assert(deck.drawCard(4)._1.isInstanceOf[List[Card]])
-      assert(deck.drawCard(4)._2.isInstanceOf[List[Card]])
+      assert(deck.drawCard(4)._2.isInstanceOf[Deck])
       assert(deck.drawCard(4)._1.length == 4)
     }
     "Have a function addCard" in {
@@ -40,7 +42,6 @@ class DeckSpec extends AnyWordSpec{
       assert(deck.deckTail == deck.cards.tail)
     }
     "Have a function lenght" in{
-      assert(deck.length.isInstanceOf[Int])
       assert(deck.length == 10)
     }
     "Have a function playDeck" in {
@@ -57,7 +58,6 @@ class DeckSpec extends AnyWordSpec{
       assert(deck.copy() == deck)
     }
     "Have a method equals" in {
-      assert(deck.equals(deck).isInstanceOf[Boolean])
       assert(deck.equals(deck))
     }
 
