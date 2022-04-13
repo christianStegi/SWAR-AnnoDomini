@@ -1,7 +1,6 @@
 package model
 
 import model.playerComponent.Player
-import model.deckModule.Deck
 import model.gameComponent.{Card, Deck, Deckgenerator}
 import org.scalatest.wordspec.AnyWordSpec
 
