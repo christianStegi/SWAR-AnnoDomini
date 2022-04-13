@@ -1,18 +1,24 @@
-package model.tableModule
+package model.gameComponent
 
-import model.playerModule.Player
-import model.deckModule.{Deck, Deckgenerator}
-import model.cardModule.Card
+import model.playerComponent.Player
 
 case class Table(players: List[Player], table: List[Card], deck: Deck, punishmentCards: Int = 3) {
   def showTable: String = "The board:\n" + table.toString() + "\n"
+
   def showAllPlayers: String = players.toString() // might not be needed, the other players cards should not be visible
+
   def showCurrentPlayer: String = currentPlayer.toString
+
   def showStatus: String = showTable + players.map(p => p.name + ": (" + p.checkNumOfCards + ")\n").toString()
+
   def currentPlayer: Player = players.head
+
   def previousPlayer: Player = players.last
+
   def getNumOfPlayers: Int = players.length
+
   def playerWon: Boolean = previousPlayer.hasWon
+
   def takePlayerCard(index: Int): (Card, Player) = currentPlayer.getCard(index)
 
   def placeCard(card: Card)(position: Int): List[Card] = table.splitAt(position)._1 ::: card :: table.splitAt(position)._2
@@ -25,7 +31,7 @@ case class Table(players: List[Player], table: List[Card], deck: Deck, punishmen
     val player = takePlayerCard(takeThisCard)._2
     copy(players = getNextPlayer(player), table = placeCard(playerCard)(placeCardAt))
   }
-  
+
   // TODO: make compatible with 1 Player session
   def getNextPlayer(player: Player = currentPlayer, keepCurrentPlayer: Boolean = false): List[Player] = {
     keepCurrentPlayer match
@@ -41,7 +47,7 @@ case class Table(players: List[Player], table: List[Card], deck: Deck, punishmen
     val sortedList = table.sortWith(_.year < _.year)
     table == sortedList
   }
-  
+
   def playerDoubtsCards: Table = {
     // TODO: change to match case and put stuff in different functions for better overview
     allCardsInOrder match

@@ -1,7 +1,7 @@
 package controller
 import controller.commands.{DoubtCommand, PlaceCardCommand}
-import model.cardModule.Card
-import model.tableModule.{Table, TableGenerator}
+import model.gameComponent.{Card, Table, TableGenerator}
+import model.tableModule.TableGenerator
 import util.{Observable, UndoManager}
 
 

@@ -1,6 +1,6 @@
-package model.playerModule
+package model.playerComponent
 
-import model.cardModule.Card
+import model.gameComponent.Card
 
 trait PlayerInterface {
 

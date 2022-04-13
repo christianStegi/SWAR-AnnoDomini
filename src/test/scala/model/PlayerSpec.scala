@@ -1,8 +1,8 @@
 package model
 
-import model.playerModule.Player
-import model.cardModule.Card
-import model.deckModule.{Deck, Deckgenerator}
+import model.playerComponent.Player
+import model.deckModule.Deck
+import model.gameComponent.{Card, Deck, Deckgenerator}
 import org.scalatest.wordspec.AnyWordSpec
 
 class PlayerSpec extends AnyWordSpec{

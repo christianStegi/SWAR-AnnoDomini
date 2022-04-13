@@ -1,6 +1,7 @@
-import model.deckModule.Deckgenerator
 
-import scala.util.{Try, Success, Failure}
+import model.gameComponent.Deckgenerator
+
+import scala.util.{Failure, Success, Try}
 
 val string1:String = "1"
 val string2: String = "hallo"

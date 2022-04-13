@@ -1,6 +1,6 @@
-package model.playerModule
+package model.playerComponent
 
-import model.cardModule.Card
+import model.gameComponent.Card
 
 case class Player(name: String = "Player", hand: List[Card]) {
   def showHand: String = this.toString()

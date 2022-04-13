@@ -1,7 +1,4 @@
-package model.deckModule
-
-import model.deckModule.Deck
-import model.cardModule.Card
+package model.gameComponent
 
 class Deckgenerator {
   def createRandomDeck(noOfCards:Int = 10): Deck ={
