@@ -1,9 +1,9 @@
-package module.tableModule
+package model.tableModule
 
-import module.deckModule.{Deck, Deckgenerator}
-import module.playerModule.Player
+import model.deckModule.{Deck, Deckgenerator}
+import model.playerModule.Player
 
-import module.tableModule.Table
+import model.tableModule.Table
 
 case class TableGenerator(noOfPlayers: Int = 1, noOfCards: Int = 30, CardsPerPlayer: Int = 5) {
   val deckGen = new Deckgenerator

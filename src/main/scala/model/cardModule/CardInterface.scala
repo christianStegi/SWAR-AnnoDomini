@@ -1,4 +1,4 @@
-package module.cardModule
+package model.cardModule
 
 trait CardInterface {
   def ShowCard: String

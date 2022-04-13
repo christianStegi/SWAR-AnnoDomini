@@ -1,8 +1,8 @@
-package module
+package model
 
-import module.playerModule.Player
-import module.deckModule.Deckgenerator
-import module.tableModule.{Table, TableGenerator}
+import model.playerModule.Player
+import model.deckModule.Deckgenerator
+import model.tableModule.{Table, TableGenerator}
 import org.scalatest.wordspec.AnyWordSpec
 
 class TableGeneratorSpec extends AnyWordSpec(){

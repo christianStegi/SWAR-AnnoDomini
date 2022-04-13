@@ -1,4 +1,4 @@
-import module.deckModule.Deckgenerator
+import model.deckModule.Deckgenerator
 
 import scala.util.{Try, Success, Failure}
 
