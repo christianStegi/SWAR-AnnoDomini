@@ -1,8 +1,6 @@
-package module.tableModule
+package model.gameComponent
 
-import module.playerModule.Player
-import module.deckModule.{Deck, Deckgenerator}
-import module.cardModule.Card
+import model.playerComponent.Player
 
 case class Table(players: List[Player], table: List[Card], deck: Deck, punishmentCards: Int = 3) {
   def showTable: String = "The board:\n" + table.toString() + "\n"
@@ -11,8 +9,7 @@ case class Table(players: List[Player], table: List[Card], deck: Deck, punishmen
 
   def showCurrentPlayer: String = currentPlayer.toString
 
-  def showStatus: String =
-    showTable + players.map(p => p.name + ": (" + p.checkNumOfCards + ")\n").toString()
+  def showStatus: String = showTable + players.map(p => p.name + ": (" + p.checkNumOfCards + ")\n").toString()
 
   def currentPlayer: Player = players.head
 
@@ -24,12 +21,7 @@ case class Table(players: List[Player], table: List[Card], deck: Deck, punishmen
 
   def takePlayerCard(index: Int): (Card, Player) = currentPlayer.getCard(index)
 
-  def placeCard(card: Card)(position: Int): List[Card] = {
-    // place card at given position
-    // position 0 = far left, supposed to be earliest date
-    // position table.length = far right, supposed to be latest date
-    table.splitAt(position)._1 ::: card :: table.splitAt(position)._2
-  }
+  def placeCard(card: Card)(position: Int): List[Card] = table.splitAt(position)._1 ::: card :: table.splitAt(position)._2
 
   def playerDrawsCard(player: Player, numOfCards: Int = 1): (Player, Deck) =
     (player.giveCards(deck.drawCard(numOfCards)._1), deck.drawCard(numOfCards)._2)
@@ -39,7 +31,6 @@ case class Table(players: List[Player], table: List[Card], deck: Deck, punishmen
     val player = takePlayerCard(takeThisCard)._2
     copy(players = getNextPlayer(player), table = placeCard(playerCard)(placeCardAt))
   }
-
 
   // TODO: make compatible with 1 Player session
   def getNextPlayer(player: Player = currentPlayer, keepCurrentPlayer: Boolean = false): List[Player] = {
@@ -52,12 +43,10 @@ case class Table(players: List[Player], table: List[Card], deck: Deck, punishmen
     currentPlayer :: players.tail.dropRight(1) ::: List(changedPlayer)
   }
 
-
   def allCardsInOrder: Boolean = {
     val sortedList = table.sortWith(_.year < _.year)
     table == sortedList
   }
-
 
   def playerDoubtsCards: Table = {
     // TODO: change to match case and put stuff in different functions for better overview

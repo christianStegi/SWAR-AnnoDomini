@@ -93,8 +93,7 @@ class Tui(controller: Controller) extends Observer{
 
   def handleIntegerInput(): Int ={
     val input = readLine()
-    val fs = myToInt(input)
-    fs match {
+    myToInt(input) match {
       case Success(n) => n
       case Failure(s) => {
         println("Please inupt an Integer!")

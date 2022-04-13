@@ -1,16 +1,13 @@
-package module.deckModule
-
-import module.cardModule.Card
+package model.gameComponent
 
 import scala.util.Random
 
 case class Deck(cards: List[Card] = Nil, extraCards: List[Card] = Nil) {
-  // def drawCard: (Card, List[Card]) = (cards.head, cards.tail)
   def drawCard(n: Int): (List[Card], Deck) = {
     n match
       case x if (x <= cards.size) => (cards.splitAt(n)._1, copy(cards = cards.splitAt(n)._2))
       case _ => createDeckFromExtraCards().drawCard(n)
-    // Problem: if there aren't enough extraCards this will end in a loop
+    // TODO: Problem: if there aren't enough extraCards this will end in a loop
     // what should we do to stop an error from happening here?
   }
 
@@ -32,7 +29,6 @@ case class Deck(cards: List[Card] = Nil, extraCards: List[Card] = Nil) {
 
   def deckHeadAsCard: Card = drawCard(1)._1.head
 
-  // def deckHead(n:Int): Card = drawCard(n)._1
   def deckTail: List[Card] = cards.tail
 
   // these are for easing the creation of table class objects:
