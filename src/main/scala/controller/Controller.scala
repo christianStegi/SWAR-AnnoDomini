@@ -3,8 +3,6 @@ import controller.commands.{DoubtCommand, PlaceCardCommand}
 import model.gameComponent.{Card, Table, TableGenerator}
 import util.{Observable, UndoManager}
 
-
-
 class Controller(var table:Table) extends Observable{
 
   val undoManager = new UndoManager
