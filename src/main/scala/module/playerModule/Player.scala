@@ -15,9 +15,9 @@ case class Player(name: String = "Player", hand: List[Card]) {
 
   def handleBadNumber(i:Int): Int = {
     i match {
-      case x if(x >= hand.size) => position = hand.size -1
-      case x if(x < 0) => position = 0
-      case _ => position = i
+      case x if(x >= hand.size) => (hand.size -1)
+      case x if(x < 0) => 0
+      case _ => i
     }
   }
 

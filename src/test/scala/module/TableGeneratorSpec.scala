@@ -10,11 +10,9 @@ class TableGeneratorSpec extends AnyWordSpec(){
     "new" should {
       val tb = TableGenerator(2, 40)
       "have a number of Players " in {
-        assert(tb.noOfPlayers.isInstanceOf[Int])
         assert(tb.noOfPlayers == 2)
       }
       "have a number of Cards " in {
-        assert(tb.noOfCards.isInstanceOf[Int])
         assert(tb.noOfCards == 40)
       }
       "have a Deckgenerator" in {
