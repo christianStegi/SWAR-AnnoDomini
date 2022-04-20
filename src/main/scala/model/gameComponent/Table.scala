@@ -4,23 +4,15 @@ import model.playerComponent.Player
 
 case class Table(players: List[Player], table: List[Card], deck: Deck, punishmentCards: Int = 3) {
   def showTable: String = "The board:\n" + table.toString() + "\n"
-
   def showAllPlayers: String = players.toString() // might not be needed, the other players cards should not be visible
-
   def showCurrentPlayer: String = currentPlayer.toString
-
   def showStatus: String = showTable + players.map(p => p.name + ": (" + p.checkNumOfCards + ")\n").toString()
-
+ 
   def currentPlayer: Player = players.head
-
   def previousPlayer: Player = players.last
-
   def getNumOfPlayers: Int = players.length
-
   def playerWon: Boolean = previousPlayer.hasWon
-
   def takePlayerCard(index: Int): (Card, Player) = currentPlayer.getCard(index)
-
   def placeCard(card: Card)(position: Int): List[Card] = table.splitAt(position)._1 ::: card :: table.splitAt(position)._2
 
   def playerDrawsCard(player: Player, numOfCards: Int = 1): (Player, Deck) =
