@@ -1,25 +1,33 @@
-version := "2.0"
+ThisBuild / organization := "de.htwg.swar"
+ThisBuild / version      := "2.0"
+ThisBuild / scalaVersion := "3.1.1"
 
-
+//version := "2.0"
 //scalaVersion := "2.13.5"
 
 lazy val root = (project in file("."))
-  .settings(
-    name := "AnnoDominiScala",
-    scalaVersion := "3.1.1"
-  )
+  .settings(name := "AnnoDominiScala")
+  .aggregate(model, controller)
+
+
+lazy val model = (project in file("./model"))
+
+lazy val controller = (project in file("./controller"))
+
+
+
 
 // for scala test
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.11"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.11" % "test"
 
 // google guice for Dependency Injection
-libraryDependencies += "com.google.inject" % "guice" % "5.1.0"
-libraryDependencies += "net.codingwell" %% "scala-guice" % "5.0."
+//libraryDependencies += "com.google.inject" % "guice" % "5.1.0"
+//libraryDependencies += "net.codingwell" %% "scala-guice" % "5.0."
 
 // File IO:
 // XML import:
 libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "2.1.0"
 // JSon import:
-libraryDependencies += "com.typesafe.play" %% "play-json" % "2.8.15"
+//libraryDependencies += "com.typesafe.play" %% "play-json" % "2.8.15"
 
