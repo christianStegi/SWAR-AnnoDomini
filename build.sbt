@@ -5,15 +5,20 @@ ThisBuild / scalaVersion := "3.1.1"
 //version := "2.0"
 //scalaVersion := "2.13.5"
 
+lazy val model = (project in file("model"))
+
+lazy val controller = (project in file("controller"))
+  .dependsOn(model)
+
 lazy val root = (project in file("."))
-  .settings(name := "AnnoDominiScala")
+  .dependsOn(model, controller)
   .aggregate(model, controller)
+  .settings(name := "AnnoDominiScala")
 
 
-lazy val model = (project in file("./model"))
+//lazy val model = (project in file("./model"))
 
-lazy val controller = (project in file("./controller"))
-
+//lazy val controller = (project in file("./controller"))
 
 
 
