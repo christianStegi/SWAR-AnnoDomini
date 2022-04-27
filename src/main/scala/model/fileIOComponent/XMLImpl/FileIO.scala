@@ -1,21 +1,20 @@
-package module.fileIOComponent.XMLImpl
+package model.fileIOComponent.XMLImpl
 
 import model.fileIOComponent.FileIOInterface
 import model.gameComponent.{Card, Deck, Table}
 import model.playerComponent.Player
 
-import java.io.{File, FileWriter}
-import scala.xml.XML
+class FileIO extends FileIOInterface{
 
-class FileIO extends FileIOInterface {
   override def save(table: Table): Unit = {
-    scala.xml.XML.save("anoDomini.xml", tableToXML(table))
+    println(tableToXML(table))
+    scala.xml.XML.save("save.xml", tableToXML(table))
   }
 
   override def load: Table = {
-    val currentPath = System.getProperty("user.dir")
-    val xml = XML.loadFile(currentPath + "/anoDomini.xml")
+    val xml = scala.xml.XML.loadFile("save.xml")
     tableFromXML(xml)
+    // TODO: make Errorhandeling with Option or Try
   }
 
   def cardToXML(c:Card): scala.xml.Node = <card><year>{c.year}</year><text>{c.text}</text></card>
@@ -66,7 +65,6 @@ class FileIO extends FileIOInterface {
 
   def tableToXML(t:Table): scala.xml.Elem = <table>{playerListToXML(t.players)}{cardListToXML(t.table)}{deckToXML(t.deck)}<punishmentCards>{t.punishmentCards}</punishmentCards></table>
 
-
   def tableFromXML(xml: scala.xml.Elem): Table ={
     val players = playerListFromXML(xml)
     val cards = cardListFromXML(xml)
@@ -74,4 +72,5 @@ class FileIO extends FileIOInterface {
     val punCards = (xml \ "punishmentCards").text.toInt
     Table(players, cards, deck, punCards)
   }
+
 }

@@ -1,12 +1,14 @@
 package controller
 
-import controller.commands.{DoubtCommand, PlaceCardCommand}
 import model.gameComponent.{Card, Table, TableGenerator}
+import model.fileIOComponent.XMLImpl.FileIO
 import util.{Observable, UndoManager}
+import controller.commands.{DoubtCommand, PlaceCardCommand}
 
-class Controller(var table:Table) extends Observable{
+class Controller(var table: Table) extends Observable{
 
   val undoManager = new UndoManager
+  val fileIO = new FileIO
 
   def createTestTable(noOfPlayers:Int): Unit = {
     val tb = TableGenerator(noOfPlayers, 40)
@@ -26,15 +28,8 @@ class Controller(var table:Table) extends Observable{
     notifyObservers()
   }
 
-  def showAllPlayers(): String ={
-    table.showAllPlayers
-    // TODO: I don'T think this is compliant to the MVC Model, might have to change this one
-  }
-
-  def confirmWinner: Any = {
-    if table.playerWon then "congratulations, player: " + table.previousPlayer + " has won!"
-  }
-
+  def showAllPlayers(): String =table.showAllPlayers
+  def confirmWinner: Any = if table.playerWon then "congratulations, player: " + table.previousPlayer + " has won!"
   def getCard(index:Int): Card = table.takePlayerCard(index)._1
 
   def undo(): Unit ={
@@ -47,8 +42,10 @@ class Controller(var table:Table) extends Observable{
     notifyObservers()
   }
 
-  def saveGame(): Unit = notifyObservers()
-
-  def loadGame(): Unit= notifyObservers()
+  def saveGame(): Unit = fileIO.save(table)
+  def loadGame(): Unit= {
+    table = fileIO.load
+    notifyObservers()
+  }
 
 }
