@@ -41,9 +41,7 @@ class FileIO extends FileIOInterface {
     </player>
   }
 
-  def playerListToXML(pl: List[Player]): scala.xml.NodeSeq ={
-    <players>{for(player <- pl) yield playerToXML(player)}</players>
-  }
+  def playerListToXML(pl: List[Player]): scala.xml.NodeSeq = <players>{for(player <- pl) yield playerToXML(player)}</players>
 
   def playerFromXML(xml: scala.xml.NodeSeq):Player = {
     val name = (xml \ "name").text
