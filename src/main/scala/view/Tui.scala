@@ -55,9 +55,11 @@ class Tui(controller: Controller) extends Observer{
       case "q" => println("End game.")
       case "d" => doAMove(controller.doubt())
       case "p" => doAMove(placeCard())
-      case "l" => doAMove(showAllPlayers())
+      case "a" => doAMove(showAllPlayers())
       case "u" => doAMove(controller.undo())
       case "r" => doAMove(controller.redo())
+      case "s" => doAMove(saveGame())
+      case "l" => doAMove(loadGame())
       case _ => wrongInput()
     }
   }
@@ -75,8 +77,10 @@ class Tui(controller: Controller) extends Observer{
       "\n d = doubt" +
       "\n u = undo recent step" +
       "\n r = redo"+
+      "\n s = save game" +
+      "\n l = load game" +
       "\n q = quit game" +
-      "\n l = look at all Players")
+      "\n a = look at all Players")
   }
 
   def placeCard(): Unit = {
@@ -101,16 +105,23 @@ class Tui(controller: Controller) extends Observer{
       }
     }
   }
-
   def myToInt(string: String): Try[Int] = Try(Integer.parseInt(string.trim))
-
-  def showAllPlayers(): Unit = {
-    println(controller.showAllPlayers())
-  }
 
   def wrongInput(): Unit = {
     println("Didn't understand your input, please type again.")
     handlePlayerInput()
+  }
+
+  def showAllPlayers(): Unit = {
+    println(controller.showAllPlayers())
+  }
+  def saveGame(): Unit ={
+    controller.saveGame()
+    println("saved game")
+  }
+  def loadGame(): Unit={
+    controller.loadGame()
+    println("load game")
   }
 
   def confirmWinner(): Unit = {
