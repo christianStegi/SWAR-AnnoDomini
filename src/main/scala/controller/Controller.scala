@@ -28,7 +28,7 @@ class Controller(var table: Table) extends Observable{
     notifyObservers()
   }
 
-  def showAllPlayers(): String =table.showAllPlayers
+  def showAllPlayers(): String = table.showAllPlayers
   def confirmWinner: Any = if table.playerWon then "congratulations, player: " + table.previousPlayer + " has won!"
   def getCard(index:Int): Card = table.takePlayerCard(index)._1
 
@@ -43,9 +43,17 @@ class Controller(var table: Table) extends Observable{
   }
 
   def saveGame(): Unit = fileIO.save(table)
+ 
   def loadGame(): Unit= {
     table = fileIO.load
     notifyObservers()
   }
+
+  def saveGameViaRest(): Unit = fileIO.save(table)
+
+  def loadGameViaRest(): Unit= {
+
+  }
+  
 
 }

@@ -60,6 +60,10 @@ class Tui(controller: Controller) extends Observer{
       case "r" => doAMove(controller.redo())
       case "s" => doAMove(saveGame())
       case "l" => doAMove(loadGame())
+      
+      case "rl" => doAMove(loadGameViaRest())
+      case "rs" => doAMove(saveGameViaRest())
+      
       case _ => wrongInput()
     }
   }
@@ -100,7 +104,7 @@ class Tui(controller: Controller) extends Observer{
     myToInt(input) match {
       case Success(n) => n
       case Failure(s) => {
-        println("Please inupt an Integer!")
+        println("Please input an Integer!")
         handleIntegerInput()
       }
     }
@@ -121,7 +125,15 @@ class Tui(controller: Controller) extends Observer{
   }
   def loadGame(): Unit={
     controller.loadGame()
-    println("load game")
+    println("game loaded")
+  }
+  def saveGameViaRest(): Unit ={
+    controller.saveGameViaRest()
+    println("saved game via REST")
+  }
+  def loadGameViaRest(): Unit={
+    controller.loadGameViaRest()
+    println("game loaded via REST")
   }
 
   def confirmWinner(): Unit = {
