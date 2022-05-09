@@ -36,15 +36,17 @@ lazy val dependencies =
     val scalaGuice = ("net.codingwell" %% "scala-guice" % scalaGuiceVersion).cross(CrossVersion.for3Use2_13)
     
     val akka = ("com.typesafe.akka" %% "akka-http" % akkaHttpVersion).cross(CrossVersion.for3Use2_13)
-    val akkaactor = ("com.typesafe.akka" %% "akka-actor-typed" % akkaVersion).cross(CrossVersion.for3Use2_13)
-    val akkastream = ("com.typesafe.akka" %% "akka-stream" % akkaVersion).cross(CrossVersion.for3Use2_13)
+    val akkaActor = ("com.typesafe.akka" %% "akka-actor-typed" % akkaVersion).cross(CrossVersion.for3Use2_13)
+    val akkaStream = ("com.typesafe.akka" %% "akka-stream" % akkaVersion).cross(CrossVersion.for3Use2_13)
+    val akkaXML = ("com.typesafe.akka" %% "akka-http-xml" % akkaHttpVersion).cross(CrossVersion.for3Use2_13)
   }
 
 
 val commonDependencies = Seq(
   dependencies.akka,
-  dependencies.akkaactor,
-  dependencies.akkastream,
+  dependencies.akkaActor,
+  dependencies.akkaStream,
+  dependencies.akkaXML,
 
   dependencies.scalactic,
   dependencies.scalatest,
