@@ -47,3 +47,6 @@ AnoDominiScala.log
 .metals
 project/.bloop
 metals.sbt
+
+# saves
+*.xml
