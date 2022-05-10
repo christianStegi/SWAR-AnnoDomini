@@ -18,6 +18,7 @@ import scala.io.StdIn
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.HttpMethods
+import akka.protobufv3.internal.compiler.PluginProtos.CodeGeneratorResponse.File
 
 class Controller(var table: Table) extends Observable{
 
@@ -29,8 +30,6 @@ class Controller(var table: Table) extends Observable{
   given ActorSystem[Any] = system
   val executionContext: ExecutionContextExecutor = system.executionContext
   given ExecutionContextExecutor = executionContext
-
-
 
 
   val undoManager = new UndoManager
@@ -76,10 +75,26 @@ class Controller(var table: Table) extends Observable{
     notifyObservers()
   }
 
-  def saveGameViaRest(): Unit = fileIOViaRest.save(table)
+  def saveGameViaRest(): Unit = {
+    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
+    given ActorSystem[Any] = system
+    val executionContext: ExecutionContextExecutor = system.executionContext
+    given ExecutionContextExecutor = executionContext
 
+    val tableAsXml = fileIO.tableToXML(table)
 
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(
+      HttpRequest(
+        method =  HttpMethods.POST,
+        uri = s"http://$fileIoHost:$fileIoPort/fileIO/xml/save",
+        //entity = HttpEntity(ContentTypes.`application/json`, Json.stringify(boardToJson(board)))
+        entity = HttpEntity(ContentTypes.`application/xml`, Json.stringify(boardToJson(board)))
+      ))
 
+    notifyObservers()
+  }
+
+  //nur kopiervorlage, kann nachher gelöscht werden!
   override def save(): Unit = {
     val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
     given ActorSystem[Any] = system
@@ -90,7 +105,8 @@ class Controller(var table: Table) extends Observable{
       HttpRequest(
         method =  HttpMethods.PUT,
         uri = s"http://$fileIoHost:$fileIoPort/fileIO/json/save",
-        entity = HttpEntity(ContentTypes.`application/json`, Json.stringify(boardToJson(board)))
+        entity = HttpEntity(ContentTypes.`application/xml`, Json.stringify(boardToJson(board)))
+        //entity = HttpEntity(ContentTypes.`application/json`, Json.stringify(boardToJson(board)))
       ))
 
     notifyObservers()
@@ -136,7 +152,7 @@ class Controller(var table: Table) extends Observable{
 
     responseFuture
       .onComplete {
-        case Success(value) =>
+        case Success(value) => 
           val boardAsString = Unmarshal(value.entity).to[String]
           boardAsString.onComplete {
             case Success(value) =>
