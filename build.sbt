@@ -23,6 +23,7 @@ lazy val dependencies =
     val scalaGuiceVersion = "5.0.2"
     val akkaVersion = "2.6.19"
     val akkaHttpVersion = "10.2.9"
+    val slickVersion = "3.3.3"
 
     val scalactic = "org.scalactic" %% "scalactic" % scalacticVersion
     val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion % "test"
@@ -37,6 +38,8 @@ lazy val dependencies =
     val akkaHttp = ("com.typesafe.akka" %% "akka-http" % akkaHttpVersion).cross(CrossVersion.for3Use2_13)
     val akkaActor = ("com.typesafe.akka" %% "akka-actor-typed" % akkaVersion).cross(CrossVersion.for3Use2_13)
     val akkaStream = ("com.typesafe.akka" %% "akka-stream" % akkaVersion).cross(CrossVersion.for3Use2_13)
+
+    val slick = "com.typesafe.slick" %% "slick" % slickVersion
   }
 
 val commonDependencies = Seq(
@@ -54,4 +57,6 @@ val commonDependencies = Seq(
   dependencies.playJson,
   dependencies.guice,
   dependencies.scalaGuice,
+
+  dependencies.slick,
 )
