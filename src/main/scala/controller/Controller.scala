@@ -117,22 +117,31 @@ class Controller(var table: Table) extends Observable{
 
         case Success(value) =>
 
-              println("%%%%%%%% jetzt in load on complete Success(value) %%%%%%%%")
-              
-              val tableAsString = Unmarshal(value.entity).to[String]
+          println("%%%%%%%% jetzt in load on complete Success(value) %%%%%%%%")
+          
+          val tableAsString = Unmarshal(value.entity).to[String]
+          // val tableAsString = value.entity.toString   //HttpEntity.Strict(text/xml; charset=UTF-8,2363 bytes total)
+
+          tableAsString.onComplete {
+            case Success(value) =>
               println("tableAsString:")
-              println(tableAsString)              
-              val xml = scala.xml.XML.loadString(value.toString)
-              println("xml:")
-              println(xml.toString)
+              println(tableAsString)   
+              println("value:")
+              println(value)             
+              val nowAsXml = scala.xml.XML.loadString(value.toString)
+              println("nowAsXml:")
+              println(nowAsXml.toString)
 
+              table = fileIOAsXML.tableFromXML(nowAsXml)
 
-              table = fileIOAsXML.tableFromXML(xml)
               println("table:")
               println(table)
               notifyObservers()
               return Future(true)
-           
+            case Failure(exception) =>
+              return Future(false)
+          }
+
         case Failure(exception) =>
           println("%%%%%%%% jetzt in load  -  failure fall 1 %%%%%%%%")
           return Future(false)
