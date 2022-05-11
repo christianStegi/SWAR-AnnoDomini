@@ -149,6 +149,9 @@ class Controller(var table: Table) extends Observable{
     return Future(false)
   }
 
+
+}
+
   // // nur zum Abschauen
   // def loadGameViaRest(): Future[Boolean] = {
   //   val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
@@ -175,6 +178,3 @@ class Controller(var table: Table) extends Observable{
   //     }
   //   return Future(false)
   // }
-
-
-}

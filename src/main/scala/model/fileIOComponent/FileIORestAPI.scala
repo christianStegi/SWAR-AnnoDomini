@@ -11,8 +11,9 @@ import scala.io.StdIn
 import scala.concurrent.ExecutionContextExecutor
 import scala.util.{Failure, Success, Try}
 
-import model.fileIOComponent.Impl.FileIOAsXML
+import model.fileIOComponent.Impl.FileIORestXml
 import model.fileIOComponent.FileIOInterface
+
 
 
 object FileIORestAPI {
@@ -25,7 +26,7 @@ object FileIORestAPI {
   val executionContext: ExecutionContextExecutor = system.executionContext
   given ExecutionContextExecutor = executionContext
 
-  val xmlHelper = FileIOAsXML()
+  val xmlHelper = FileIORestXml()
 
     @main def run(): Unit = {
 

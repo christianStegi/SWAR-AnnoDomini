@@ -1,5 +1,7 @@
 package model.fileIOComponent.Impl
 
+
+
 import model.fileIOComponent.FileIOInterface
 import model.gameComponent.{Card, Deck, Table}
 import model.playerComponent.Player
@@ -7,7 +9,7 @@ import java.io.PrintWriter
 import java.io.File
 
 
-class FileIOAsXML extends FileIOInterface{
+class FileIORestXml extends FileIOInterface{
 
   override def save(table: Table): Unit = {
     println(tableToXML(table))
@@ -15,9 +17,32 @@ class FileIOAsXML extends FileIOInterface{
   }
 
 
+  def saveFromString(tableAsString: String): Unit = {
+    // println("\n\nsaveFromString:\n AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n\n\n")
+    val pw = new PrintWriter(new File("./savedAsString.txt"))
+    pw.write(tableAsString)
+    pw.close
+  }
+
+
   override def load: Table = {
     val xml = scala.xml.XML.loadFile("save.xml")
     tableFromXML(xml)
+    // TODO: make Errorhandeling with Option or Try
+  }
+
+
+  //   def loadFromStringFile: Table = {
+  //   val xml = scala.xml.XML.loadFile("./savedAsString.txt")
+  //   tableFromXML(xml)
+  //   // TODO: make Errorhandeling with Option or Try
+  // }
+
+
+  def loadAsStringForSending: String = {
+    val source = scala.io.Source.fromFile("./savedAsString.txt")
+    val lines = try source.mkString finally source.close()
+    lines
     // TODO: make Errorhandeling with Option or Try
   }
 
@@ -78,4 +103,6 @@ class FileIOAsXML extends FileIOInterface{
     Table(players, cards, deck, punCards)
   }
 
+
 }
+

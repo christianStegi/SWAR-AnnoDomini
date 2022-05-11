@@ -83,8 +83,8 @@ class Tui(controller: Controller) extends Observer{
       "\n r = redo"+
       "\n s = save game" +
       "\n l = load game" +
-      "\n rs = save game via REST" +
-      "\n rl = load game via REST" +      
+      "\n rs = save game the REST way" +
+      "\n rl = load game the REST way" +      
       "\n q = quit game" +
       "\n a = look at all Players")
   }
@@ -130,15 +130,13 @@ class Tui(controller: Controller) extends Observer{
     println("game loaded")
   }
   def saveGameViaRest(): Unit ={
-    println("saving game via REST...")
+    println("saving game the REST way...")
     controller.saveGameViaRestAsXML()
-    println("DONE saving game via REST...")
   }
 
   def loadGameViaRest(): Unit={
-    println("loading game via REST...")
+    println("loading game the REST way...")
     controller.loadGameViaRestAsXML()
-    println("DONE loading game via REST")
   }
 
   def confirmWinner(): Unit = {
