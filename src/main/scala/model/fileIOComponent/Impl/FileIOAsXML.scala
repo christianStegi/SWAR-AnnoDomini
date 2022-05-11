@@ -13,14 +13,15 @@ class FileIOAsXML extends FileIOInterface{
     scala.xml.XML.save("save.xml", tableToXML(table))   
   }
 
-  //Dide versuchsmethode
+
   def saveFromString(tableAsString: String): Unit = {
-    val pw = new PrintWriter(new File("savedAsString.txt"))
+    println("\n\nsaveFromString:\n AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n\n\n")
+    val pw = new PrintWriter(new File("./savedAsString.txt"))
     pw.write(tableAsString)
     pw.close
   }
 
-  
+
 
   override def load: Table = {
     val xml = scala.xml.XML.loadFile("save.xml")
@@ -29,10 +30,18 @@ class FileIOAsXML extends FileIOInterface{
   }
 
 
+    def loadFromStringFile: Table = {
+    val xml = scala.xml.XML.loadFile("./savedAsString.txt")
+    tableFromXML(xml)
+    // TODO: make Errorhandeling with Option or Try
+  }
+
+
+
   // entweder als scala.xml.Elem auslesen via methode aus scala.xml.XML oder Datei einfach als String lesen
   def loadAsStringForSending: String = {
     // val lines = scala.io.Source.fromFile("file.txt").mkString
-    val source = scala.io.Source.fromFile("file.txt")
+    val source = scala.io.Source.fromFile("./savedAsString.txt")
     val lines = try source.mkString finally source.close()
     // val xml = scala.xml.XML.loadFile("save.xml")
     lines

@@ -6,12 +6,15 @@ ThisBuild / scalaVersion := "3.1.1"
 lazy val root = (project in file("."))
   .settings(libraryDependencies ++= commonDependencies)
   .settings(name := "AnnoDominiScala")
-  .aggregate(model, controller)
+  .aggregate(model, controller, fileIO)
 
 
 lazy val model = (project in file("./model"))
 
 lazy val controller = (project in file("./controller"))
+
+lazy val fileIO = (project in file("./fileIO"))
+
 
 
 lazy val dependencies =
@@ -20,7 +23,8 @@ lazy val dependencies =
     val scalatestVersion = "3.2.11"
     val scalaXmlVersion_old = "2.1.0"
     val scalaXmlVersion_new = "2.11.0-M4"
-    val scalaXmlVersion = scalaXmlVersion_old
+    // val scalaXmlVersion = scalaXmlVersion_old
+    val scalaXmlVersion = "2.1.0"
     val playJsonVersion = "2.10.0-RC5"
     val guiceVersion = "5.1.0"
     val scalaGuiceVersion = "5.0.2"
@@ -33,8 +37,8 @@ lazy val dependencies =
     val scalactic = "org.scalactic" %% "scalactic" % scalacticVersion
     val scalatest = "org.scalatest" %% "scalatest" % scalatestVersion % "test"
 
-    val scalaXML = ("org.scala-lang.modules" %% "scala-xml" % scalaXmlVersion).cross(CrossVersion.for3Use2_13)
-    //val scalaXML = "org.scala-lang.modules" %% "scala-xml" % scalaXmlVersion
+    // val scalaXML = ("org.scala-lang.modules" %% "scala-xml" % scalaXmlVersion).cross(CrossVersion.for3Use2_13)
+    val scalaXML = "org.scala-lang.modules" %% "scala-xml" % scalaXmlVersion
     
     val playJson = ("com.typesafe.play" %% "play-json" % playJsonVersion).cross(CrossVersion.for3Use2_13)
 

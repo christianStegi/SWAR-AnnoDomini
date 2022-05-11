@@ -20,6 +20,8 @@ import akka.http.scaladsl.model.HttpMethods
 import akka.protobufv3.internal.compiler.PluginProtos.CodeGeneratorResponse.File
 import akka.http.scaladsl.model.MediaTypes
 import scala.language.postfixOps
+import scala.util.{Failure, Success, Try}
+import akka.http.scaladsl.unmarshalling.Unmarshal
 
 class Controller(var table: Table) extends Observable{
 
@@ -27,7 +29,7 @@ class Controller(var table: Table) extends Observable{
 //AKKA STUFF (REST)
   val fileIoHost: String = "localhost"
   val fileIoPort: Int = 8081
-  val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system-Controller")
+  val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
   given ActorSystem[Any] = system
   val executionContext: ExecutionContextExecutor = system.executionContext
   given ExecutionContextExecutor = executionContext
@@ -88,23 +90,55 @@ class Controller(var table: Table) extends Observable{
     println("xmlAsString:\n")
     println(xmlAsString)
     
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(
+      HttpRequest(
+        method =  HttpMethods.PUT,
+        uri = s"http://$fileIoHost:$fileIoPort/fileIO/xml/save",
+        entity = HttpEntity(ContentTypes.`text/xml(UTF-8)`, xmlAsString)
+      ))
+
+  }
+
+
+  // nur zum Abschauen
+  def loadGameViaRestAsXML(): Future[Boolean] = {
+    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
+    given ActorSystem[Any] = system
+    val executionContext: ExecutionContextExecutor = system.executionContext
+    given ExecutionContextExecutor = executionContext
 
     val responseFuture: Future[HttpResponse] = Http().singleRequest(
       HttpRequest(
-        method =  HttpMethods.POST,
-        uri = s"http://$fileIoHost:$fileIoPort/fileIO/xml/save",
-        //entity = HttpEntity(ContentTypes.`application/json`, Json.stringify(boardToJson(board)))
-        // entity = HttpEntity(ContentTypes.`application/xml`, tableAsXml)
-        // entity = HttpEntity(MediaTypes.`application/xml`, tableAsXml)
-        // entity = HttpEntity(ContentTypes.`application/xml`, tableAsXml)
-        // entity = HttpEntity(ContentTypes.`text/plain(UTF-8)`, "dfasdf")
-        entity = HttpEntity(ContentTypes.`text/xml(UTF-8)`, xmlAsString)
-
+        uri = s"http://$fileIoHost:$fileIoPort/fileIO/xml/load"
       ))
 
-    notifyObservers()
-  }
+    responseFuture
+      .onComplete {
 
+        case Success(value) =>
+
+              println("%%%%%%%% jetzt in load on complete Success(value) %%%%%%%%")
+              
+              val tableAsString = Unmarshal(value.entity).to[String]
+              println("tableAsString:")
+              println(tableAsString)              
+              val xml = scala.xml.XML.loadString(value.toString)
+              println("xml:")
+              println(xml.toString)
+
+
+              table = fileIOAsXML.tableFromXML(xml)
+              println("table:")
+              println(table)
+              notifyObservers()
+              return Future(true)
+           
+        case Failure(exception) =>
+          println("%%%%%%%% jetzt in load  -  failure fall 1 %%%%%%%%")
+          return Future(false)
+      }
+    return Future(false)
+  }
 
   // // nur zum Abschauen
   // def loadGameViaRest(): Future[Boolean] = {
