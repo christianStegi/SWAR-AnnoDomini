@@ -11,11 +11,11 @@ import scala.io.StdIn
 import scala.concurrent.ExecutionContextExecutor
 import scala.util.{Failure, Success, Try}
 
-import model.fileIOComponent.XMLImpl.FileIO
+import model.fileIOComponent.Impl.FileIOAsXML
 import model.fileIOComponent.FileIOInterface
 
 
-object FileIORestAPI extends FileIOInterface{
+object FileIORestAPI {
 
   val host = "localhost"
   val port = 8081
@@ -25,18 +25,18 @@ object FileIORestAPI extends FileIOInterface{
   val executionContext: ExecutionContextExecutor = system.executionContext
   given ExecutionContextExecutor = executionContext
 
-  val xmlHelper = FileIO()
+  val xmlHelper = FileIOAsXML()
 
   @main def run(): Unit = {
 
     val route = concat(
       path("fileIO" / "xml" / "load") {
         get {
-          Try(xmlHelper.load) match {
+          Try(xmlHelper.loadAsStringForSending) match {
             case Success(table) => {
               //val tableXml = xmlFileIO.tableFromXML(table).toString
-              //complete(HttpEntity(ContentTypes.`text/xml(UTF-8)`, table))
-              complete(HttpEntity(ContentTypes.`text/xml(UTF-8)`, "Hier muss der Inhalt von table rein als String oder XML"))
+              complete(HttpEntity(ContentTypes.`text/xml(UTF-8)`, table))
+              // complete(HttpEntity(ContentTypes.`text/xml(UTF-8)`, "Hier muss der Inhalt von table rein als String oder XML"))
             }
             case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be loaded")
           }
@@ -45,12 +45,12 @@ object FileIORestAPI extends FileIOInterface{
       path("fileIO" / "xml" / "save") {
         post {
           entity(as[String]) { table =>
-            //FileIO.saveFromString(table)
+            xmlHelper.saveFromString(table)
             //xmlHelper.tableFromXML(table)
             
             //application/xml
 
-            Try(xmlFileIO.load) match {
+            Try(xmlHelper.load) match {
               case Success(table) => complete(StatusCodes.OK, "table was saved")
               case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be saved")
             }

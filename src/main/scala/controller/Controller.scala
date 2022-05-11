@@ -1,8 +1,7 @@
 package controller
 
 import model.gameComponent.{Card, Table, TableGenerator}
-import model.fileIOComponent.XMLImpl.FileIO
-import model.fileIOComponent.XMLImpl.FileIORestImplXML
+import model.fileIOComponent.Impl.FileIOAsXML
 import util.{Observable, UndoManager}
 import controller.commands.{DoubtCommand, PlaceCardCommand}
 
@@ -19,6 +18,8 @@ import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.HttpMethods
 import akka.protobufv3.internal.compiler.PluginProtos.CodeGeneratorResponse.File
+import akka.http.scaladsl.model.MediaTypes
+import scala.language.postfixOps
 
 class Controller(var table: Table) extends Observable{
 
@@ -33,7 +34,7 @@ class Controller(var table: Table) extends Observable{
 
 
   val undoManager = new UndoManager
-  val fileIO = new FileIO
+  val fileIOAsXML = new FileIOAsXML
 
 
   def createTestTable(noOfPlayers:Int): Unit = {
@@ -68,104 +69,69 @@ class Controller(var table: Table) extends Observable{
     notifyObservers()
   }
 
-  def saveGame(): Unit = fileIO.save(table)
+  def saveGame(): Unit = fileIOAsXML.save(table)
 
   def loadGame(): Unit= {
-    table = fileIO.load
+    table = fileIOAsXML.load
     notifyObservers()
   }
 
-  def saveGameViaRest(): Unit = {
+  def saveGameViaRestAsXML(): Unit = {
     val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
     given ActorSystem[Any] = system
     val executionContext: ExecutionContextExecutor = system.executionContext
     given ExecutionContextExecutor = executionContext
 
-    val tableAsXml = fileIO.tableToXML(table)
+    val tableAsXml = fileIOAsXML.tableToXML(table)
+    val xmlAsString = tableAsXml.toString
+
+    println("xmlAsString:\n")
+    println(xmlAsString)
+    
 
     val responseFuture: Future[HttpResponse] = Http().singleRequest(
       HttpRequest(
         method =  HttpMethods.POST,
         uri = s"http://$fileIoHost:$fileIoPort/fileIO/xml/save",
         //entity = HttpEntity(ContentTypes.`application/json`, Json.stringify(boardToJson(board)))
-        entity = HttpEntity(ContentTypes.`application/xml`, Json.stringify(boardToJson(board)))
-      ))
+        // entity = HttpEntity(ContentTypes.`application/xml`, tableAsXml)
+        // entity = HttpEntity(MediaTypes.`application/xml`, tableAsXml)
+        // entity = HttpEntity(ContentTypes.`application/xml`, tableAsXml)
+        // entity = HttpEntity(ContentTypes.`text/plain(UTF-8)`, "dfasdf")
+        entity = HttpEntity(ContentTypes.`text/xml(UTF-8)`, xmlAsString)
 
-    notifyObservers()
-  }
-
-  //nur kopiervorlage, kann nachher gelöscht werden!
-  override def save(): Unit = {
-    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
-    given ActorSystem[Any] = system
-    val executionContext: ExecutionContextExecutor = system.executionContext
-    given ExecutionContextExecutor = executionContext
-
-    val responseFuture: Future[HttpResponse] = Http().singleRequest(
-      HttpRequest(
-        method =  HttpMethods.PUT,
-        uri = s"http://$fileIoHost:$fileIoPort/fileIO/json/save",
-        entity = HttpEntity(ContentTypes.`application/xml`, Json.stringify(boardToJson(board)))
-        //entity = HttpEntity(ContentTypes.`application/json`, Json.stringify(boardToJson(board)))
       ))
 
     notifyObservers()
   }
 
 
-  def loadGameViaRest(): Future[Boolean] = {
-    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
-    given ActorSystem[Any] = system
-    val executionContext: ExecutionContextExecutor = system.executionContext
-    given ExecutionContextExecutor = executionContext
+  // // nur zum Abschauen
+  // def loadGameViaRest(): Future[Boolean] = {
+  //   val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
+  //   given ActorSystem[Any] = system
+  //   val executionContext: ExecutionContextExecutor = system.executionContext
+  //   given ExecutionContextExecutor = executionContext
 
-    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = s"http://$fileIoHost:$fileIoPort/fileIO/xml/load"))
+  //   val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = s"http://$fileIoHost:$fileIoPort/fileIO/xml/load"))
 
-    responseFuture
-      .onComplete {
-        case Success(value) =>
-          val tableAsString = Unmarshal(value.entity).to[String]
-          boardAsString.onComplete {
-            case Success(value) =>
-              board = loadFromString(value)
-              notifyObservers()
-              return Future(true)
-            case Failure(exception) =>
-              return Future(false)
-          }
-        case Failure(exception) =>
-          return Future(false)
-      }
-    return Future(false)
-  }
+  //   responseFuture
+  //     .onComplete {
+  //       case Success(value) =>
+  //         val tableAsString = Unmarshal(value.entity).to[String]
+  //         boardAsString.onComplete {
+  //           case Success(value) =>
+  //             board = loadFromString(value)
+  //             notifyObservers()
+  //             return Future(true)
+  //           case Failure(exception) =>
+  //             return Future(false)
+  //         }
+  //       case Failure(exception) =>
+  //         return Future(false)
+  //     }
+  //   return Future(false)
+  // }
 
-
-
-  //nur kopiervorlage, kann nachher gelöscht werden!
-  override def load_CopiedMethod(): Future[Boolean] = {
-    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
-    given ActorSystem[Any] = system
-    val executionContext: ExecutionContextExecutor = system.executionContext
-    given ExecutionContextExecutor = executionContext
-
-    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = s"http://$fileIoHost:$fileIoPort/fileIO/json/load"))
-
-    responseFuture
-      .onComplete {
-        case Success(value) => 
-          val boardAsString = Unmarshal(value.entity).to[String]
-          boardAsString.onComplete {
-            case Success(value) =>
-              board = loadFromString(value)
-              notifyObservers()
-              return Future(true)
-            case Failure(exception) =>
-              return Future(false)
-          }
-        case Failure(exception) =>
-          return Future(false)
-      }
-    return Future(false)
-  }
 
 }

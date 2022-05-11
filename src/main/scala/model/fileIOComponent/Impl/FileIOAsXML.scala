@@ -1,21 +1,44 @@
-package model.fileIOComponent.XMLImpl
+package model.fileIOComponent.Impl
 
 import model.fileIOComponent.FileIOInterface
 import model.gameComponent.{Card, Deck, Table}
 import model.playerComponent.Player
+import java.io.PrintWriter
+import java.io.File
 
-class FileIO extends FileIOInterface{
+class FileIOAsXML extends FileIOInterface{
 
   override def save(table: Table): Unit = {
     println(tableToXML(table))
-    scala.xml.XML.save("save.xml", tableToXML(table))
+    scala.xml.XML.save("save.xml", tableToXML(table))   
   }
+
+  //Dide versuchsmethode
+  def saveFromString(tableAsString: String): Unit = {
+    val pw = new PrintWriter(new File("savedAsString.txt"))
+    pw.write(tableAsString)
+    pw.close
+  }
+
+  
 
   override def load: Table = {
     val xml = scala.xml.XML.loadFile("save.xml")
     tableFromXML(xml)
     // TODO: make Errorhandeling with Option or Try
   }
+
+
+  // entweder als scala.xml.Elem auslesen via methode aus scala.xml.XML oder Datei einfach als String lesen
+  def loadAsStringForSending: String = {
+    // val lines = scala.io.Source.fromFile("file.txt").mkString
+    val source = scala.io.Source.fromFile("file.txt")
+    val lines = try source.mkString finally source.close()
+    // val xml = scala.xml.XML.loadFile("save.xml")
+    lines
+    // TODO: make Errorhandeling with Option or Try
+  }
+
 
   def cardToXML(c:Card): scala.xml.Node = <card><year>{c.year}</year><text>{c.text}</text></card>
   def cardListToXML(l:List[Card]): scala.xml.NodeSeq = <hand>{ for (c <- l) yield cardToXML(c) }</hand>

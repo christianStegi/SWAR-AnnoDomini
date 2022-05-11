@@ -23,25 +23,25 @@ object ControllerAPI {
 
   //val controller = Controller()
   
-  def run(): Future[Http.ServerBinding] = {
-    val route: Route =
-      concat(
-        path("save") {
-          get {
-            controller.save()
-            //complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>saved current table</h1>"))
-            complete(HttpEntity(ContentTypes.`application/xml`, "<h1>saved current table</h1>"))
-          }
-        },
-        path("load") {
-          get {
-            controller.load()
-            //complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>load saved table</h1>"))
-            complete(HttpEntity(ContentTypes.`application/xml`, "<h1>load saved table</h1>"))
-          }
-        }
-      )
+  // def run(): Future[Http.ServerBinding] = {
+  //   val route: Route =
+  //     concat(
+  //       path("save") {
+  //         get {
+  //           controller.save()
+  //           //complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>saved current table</h1>"))
+  //           complete(HttpEntity(ContentTypes.`application/xml`, "<h1>saved current table</h1>"))
+  //         }
+  //       },
+  //       path("load") {
+  //         get {
+  //           controller.load()
+  //           //complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>load saved table</h1>"))
+  //           complete(HttpEntity(ContentTypes.`application/xml`, "<h1>load saved table</h1>"))
+  //         }
+  //       }
+  //     )
 
-    Http().newServerAt(host, port).bind(route)
-  }
+  //   Http().newServerAt(host, port).bind(route)
+  // }
 }
