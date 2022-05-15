@@ -120,7 +120,7 @@ class Controller(var table: Table) extends Observable{
           println("%%%%%%%% jetzt in load on complete Success(value) %%%%%%%%")
           
           val tableAsString = Unmarshal(value.entity).to[String]
-          // val tableAsString = value.entity.toString   //HttpEntity.Strict(text/xml; charset=UTF-8,2363 bytes total)
+          // ergibt folgendes Element:  //val tableAsString = value.entity.toString   //HttpEntity.Strict(text/xml; charset=UTF-8,2363 bytes total)
 
           tableAsString.onComplete {
             case Success(value) =>
@@ -151,30 +151,3 @@ class Controller(var table: Table) extends Observable{
 
 
 }
-
-  // // nur zum Abschauen
-  // def loadGameViaRest(): Future[Boolean] = {
-  //   val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
-  //   given ActorSystem[Any] = system
-  //   val executionContext: ExecutionContextExecutor = system.executionContext
-  //   given ExecutionContextExecutor = executionContext
-
-  //   val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = s"http://$fileIoHost:$fileIoPort/fileIO/xml/load"))
-
-  //   responseFuture
-  //     .onComplete {
-  //       case Success(value) =>
-  //         val tableAsString = Unmarshal(value.entity).to[String]
-  //         boardAsString.onComplete {
-  //           case Success(value) =>
-  //             board = loadFromString(value)
-  //             notifyObservers()
-  //             return Future(true)
-  //           case Failure(exception) =>
-  //             return Future(false)
-  //         }
-  //       case Failure(exception) =>
-  //         return Future(false)
-  //     }
-  //   return Future(false)
-  // }

@@ -3,19 +3,30 @@ ThisBuild / version      := "2.0"
 ThisBuild / scalaVersion := "3.1.1"
 
 
-// lazy val fileIO = (project in file("fileIO"))
+// lazy val root = (project in file("."))
+//   // .dependsOn(model, controller)
+//   .dependsOn(fileIO)
+//   .aggregate(fileIO)
 //   .settings(libraryDependencies ++= commonDependencies)
-//   // .dependsOn(model)
-//   // .dependsOn(root)
+//   .settings(name := "AnnoDominiScala")
+//   // .aggregate(model, controller, fileIO)
 
 
-lazy val root = (project in file("."))
-  // .dependsOn(model, controller)
+lazy val FileIO = (project in file("./FileIO"))
   .settings(libraryDependencies ++= commonDependencies)
-  .settings(name := "AnnoDominiScala")
-  // .aggregate(model, controller, fileIO)
-  // .dependsOn(fileIO)
-  // .aggregate(fileIO)
+  .settings(name := "FileIO")
+  // .dependsOn(model)
+  // .dependsOn(root)
+
+
+
+// lazy val root = (project in file("."))
+//   // .dependsOn(model, controller)
+//   .dependsOn(fileIO)
+//   .aggregate(fileIO)
+//   .settings(libraryDependencies ++= commonDependencies)
+//   .settings(name := "AnnoDominiScala")
+//   // .aggregate(model, controller, fileIO)
 
 
 lazy val dependencies =
@@ -57,6 +68,9 @@ lazy val dependencies =
     // val akkaXML = ("com.typesafe.akka" %% "akka-http-xml" % akkaHttpVersion).cross(CrossVersion.for3Use2_13)
     // val akkaXML = "com.typesafe.akka" %% "akka-http-xml" % akkaHttpVersion
     //val akkaXML = ("com.typesafe.akka" %% "akka-http-xml_2.13" % akkaHttpVersion).cross(CrossVersion.for3Use2_13)
+
+
+    //clears terminal output from sl4j logging error messages coming from sl4j not from our code
     // val loggerStuff = "org.slf4j" %% "slf4j-nop" % loggerStuffVersion
 
   }
@@ -65,8 +79,6 @@ lazy val dependencies =
    //libraryDependencies += ("com.typesafe.akka" % "akka-http-xml" % "3.0.0-RC1")
   //libraryDependencies += "com.typesafe.akka" % "akka-http-xml" % "10.2.9"
   // libraryDependencies += "com.typesafe.akka" % "akka-http-xml_2.13" % "10.2.9"
-
-libraryDependencies += "org.slf4j" % "slf4j-nop" % "2.0.0-alpha7"
 
 val commonDependencies = Seq(
 
@@ -86,3 +98,4 @@ val commonDependencies = Seq(
   // dependencies.loggerStuff,
 )
 
+libraryDependencies += "org.slf4j" % "slf4j-nop" % "2.0.0-alpha7"
