@@ -50,5 +50,5 @@ metals.sbt
 
 
 # Save-Files
-save.xml
-FileIO/saveeAsString.txt
+#save.xml
+#FileIO/savedAsString.txt
