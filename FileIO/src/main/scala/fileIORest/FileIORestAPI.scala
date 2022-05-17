@@ -44,12 +44,10 @@ object FileIORestAPI {
 
     val route = concat(
       path("fileIO" / "xml" / "load") {
-        println("\n============== in load before stuff starts ==============\n")
 
         get {
           Try(xmlHelper.loadAsStringForSending) match {
             case Success(table) => {
-              println("\n============== in load case Success ==============\n")
               complete(HttpEntity(ContentTypes.`text/xml(UTF-8)`, table))
             }
             case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be loaded")
@@ -59,7 +57,6 @@ object FileIORestAPI {
       path("fileIO" / "xml" / "save") {
         put {
 
-          println("\n============== starting save procedure... ==============\n")
           entity(as[String]) { table =>
             xmlHelper.saveFromString(table)
             complete(StatusCodes.OK, "table was saved")
@@ -76,7 +73,7 @@ object FileIORestAPI {
     val bindingFuture = Http().newServerAt(host, port).bind(route)
 
 
-    println(s"Server now online. You can also visit the corresponding URL. Press RETURN to stop...")
+    println(s"Server now online. You can also visit the corresponding URL in a browser. Press RETURN to stop...")
     StdIn.readLine() // let it run until user presses return
     bindingFuture
       .flatMap(_.unbind()) // trigger unbinding from the port

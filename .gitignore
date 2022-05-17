@@ -37,7 +37,7 @@ project/.sbtserver
 .sonar/
 
 # Application
-AnoDominiScala.log
+AnnoDominiScala.log
 
 # VSCode
 .vscode
@@ -47,3 +47,8 @@ AnoDominiScala.log
 .metals
 project/.bloop
 metals.sbt
+
+
+# Save-Files
+save.xml
+FileIO/saveeAsString.txt
