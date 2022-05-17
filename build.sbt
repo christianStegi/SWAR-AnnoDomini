@@ -3,8 +3,8 @@ ThisBuild / version      := "2.0"
 ThisBuild / scalaVersion := "3.1.1"
 
 
-// lazy val fileIO = (project in file("fileIO"))
-//   .settings(libraryDependencies ++= commonDependencies)
+lazy val FileIO = (project in file("FileIO"))
+  .settings(libraryDependencies ++= commonDependencies)
 //   // .dependsOn(model)
 //   // .dependsOn(root)
 
@@ -14,8 +14,8 @@ lazy val root = (project in file("."))
   .settings(libraryDependencies ++= commonDependencies)
   .settings(name := "AnnoDominiScala")
   // .aggregate(model, controller, fileIO)
-  // .dependsOn(fileIO)
-  // .aggregate(fileIO)
+    .dependsOn(FileIO)
+    .aggregate(FileIO)
 
 
 lazy val dependencies =

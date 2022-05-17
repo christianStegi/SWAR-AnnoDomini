@@ -1,6 +1,11 @@
 package fileIORest
 
-import impl.LittleTestFile
+import akka.http.scaladsl.server.Route
+
+// import scala.language.postfixOps
+
+import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.io.StdIn
 
 import akka.http.scaladsl.server.Directives.*
 import akka.http.scaladsl.Http
@@ -15,6 +20,8 @@ import scala.util.{Failure, Success, Try}
 
 //import model.fileIOComponent.Impl.FileIORestXml
 //import model.fileIOComponent.FileIOInterface
+
+import fileIORest.impl.LittleTestFile
 import fileIORest.impl.FileIORestXml_SMALL
 
 
@@ -24,7 +31,7 @@ object FileIORestAPI {
   val host = "localhost"
   val port = 8081
 
-  val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system-fileIO")
+  val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
   given ActorSystem[Any] = system
   val executionContext: ExecutionContextExecutor = system.executionContext
   given ExecutionContextExecutor = executionContext

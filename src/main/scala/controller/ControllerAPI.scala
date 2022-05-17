@@ -16,7 +16,8 @@ object ControllerAPI {
   val host = "localhost"
   val port = 8080
 
-  val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system-ControllerAPI")
+  //val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system-ControllerAPI")
+  val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
   given ActorSystem[Any] = system
   val executionContext: ExecutionContextExecutor = system.executionContext
   given ExecutionContextExecutor = executionContext

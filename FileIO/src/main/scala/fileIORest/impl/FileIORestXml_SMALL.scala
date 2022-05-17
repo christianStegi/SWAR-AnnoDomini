@@ -1,4 +1,4 @@
-package fileIORest.Impl
+package fileIORest.impl
 
 import java.io.PrintWriter
 import java.io.File

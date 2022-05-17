@@ -1,7 +1,7 @@
-// package fileIORest.Impl
-package FileIO.src.main.scala.fileIORest
+package fileIORest.impl
+// package FileIO.src.main.scala.fileIORest
 
-class LittleTestFile {
+object LittleTestFile {
 
     def printMe = println("Hello, i m a stupid little testfile :)")
 }
