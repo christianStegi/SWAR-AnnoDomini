@@ -2,8 +2,11 @@ version: "3.8"
 
 services:
   annodomini:
+    container_name: annodomini-game
     image: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
-    command: sbt run
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
     working_dir: /SWAR-AnnoDomini
     volumes:
       - ./:/SWAR-AnnoDomini
@@ -14,6 +17,7 @@ services:
       MYSQL_DB: todos
 
   mysql:
+    container_name: annodomini-sql
     image: mysql:5.7
     volumes:
       - annodomini-sql-database:/var/lib/mysql
