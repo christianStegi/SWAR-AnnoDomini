@@ -44,7 +44,7 @@ class Tui(controller: Controller) extends Observer{
   }
   
   def handlePlayerInput(): Unit ={
-    giveOptions()
+    showOptionsToUser()
     val input = readLine()
     println(s"input is: $input")
     processInputLine(input)
@@ -75,7 +75,7 @@ class Tui(controller: Controller) extends Observer{
     // TODO: This could be handled with a Command Pattern instead, might be better?
   }
 
-  def giveOptions(): Unit = {
+  def showOptionsToUser(): Unit = {
     println("what will you do?" +
       "\n p = place card " +
       "\n d = doubt" +
@@ -129,6 +129,7 @@ class Tui(controller: Controller) extends Observer{
     controller.loadGame()
     println("game loaded")
   }
+  
   def saveGameViaRest(): Unit ={
     println("saving game the REST way...")
     controller.saveGameViaRestAsXML()
