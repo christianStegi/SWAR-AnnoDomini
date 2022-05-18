@@ -38,7 +38,7 @@ object FileIORestAPI {
 
   val xmlHelper = FileIORestXml_SMALL()
 
-    @main def run(): Unit = {
+  def main(args:Array[String]): Unit = {
 
     println("\n============== FileIORestAPI server running now...  ==============\n")
 
