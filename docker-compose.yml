@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  annodomini:
+    image: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
+    command: sbt run
+    working_dir: /SWAR-AnnoDomini
+    volumes:
+      - ./:/SWAR-AnnoDomini
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_DB: todos
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - annodomini-sql-database:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: annodomini-db
+
+volumes:
+  annodomini-sql-database:
