@@ -2,24 +2,31 @@ version: "3.8"
 
 services:
   annodomini:
-    image: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
-    command: sbt run
-    working_dir: /SWAR-AnnoDomini
-    volumes:
-      - ./:/SWAR-AnnoDomini
-    environment:
-      MYSQL_HOST: mysql
-      MYSQL_USER: root
-      MYSQL_PASSWORD: secret
-      MYSQL_DB: todos
+    container_name: "annodomini-game"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    # image: hseeberger/scala-sbt:8u222_1.3.5_2.13.1 # -> only necessary if you lack a Dockerfile
+    # command: sbt run # -> only necessary if you lack a dockerfile or your dockerfile doesn't implement a command
+    ports:
+      - "8080:8080"
+    stdin_open: true
 
-  mysql:
-    image: mysql:5.7
-    volumes:
-      - annodomini-sql-database:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: annodomini-db
+  fileio:
+    container_name: "annodomini-fileio"
+    build:
+      context: ./fileIO
+      dockerfile: ./Dockerfile
+    ports:
+      - "8081:8081"
+    stdin_open: true
 
-volumes:
-  annodomini-sql-database:
+
+# mysql:
+#  image: mysql:5.7
+    # volumes:
+    #  - annodomini-sql-database:/var/lib/mysql
+    # environment:
+    #  MYSQL_ROOT_PASSWORD: secret
+    #  MYSQL_DATABASE: annodomini-db
+
