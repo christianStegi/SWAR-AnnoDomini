@@ -143,7 +143,7 @@ class Controller(var table: Table) extends Observable{
           }
 
         case Failure(exception) =>
-          println("%%%%%%%% jetzt in load  -  failure fall 1 %%%%%%%%")
+          println("%%%%%%%% Failure in Controller.loadGameViaRestAsXML -  REST-loading did not work. %%%%%%%%")
           return Future(false)
       }
     return Future(false)

@@ -14,3 +14,25 @@ anderes oder noch viel mehr macht, als mit dem Methodennamen angedeutet.
 Sollen wir das Umbenennen??
 Pro: bessere Lesbarkeit des Codes. damit auch eventuell leichter, Tests zu schreiben.
 Con: Sarah muss sich wieder neu in den Code reindenken.
+
+---------------------------------------------------
+---------------------------------------------------
+MONGODB Notizen
+---------------------------------------------------
+---------------------------------------------------
+gutes Tutorial zum Einstieg zwecks Aufsetzen:
+https://www.youtube.com/watch?v=URhVzydeML4
+
+mongodb-bin installieren (für linux, für win auf website schauen)
+mongodb-tools-bin eventuell auch
+
+sudo systemctl start mongodb
+sudo systemctl enable mongodb
+sudo systemctl status mongodb
+mongod --version
+mongosh
+db.version()
+
+---------------------------------------------------
+
+

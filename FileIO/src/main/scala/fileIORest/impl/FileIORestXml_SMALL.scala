@@ -7,6 +7,7 @@ import java.io.File
 class FileIORestXml_SMALL {
 
 
+//TODO hier eine Option[String] übergeben
 
   def saveFromString(tableAsString: String): Unit = {
     val pw = new PrintWriter(new File("./savedAsString.txt"))
@@ -14,6 +15,7 @@ class FileIORestXml_SMALL {
     pw.close
   }
 
+  //TODO mit einer Option machen
 
   def loadAsStringForSending: String = {
     val source = scala.io.Source.fromFile("./savedAsString.txt")

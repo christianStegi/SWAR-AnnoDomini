@@ -30,6 +30,7 @@ lazy val dependencies =
     val old_akkaHttpVersion = "10.2.9"
     val new_akkaHttpVersion = "3.0.0-RC1"
     val akkaHttpVersion = old_akkaHttpVersion
+    val mongoDbVersion = "4.6.0"
 
 
     val scalactic = "org.scalactic" %% "scalactic" % scalacticVersion
@@ -46,6 +47,7 @@ lazy val dependencies =
     val akkaActor = ("com.typesafe.akka" %% "akka-actor-typed" % akkaVersion).cross(CrossVersion.for3Use2_13)
     val akkaStream = ("com.typesafe.akka" %% "akka-stream" % akkaVersion).cross(CrossVersion.for3Use2_13)
 
+    val mongoDb = ("org.mongodb.scala" %% "mongo-scala-driver" % mongoDbVersion).cross(CrossVersion.for3Use2_13)
   }
 
 
@@ -63,6 +65,7 @@ val commonDependencies = Seq(
   dependencies.playJson,
   dependencies.guice,
   dependencies.scalaGuice,
+  dependencies.mongoDb
 )
 
 
