@@ -60,7 +60,6 @@ val commonDependencies = Seq(
   dependencies.akkaHttp,
   dependencies.akkaActor,
   dependencies.akkaStream,
-  // dependencies.akkaXML,
 
   dependencies.playJson,
   dependencies.guice,

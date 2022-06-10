@@ -76,4 +76,4 @@ val commonDependencies = Seq(
 
 
 //clears terminal output from sl4j logging error messages coming from sl4j not from our code
-libraryDependencies += "org.slf4j" % "slf4j-nop" % "2.0.0-alpha7"
+// libraryDependencies += "org.slf4j" % "slf4j-nop" % "2.0.0-alpha7"

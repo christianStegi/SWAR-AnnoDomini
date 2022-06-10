@@ -1,4 +1,5 @@
 package DAO.SlickImpl
+import slick.jdbc.MySQLProfile.api._
 
 class Slick extends daoInterface{
   val dbUrl: String = "jdbc:mysql://" + sys.env.getOrElse("DATABASE_HOST", "localhost:3306") + "/" + sys.env.getOrElse("MYSQL_DATABASE", "cah") + "?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true"
@@ -35,7 +36,6 @@ class Slick extends daoInterface{
 
     }
 
-  override def load(): Try[String] =
 
 
 }
