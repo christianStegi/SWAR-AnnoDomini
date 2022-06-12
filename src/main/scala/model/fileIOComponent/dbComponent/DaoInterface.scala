@@ -1,4 +1,4 @@
-package model.fileIOComponent.dbComponent
+package model.persistenceComponent.dbComponent
 
 import model.gameComponent.Table
 
