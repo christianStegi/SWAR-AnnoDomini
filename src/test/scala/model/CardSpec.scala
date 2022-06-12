@@ -28,6 +28,10 @@ class CardSpec extends AnyWordSpec {
         "Have a reveal function" in {
           assert(card.reveal == "[year: 10; A Card Text]")
         }
+        "should be considered the same as another card with the same text and year" in{
+          val cardClone = Card("A Card Text", 10)
+          assert(card == cardClone)
+        }
     }
   }
 }
