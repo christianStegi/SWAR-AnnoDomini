@@ -26,7 +26,7 @@ class CardSpec extends AnyWordSpec {
           assert(card.toString == "[A Card Text]\n")
         }
         "Have a reveal function" in {
-          assert(card.reveal == "year: 10 [A Card Text]\n")
+          assert(card.reveal == "[year: 10; A Card Text]")
         }
     }
   }
