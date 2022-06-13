@@ -1,7 +1,7 @@
 package controller
 
 import model.gameComponent.{Card, Table, TableGenerator}
-import model.fileIOComponent.XMLImpl.FileIO
+import model.persistenceComponent.XMLImpl.FileIO
 import util.{Observable, UndoManager}
 import controller.commands.{DoubtCommand, PlaceCardCommand}
 

@@ -50,3 +50,6 @@ metals.sbt
 
 # saves
 *.xml
+
+# don't include scala worksheets:
+*.sc

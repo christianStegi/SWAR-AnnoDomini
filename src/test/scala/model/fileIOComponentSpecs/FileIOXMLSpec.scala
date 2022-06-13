@@ -1,4 +1,4 @@
-package model.fileIOComponentSpecs
+/*package model.fileIOComponentSpecs
 
 class FileIOXMLSpec {
 
@@ -16,3 +16,4 @@ class FileIOXMLSpec {
   // test if loaded table =/= table1
 
 }
+*/
