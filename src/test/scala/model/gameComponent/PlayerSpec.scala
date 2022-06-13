@@ -1,13 +1,12 @@
-package model
+package model.gameComponent
 
-import model.playerComponent.Player
-import model.gameComponent.{Card, Deck, Deckgenerator}
+import model.gameComponent.{Card, Deck, Deckgenerator, Player}
 import org.scalatest.wordspec.AnyWordSpec
 
 class PlayerSpec extends AnyWordSpec{
   val deckGen:Deckgenerator = new Deckgenerator
   val deck:Deck = deckGen.createRandomDeck()
-  val hand:List[Card] = deck.drawCard(5)._1
+  val hand:List[Card] = deck.drawFromDeck(5)._1
   val player:Player = Player("Player", hand)
   "A Player" when{
     "new" should {
@@ -38,7 +37,7 @@ class PlayerSpec extends AnyWordSpec{
         val takenCard = player.getCard(3)._1
         val changedPlayer = player.getCard(3)._2
         assert(takenCard.isInstanceOf[Card])
-        assert(takenCard == deck.drawCard(4)._1(3))
+        assert(takenCard == deck.drawFromDeck(4)._1(3))
         assert(player.checkNumOfCards > changedPlayer.checkNumOfCards)
         assert(changedPlayer.checkNumOfCards == 4)
 

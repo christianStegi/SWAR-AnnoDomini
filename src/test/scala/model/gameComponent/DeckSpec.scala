@@ -1,4 +1,4 @@
-package model
+package model.gameComponent
 
 import model.gameComponent.{Card, Deck, Deckgenerator}
 import org.scalatest.wordspec.AnyWordSpec

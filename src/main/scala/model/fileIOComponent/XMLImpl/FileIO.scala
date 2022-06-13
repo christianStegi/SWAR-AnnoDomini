@@ -62,7 +62,7 @@ class FileIO extends FileIOInterface{
     Deck(deck)
   }
 
-  def tableToXML(t:Table): scala.xml.Elem = <table>{playerListToXML(t.players)}{cardListToXML(t.cardsOnTable)}{deckToXML(t.deck)}<punishmentCards>{t.punishmentCards}</punishmentCards></table>
+  def tableToXML(t:Table): scala.xml.Elem = <table>{playerListToXML(t.players)}{cardListToXML(t.cardsOnTable)}{deckToXML(t.deck)}<punishmentCards>{t.numberOfPunishmentCards}</punishmentCards></table>
 
   def tableFromXML(xml: scala.xml.Elem): Table ={
     val players = playerListFromXML(xml)
