@@ -1,7 +1,4 @@
-import model.gameComponent.Table
-import model.gameComponent.Deckgenerator
-import model.gameComponent.{Card, Deck}
-import model.playerComponent.Player
+import model.gameComponent.{Card, Deck, Deckgenerator, Player, Table}
 
 import java.io.{File, FileWriter}
 
@@ -9,12 +6,12 @@ import java.io.{File, FileWriter}
 val dg = new Deckgenerator
 var deck = dg.createRandomDeck(10)
 
-val player1 = Player("Johnny", deck.drawCard(2)._1)
-deck = deck.drawCard(2)._2
-val player2 = Player("Kaycee", deck.drawCard(2)._1)
-deck = deck.drawCard(2)._2
+val player1 = Player("Johnny", deck.drawFromDeck(2)._1)
+deck = deck.drawFromDeck(2)._2
+val player2 = Player("Kaycee", deck.drawFromDeck(2)._1)
+deck = deck.drawFromDeck(2)._2
 
-val table1 = Table(List(player2,player1), deck.drawCard(1)._1, deck.drawCard(1)._2)
+val table1 = Table(List(player2,player1), deck.drawFromDeck(1)._1, deck.drawFromDeck(1)._2)
 
 def cardToXML(c:Card): scala.xml.Node = <card><year>{c.year}</year><text>{c.text}</text></card>
 
@@ -69,7 +66,7 @@ def deckFromXML(xml: scala.xml.NodeSeq) ={
   Deck(deck)
 }
 
-def tableToXML(t:Table): scala.xml.Elem = <table>{playerListToXML(t.players)}{cardListToXML(t.table)}{deckToXML(t.deck)}<punishmentCards>{t.punishmentCards}</punishmentCards></table>
+def tableToXML(t:Table): scala.xml.Elem = <table>{playerListToXML(t.players)}{cardListToXML(t.cardsOnTable)}{deckToXML(t.deck)}<punishmentCards>{t.numberOfPunishmentCards}</punishmentCards></table>
 
 def tableFromXML(xml: scala.xml.Elem): Table ={
   val players = playerListFromXML(xml)

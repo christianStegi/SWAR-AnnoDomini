@@ -1,26 +1,20 @@
-package model.fileIOComponent.Impl
+package model.persistenceComponent.XMLImpl
 
-import model.fileIOComponent.FileIOInterface
-import model.gameComponent.{Card, Deck, Table}
-import model.playerComponent.Player
-import java.io.PrintWriter
-import java.io.File
+import model.persistenceComponent.FileIOInterface
+import model.gameComponent.{Card, Deck, Player, Table}
 
-
-class FileIOAsXML extends FileIOInterface{
+class FileIO extends FileIOInterface{
 
   override def save(table: Table): Unit = {
     println(tableToXML(table))
-    scala.xml.XML.save("save.xml", tableToXML(table))   
+    scala.xml.XML.save("save.xml", tableToXML(table))
   }
-
 
   override def load: Table = {
     val xml = scala.xml.XML.loadFile("save.xml")
     tableFromXML(xml)
     // TODO: make Errorhandeling with Option or Try
   }
-
 
   def cardToXML(c:Card): scala.xml.Node = <card><year>{c.year}</year><text>{c.text}</text></card>
   def cardListToXML(l:List[Card]): scala.xml.NodeSeq = <hand>{ for (c <- l) yield cardToXML(c) }</hand>
@@ -68,7 +62,7 @@ class FileIOAsXML extends FileIOInterface{
     Deck(deck)
   }
 
-  def tableToXML(t:Table): scala.xml.Elem = <table>{playerListToXML(t.players)}{cardListToXML(t.table)}{deckToXML(t.deck)}<punishmentCards>{t.punishmentCards}</punishmentCards></table>
+  def tableToXML(t:Table): scala.xml.Elem = <table>{playerListToXML(t.players)}{cardListToXML(t.cardsOnTable)}{deckToXML(t.deck)}<punishmentCards>{t.numberOfPunishmentCards}</punishmentCards></table>
 
   def tableFromXML(xml: scala.xml.Elem): Table ={
     val players = playerListFromXML(xml)

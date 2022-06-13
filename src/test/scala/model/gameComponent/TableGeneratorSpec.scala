@@ -1,7 +1,6 @@
-package model
+package model.gameComponent
 
-import model.gameComponent.{Deckgenerator, Table, TableGenerator}
-import model.playerComponent.Player
+import model.gameComponent.{Deckgenerator, Player, Table, TableGenerator}
 import org.scalatest.wordspec.AnyWordSpec
 
 class TableGeneratorSpec extends AnyWordSpec(){
@@ -29,7 +28,7 @@ class TableGeneratorSpec extends AnyWordSpec(){
         val table = tb.createTable
         assert(table.isInstanceOf[Table])
         assert(table.players.length == 2)
-        assert(table.deck.length == 29)
+        assert(table.deck.numberOfCardsInDeck == 29)
       }
     }
   }
