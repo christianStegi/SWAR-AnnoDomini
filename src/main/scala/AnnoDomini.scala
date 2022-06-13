@@ -20,8 +20,6 @@ import scala.io.StdIn.readLine
 // Add Docker (HA 13)
 
 // TODO: add method to check numbers of Players
-// TODO: add method to view all players at once
-// TODO: add better Input errorhandling
 
 
 object AnnoDomini {
