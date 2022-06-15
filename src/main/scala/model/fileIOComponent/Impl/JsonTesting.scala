@@ -33,20 +33,24 @@ object JsonTesting {
 
         fileIo.save(table)
 
+        test_loadConversionStuff()
         // loadTestingStuff_first()
-        test_getSinglePlayer()
+        // test_getSinglePlayer()
 
         // println(yo)
         // println(yo.getClass)
 
 
+    def test_loadConversionStuff() = 
+        val fileContentAsJSON = fileIo.loadJSONFromFile()
+        fileIo.dummy_getDeckFromJSON(fileContentAsJSON)
+
     def test_getSinglePlayer() = 
         val obj = fileIo.playerListToJSON(playerList)
-        val result = fileIo.dummy_getSinglePlayer(obj)
-       
+        val result = fileIo.buildPlayersFromJSON(obj)
+        println("result: " + result)
 
     def loadTestingStuff_first() =
-        // val yo = fileIo.dummyLoad()
         val yo = fileIo.dummyLoad()
 
     def singeCardStuff() = 
