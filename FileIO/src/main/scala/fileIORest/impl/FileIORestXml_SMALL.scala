@@ -6,8 +6,6 @@ import java.io.File
 
 class FileIORestXml_SMALL {
 
-
-
   def saveFromString(tableAsString: String): Unit = {
     val pw = new PrintWriter(new File("./savedAsString.txt"))
     pw.write(tableAsString)
