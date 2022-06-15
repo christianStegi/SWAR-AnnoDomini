@@ -1,0 +1,67 @@
+{
+  "table" : [ {
+    "playerList" : [ {
+      "player" : {
+        "name" : "manne",
+        "playersHand" : {
+          "hand" : [ {
+            "card" : {
+              "year" : 1900,
+              "text" : "1900"
+            }
+          }, {
+            "card" : {
+              "year" : 2000,
+              "text" : "2000"
+            }
+          } ]
+        }
+      }
+    }, {
+      "player" : {
+        "name" : "freddi",
+        "playersHand" : {
+          "hand" : [ {
+            "card" : {
+              "year" : 2100,
+              "text" : "2100"
+            }
+          }, {
+            "card" : {
+              "year" : 2200,
+              "text" : "2200"
+            }
+          } ]
+        }
+      }
+    } ]
+  }, {
+    "hand" : [ {
+      "card" : {
+        "year" : 1900,
+        "text" : "1900"
+      }
+    }, {
+      "card" : {
+        "year" : 2000,
+        "text" : "2000"
+      }
+    } ]
+  }, {
+    "deck" : {
+      "hand" : [ {
+        "card" : {
+          "year" : 1900,
+          "text" : "1900"
+        }
+      }, {
+        "card" : {
+          "year" : 2000,
+          "text" : "2000"
+        }
+      } ]
+    }
+  }, {
+    "punishmentCards" : "3"
+  } ]
+}

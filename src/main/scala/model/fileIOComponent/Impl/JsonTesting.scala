@@ -20,18 +20,34 @@ object JsonTesting {
     val deck: Deck = Deck(cardList,cardList2)
     val table: Table = Table(playerList, cardList, deck, 3)
 
-    @main def mainForTesting(): Unit = {
+
+    // @main  def mainForTesting(): Unit = {
+    def main(args:Array[String]): Unit =
+
         // singeCardStuff()
         // cardListStuff()
         // playerStuff()
         // playerListStuff()
         // deckStuff()
-        tableStuff()
+        // tableStuff()
+
+        fileIo.save(table)
+
+        // loadTestingStuff_first()
+        test_getSinglePlayer()
+
+        // println(yo)
+        // println(yo.getClass)
 
 
-        // println(Json.prettyPrint(obj))
-    }
+    def test_getSinglePlayer() = 
+        val obj = fileIo.playerListToJSON(playerList)
+        val result = fileIo.dummy_getSinglePlayer(obj)
+       
 
+    def loadTestingStuff_first() =
+        // val yo = fileIo.dummyLoad()
+        val yo = fileIo.dummyLoad()
 
     def singeCardStuff() = 
         val obj = fileIo.cardToJSON(card1)

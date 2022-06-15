@@ -21,7 +21,6 @@ import scala.util.{Failure, Success, Try}
 //import model.fileIOComponent.Impl.FileIORestXml
 //import model.fileIOComponent.FileIOInterface
 
-import fileIORest.impl.LittleTestFile
 import fileIORest.impl.FileIORestXml_SMALL
 
 
