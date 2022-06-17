@@ -2,6 +2,7 @@ package controller
 
 import model.gameComponent.{Card, Table, TableGenerator}
 import model.fileIOComponent.Impl.FileIOAsXML
+import model.persistenceComponent.XMLImpl.FileIO
 import util.{Observable, UndoManager}
 import controller.commands.{DoubtCommand, PlaceCardCommand}
 
@@ -89,7 +90,7 @@ class Controller(var table: Table) extends Observable{
 
     println("xmlAsString:\n")
     println(xmlAsString)
-    
+
     val responseFuture: Future[HttpResponse] = Http().singleRequest(
       HttpRequest(
         method =  HttpMethods.PUT,
@@ -118,16 +119,16 @@ class Controller(var table: Table) extends Observable{
         case Success(value) =>
 
           println("%%%%%%%% jetzt in load on complete Success(value) %%%%%%%%")
-          
+
           val tableAsString = Unmarshal(value.entity).to[String]
           // ergibt folgendes Element:  //val tableAsString = value.entity.toString   //HttpEntity.Strict(text/xml; charset=UTF-8,2363 bytes total)
 
           tableAsString.onComplete {
             case Success(value) =>
               println("tableAsString:")
-              println(tableAsString)   
+              println(tableAsString)
               println("value:")
-              println(value)             
+              println(value)
               val nowAsXml = scala.xml.XML.loadString(value.toString)
               println("nowAsXml:")
               println(nowAsXml.toString)

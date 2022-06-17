@@ -1,4 +1,4 @@
-package model
+package model.gameComponent
 
 import model.gameComponent.Card
 import org.scalatest.wordspec.AnyWordSpec
@@ -26,7 +26,11 @@ class CardSpec extends AnyWordSpec {
           assert(card.toString == "[A Card Text]\n")
         }
         "Have a reveal function" in {
-          assert(card.reveal == "year: 10 [A Card Text]\n")
+          assert(card.reveal == "[year: 10; A Card Text]")
+        }
+        "should be considered the same as another card with the same text and year" in{
+          val cardClone = Card("A Card Text", 10)
+          assert(card == cardClone)
         }
     }
   }

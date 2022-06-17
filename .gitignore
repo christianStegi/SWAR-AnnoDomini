@@ -48,7 +48,8 @@ AnnoDominiScala.log
 project/.bloop
 metals.sbt
 
+# saves
+*.xml
 
-# Save-Files
-#save.xml
-#FileIO/savedAsString.txt
+# don't include scala worksheets:
+*.sc
