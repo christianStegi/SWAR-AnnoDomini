@@ -1,12 +1,10 @@
 package model.persistenceComponent.XMLImpl
 
 import model.fileIOComponent.FileIOInterface
-import model.gameComponent.{Card, Deck, Table}
-import model.playerComponent.Player
+import model.gameComponent.{Card, Deck, Table, Player}
 import java.io.PrintWriter
 import java.io.File
 import model.persistenceComponent.FileIOInterface
-import model.gameComponent.{Card, Deck, Player, Table}
 
 
 class FileIOAsXML extends FileIOInterface{
