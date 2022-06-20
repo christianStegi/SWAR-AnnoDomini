@@ -36,17 +36,19 @@
       }
     } ]
   }, {
-    "hand" : [ {
-      "card" : {
-        "year" : 1900,
-        "text" : "1900"
-      }
-    }, {
-      "card" : {
-        "year" : 2000,
-        "text" : "2000"
-      }
-    } ]
+    "tablesTable" : {
+      "hand" : [ {
+        "card" : {
+          "year" : 1900,
+          "text" : "1900"
+        }
+      }, {
+        "card" : {
+          "year" : 2000,
+          "text" : "2000"
+        }
+      } ]
+    }
   }, {
     "deck" : {
       "hand" : [ {
