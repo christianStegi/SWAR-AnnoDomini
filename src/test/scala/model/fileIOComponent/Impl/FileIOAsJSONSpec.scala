@@ -11,7 +11,7 @@ import model.gameComponent.Table
 import model.gameComponent.Card
 import play.api.libs.json.Json
 
-class FileInOutSpec extends AnyWordSpec:
+class FileIOAsJSONSpec extends AnyWordSpec:
 
     val fileIO = FileIOAsJSON()
     val card1: Card = Card("text of card 1000", 1000)

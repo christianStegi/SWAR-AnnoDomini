@@ -1,18 +1,24 @@
-package model.dbComponent.impl
+package model.dbComponent.Impl
+// package model.fakepackage
+
+import model.dbComponent.impl.DAOMongoDBImpl
 
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers._
 import model.fileIOComponent.Impl.FileIOAsJSON
 
-class MongoDBImplSpec extends AnyWordSpec:
+class DAOMongoDBImplSpec extends AnyWordSpec:
 
     val fileIO = FileIOAsJSON()
+    val mongoDBImpl = DAOMongoDBImpl()
 
     def doFirstTests: Unit = 
         "A MongoDB instance" when {
             "started" should {
 
-                "be reachable" in {}
+                "be reachable" in {
+                    val mongoDbClient = mongoDBImpl.initializeDB()
+                }
 
                 "be able to return it's databases" in {}
 

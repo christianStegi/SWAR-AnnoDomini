@@ -29,6 +29,7 @@ class TestingMongoDB() extends DAOInterface:
         val firstDoc: Document = Document("_id" -> "firstDoc", "game" -> "")
         // observerInsertion(firstColl.insertOne(firstDoc))
 
+        
     override
     def read: String =
         ???
