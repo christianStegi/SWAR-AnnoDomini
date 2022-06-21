@@ -14,7 +14,7 @@ case class Deck(cards: List[Card] = Nil, extraCards: List[Card] = Nil) {
       case _ => createDeckFromExtraCards().drawFromDeck(n)
     // Problem: if there aren't enough extraCards this will end in a loop
   }
-
+  
   def deckHasEnoughCards(neededCards: Int): Boolean = neededCards <= numberOfCardsInDeck
   def createDeckFromExtraCards(): Deck = addCard(Deck(extraCards).shuffle)
   // TODO: let this recognize, if the Cards in extraCards aren't enough to fulfill the demand for extra cards

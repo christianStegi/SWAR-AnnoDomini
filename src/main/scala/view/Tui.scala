@@ -1,7 +1,7 @@
 package view
 
-import controller.Controller
 import util.Observer
+import controller.Controller
 
 import scala.io.StdIn.readLine
 import scala.util.{Try, Success, Failure}
@@ -24,7 +24,7 @@ def correctNumber(num: Int) : 2 | 3 | 4 = {
   // TODO: check if this can be simplyfied with higher functions
 }
 
-class Tui(controller: Controller) extends Observer{
+class Tui(controller: Controller) extends Observer {
 
   controller.add(this)
 

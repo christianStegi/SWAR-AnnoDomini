@@ -3,7 +3,7 @@ package model.persistenceComponent.XMLImpl
 import model.persistenceComponent.FileIOInterface
 import model.gameComponent.{Card, Deck, Player, Table}
 
-class FileIO extends FileIOInterface{
+class FileIO extends FileIOInterface {
 
   override def save(table: Table): Unit = {
     println(tableToXML(table))
@@ -62,7 +62,7 @@ class FileIO extends FileIOInterface{
     Deck(deck)
   }
 
-  def tableToXML(t:Table): scala.xml.Elem = <table>{playerListToXML(t.players)}{cardListToXML(t.cardsOnTable)}{deckToXML(t.deck)}<punishmentCards>{t.numberOfPunishmentCards}</punishmentCards></table>
+  def tableToXML(t:Table): scala.xml.Elem = <table>{playerListToXML(t.players)}{deckToXML(t.deck)}{cardListToXML(t.cardsOnTable)}<punishmentCards>{t.numberOfPunishmentCards}</punishmentCards></table>
 
   def tableFromXML(xml: scala.xml.Elem): Table ={
     val players = playerListFromXML(xml)

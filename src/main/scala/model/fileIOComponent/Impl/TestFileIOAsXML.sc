@@ -1,4 +1,4 @@
-import model.gameComponent.{Card, Deck, Deckgenerator, Player, Table}
+import model.gameComponent._
 
 import java.io.{File, FileWriter}
 

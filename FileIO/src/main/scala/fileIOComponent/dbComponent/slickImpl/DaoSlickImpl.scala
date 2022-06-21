@@ -1,10 +1,13 @@
 package DAO.SlickImpl
 
-import scala.concurrent._
-import scala.concurrent.duration._
+import scala.concurrent.*
+import scala.concurrent.duration.*
 import ExecutionContext.Implicits.global
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
+import model.fileIOComponent.Impl.FileIOAsXML
+import model.gameComponent.Card
+import slick.dbio.{DBIO, DBIOAction}
 
 class DaoSlickImpl extends daoInterface{
   /*
@@ -20,12 +23,13 @@ class DaoSlickImpl extends daoInterface{
     password = databasePassword
   )
 */
-  val gameId = 1
+  val gameID = 100
+  val deckID = 200
 
-  val cards = TableQuery[CardTable]
-  val decks = TableQuery[DeckTable]
-  val games = TableQuery[GameTable]
-  val players = TableQuery[PlayerTable]
+  val cardTable = TableQuery[CardTable]
+  val deckTable = TableQuery[DeckTable]
+  val gameTable = TableQuery[GameTable]
+  val playerTable = TableQuery[PlayerTable]
 
   override def save(game: String): Unit =
   {
@@ -33,7 +37,7 @@ class DaoSlickImpl extends daoInterface{
     val db = Database.forConfig("mysqldb")
     try{
       println("attempting to save mockdata in db:")
-      val setup = DBIO.seq((decks.schema ++ games.schema ++ cards.schema ++ players.schema).createIfNotExists)
+      val setup = DBIO.seq((deckTable.schema ++ gameTable.schema ++ cardTable.schema ++ playerTable.schema).createIfNotExists)
 
       val setupFuture = db.run(setup)
       setupFuture.onComplete {
@@ -42,43 +46,42 @@ class DaoSlickImpl extends daoInterface{
       }
       Await.ready(setupFuture, Duration(100, MILLISECONDS))
 
-      game
+      val gameAsXML = scala.xml.XML.loadString(game)
+      val deck = deckFromXML(gameAsXML)
+      val players = playerListFromXML(gameAsXML)
+      val tableCards = cardListFromXML(gameAsXML)
 
 
+      // save the deck and it's cards
+      val insertDeckActionFuture = db.run(gameTable += (gameID, deckID))
+      val insertDeckCardsActionFuture = db.run(for (card <- deck) do yield cardTable += (card._1, card._2, deckID))
+      // save all the cards on the table
+      val insertTableCardsActionFuture = db.run(for (card <- tableCards) do yield cardTable += (card._1, card._2, gameID))
+      // save the players
+      val insertPlayersAction = DBIO.seq{
+        for (player <- players)
+          do
+          yield playerTable += (player._1, gameID)
+          for (card <- player._2) do yield cardTable += (card._1, card._2)
+      }
+      val insertPlayerFutur = db.run(insertPlayersAction)
 
 
+      Await.ready(insertDeckActionFuture)
+      Await.ready(insertTableCardsActionFuture)
+      Await.ready(insertTableCardsActionFuture)
+      Await.ready(insertPlayerFutur)
 
-    }finally {
-      db.close()
+    }finally db.close()
 
     }
 
-
-    val cardsJson = Json.parse(json)
-    val questCardsJson = (cardsJson \ "cardList").head
-    val answerCardsJson = (cardsJson \ "cardList").last
-    Try {
-      database.run(questionCardsTable ++= (
-        (questCardsJson \\ "card").map(s => s.toString).toSeq
-        ))
-
-      database.run(answerCardsTable ++= (
-        (answerCardsJson \\ "card").map(s => s.toString).toSeq
-        ))
-
-    }
-  }
-
-
-  override def load: Option[String] ={
+  override def load: Option[String] =  {
     println("loading game from mysql db")
     val db = Database.forConfig("mysqldb")
     try{
 
-
-      val game = db.run(games.result).map(_.foreach{
-        case (game_id, deck_id) =>
-          println(game_id, deck_id)})
+      val gameQuery = gameTable.filter(_.game_id = gameID)
 
       val players = db.run(players.result).map(_.foreach{
         case (player_id, player_name, game_id) =>
@@ -88,15 +91,7 @@ class DaoSlickImpl extends daoInterface{
         case (card_id, card_year, card_text, card_owner) =>
           (card_id, card_year, card_text, card_owner)})
 
-      val deck = db.run(decks.result).map(_.foreach{
-        case (deck_id) =>
-          deck_id})
-
-
-
-
-
-
+      // get the cards on the game table
 
 
     }finally {
@@ -109,7 +104,7 @@ class DaoSlickImpl extends daoInterface{
   def cardFromXML(xml: scala.xml.Node): (text:String, year:Int) = {
     val year = (xml \ "year").text.toInt
     val text = (xml \ "text").text
-    (text, year)
+    (year, text)
   }
 
   def cardListFromXML(xml: scala.xml.NodeSeq): List[(text:String, year:Int)] = {
@@ -118,6 +113,28 @@ class DaoSlickImpl extends daoInterface{
     val hand = for (el <- list) yield cardFromXML(el)
     hand.toList
   }
+
+  def deckFromXML(xml: scala.xml.NodeSeq) ={
+    val relevantXML = (xml \ "deck")
+    val deck = cardListFromXML(relevantXML)
+   deck
+  }
+
+  def playerFromXML(xml: scala.xml.NodeSeq):Player = {
+    val name = (xml \ "name").text
+    val cards = cardListFromXML(xml)
+    (name, cards)
+  }
+
+  def playerListFromXML(xml: scala.xml.NodeSeq): List[Player] ={
+    val relevantXML = (xml \ "players")
+    val players = for (player <- (relevantXML \ "player")) yield playerFromXML(player)
+    players.toList
+  }
+
+
+
+
 
 
 
