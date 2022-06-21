@@ -36,118 +36,43 @@ val playerListAsObj = (objToSearchThrough \ "fieldName")(0)
         val playerListAsObj = (objToSearchThrough)(0)
         liefert Elemente zurück bei JsArrays
 
-def \\ (fieldName: String): Seq[JsValue]
+def (fieldName: String): Seq[JsValue]
         Lookup for fieldName in the current object and all descendants.
         liefert eine Seq zurück!
 
  */
     
     override def load: Table = 
-        //parsedFileContent is a JsObject
-        val parsedFileContent = loadJSONFromFile()
-        
-        //jsonTable is a JsArray
-        val jsonTable = (parsedFileContent \ "table").get
-        println("jsonTable:") 
-        
-        println(Json.prettyPrint(jsonTable))
-        
-        // buildTableFromJsObject(parsedFileContent)
+        val parsedFileContent: JsValue = loadJSONFromFile()
+        val jsonTable: JsValue = (parsedFileContent \ "table").get
         buildTableFromJSON(jsonTable)
         // TODO: make Errorhandeling with Option or Try
 
 
     def loadJSONFromFile(): JsValue = 
-        // val loaded: String = Source.fromFile(filename).getLines.mkString
         val contentFromFileAsString: String = Source.fromFile(filename).mkString
         Json.parse(contentFromFileAsString)
 
-
-    def buildTableFromJsObject(jsObj: JsValue): Table =
-        val players: List[Player] = buildPlayersFromObj(jsObj)
-        // val table: List[Card] = buildTablesTableHandFromJSON(jsonTable)
-        // // val deck: Deck = getDeckFromJSON(jsonTable)
-        // val deck = Deck()
-        // val punishment: Int = getPunishmentFromJSON(jsonTable)
-        // Table(players, table, deck, punishment)
-        // Table(players, table, deck, 5)
-        Table(List[Player](), List[Card](), Deck(), 5)
-
-
-    def buildPlayersFromObj(jsObj: JsValue): List[Player] = 
-
-        // val playerList = (jsObj \ "table" \ "playerList")
-        /* SELEKTIERE playerList-Json-Objekt aus JsArray table */
-        val playerListAsObj = (jsObj \ "table")(0)
-        println("================================")
-        println("playerList: ")
-        println(playerListAsObj.getClass)
-        println(playerListAsObj)
-
-        val realPlayerList = (playerListAsObj \ "playerList").get
-        println("================================")
-        println("realPlayerList: ")
-        println(realPlayerList.getClass)
-        println(realPlayerList)
-        
-        // val listOfSinglePlayers = (realPlayerList(0) \ "player")
-        val listOfSinglePlayers = (realPlayerList \\ "player")
-        println("================================")
-        println("listOfSinglePlayers: \n" + listOfSinglePlayers)
-
-        for (singlePlayer <- listOfSinglePlayers) yield
-            println("singlePlayer:")
-            println(singlePlayer)
-
-        // val playersNotJson = for (singlePlayer <- listOfSinglePlayers) yield {
-        //     // println("singlePlayer: " + singlePlayer)
-        //     val playerName = (singlePlayer \ "name").get
-        //     // println("playerName: " + playerName)
-        //     val playersHand: List[Card] = getHandForPlayer(singlePlayer)
-        //     Player(name = playerName.toString, hand = playersHand)
-        // }
-
-        // val playersAsList: List[Player] = playersNotJson.toList
-        // playersAsList
-        
-        
-        List[Player]()
-    
 
     def buildTableFromJSON(jsonTable: JsValue): Table =
         val players: List[Player] = buildPlayersFromJSON(jsonTable(0))
         val table: List[Card] = buildTablesTableHandFromJSON(jsonTable(1))
         val deck: Deck = getDeckFromJSON(jsonTable(2))
-        // val deck = Deck()
         val punishment: Int = getPunishmentFromJSON(jsonTable(3))
         Table(players, table, deck, punishment)
-        // Table(players, table, deck, 5)
         
 
     def buildPlayersFromJSON(jsonTable: JsValue): List[Player] = 
-        println("jsonTable:")
-        println(jsonTable)
-        println("jsonTable.getClass: " + jsonTable.getClass)
-        
-        val players = (jsonTable \   "playerList")
-        // val players = (jsonTable.asInstanceOf[JsObject] \ "playerList")
-        // println()
-        println("players: ")
-        println(players)
-        // println()
-        println("players.getClass: " + players.getClass)
-        // println()
-
-        /* GET LIST OF SINGLE PLAYERS */
+       
+        val players = (jsonTable \ "playerList")
         val listOfSinglePlayers = (players \\ "player")
-        // println("listOfSinglePlayers: \n" + listOfSinglePlayers)
 
         val playersNotJson = for (singlePlayer <- listOfSinglePlayers) yield {
-            // println("singlePlayer: " + singlePlayer)
             val playerName = (singlePlayer \ "name").get
-            // println("playerName: " + playerName)
+            /* clear string from ' " ' (highquote-char) */
+            val cleanedPlayerName = playerName.toString.substring(1, (playerName.toString.length -1))
             val playersHand: List[Card] = getHandForPlayer(singlePlayer)
-            Player(name = playerName.toString, hand = playersHand)
+            Player(name = cleanedPlayerName, hand = playersHand)
         }
 
         val playersAsList: List[Player] = playersNotJson.toList
@@ -157,62 +82,48 @@ def \\ (fieldName: String): Seq[JsValue]
     def getHandForPlayer(player: JsValue): List[Card] = 
         val playersHand = (player \ "playersHand").get
         getHandFromEntity(playersHand)
-        // val hand = (playersHand \ "hand")
-        // getCardListFromJSON(hand)
-    
+
+
     def getHandFromEntity(entity: JsValue): List[Card] = 
         val hand = (entity \ "hand").get
         getCardListFromJSON(hand)
 
+
     def getCardListFromJSON(hand: JsValue): List[Card] = 
 
-        /* GET CARDLIST */
         val cardListAsJson = (hand \\ "card")
-
-        /* GET SINGLE CARDS FROM CARDLISTASJSON */
-        val cardListNotJSON = for (singleCard <- cardListAsJson) yield {
-            println("singleCard: " + singleCard)
+        val cardListAsSeq = for (singleCard <- cardListAsJson) yield {
             getCardFromJSON(singleCard)
         }
-        val cardListDifferentFormat: List[Card] = cardListNotJSON.toList
+        val cardListDifferentFormat: List[Card] = cardListAsSeq.toList
         cardListDifferentFormat
         
 
     def getCardFromJSON(singleCard: JsValue): Card = 
         val cardYear = (singleCard \ "year").get.toString.toInt
-        val cardText: String = Json.stringify((singleCard \ "text").get)
-        val card = Card(text = cardText, year = cardYear)
+        // val cardText: String = Json.stringify((singleCard \ "text").get)
+        val cardText: String = (singleCard \ "text").get.toString
+
+        /* clear string from ' " ' (highquote-char) */
+        val cleanCardText = cardText.substring(1, cardText.length - 1)
+        val card = Card(text = cleanCardText, year = cardYear)
         card
+        
 
     def buildTablesTableHandFromJSON(jsonTable: JsValue): List[Card] = 
-        println("================================")
-        // println(jsonTable.getClass())
-        // println(Json.prettyPrint(jsonTable))
 
         val myTry = Try ((jsonTable \ "tablesTable").get)
         myTry match {
             case Success(result) => {
-                println("Erfolgsfall! :)")
-                println(result)
+                val hand = getHandFromEntity(result)
+                hand
             }
             case Failure(f) => 
-                println("Failure-Fall:")
+                println("Failure-Fall: tablesTable konnte nicht gelesen werden, daher wird eine leere Liste zurückgegeben.")
                 println(f)
-                println(myTry.getClass())
+                List[Card]()        
         }
         
-        // val tablesTable = (jsonTable \ "tablesTable").get
-        println("================================")
-        // println(Json.prettyPrint(tablesTable))
-        // getHandFromEntity(tablesTable)
-        List[Card]()
-
-
-    def tryingATry(jsonTable: JsValue): Try[JsValue] = {
-                
-        Try ((jsonTable \ "tablesTable").get)
-        // Try (List[Card]())
-    }
 
     def getDeckFromJSON(jsonTable: JsValue): Deck = 
         val deck = (jsonTable \ "deck").get
@@ -228,7 +139,6 @@ def \\ (fieldName: String): Seq[JsValue]
 
     override def save(table: Table): Unit = {
         val pw = new PrintWriter(new File(filename))
-        // pw.write(Json.stringify(tableToJson(table)))
         pw.write(Json.prettyPrint(tableToJson(table)))
         pw.close
     }
@@ -236,8 +146,10 @@ def \\ (fieldName: String): Seq[JsValue]
     def cardToJSON(card: Card): JsValue = 
         Json.obj(
             "card" -> Json.obj(
-                "year" -> JsNumber(card.year),
-                "text" -> JsString(card.text)
+                // "year" -> JsNumber(card.year),
+                // "text" -> JsString(card.text)
+                "year" -> card.year,
+                "text" -> card.text
             )
         )
 
@@ -251,7 +163,6 @@ def \\ (fieldName: String): Seq[JsValue]
     def playerToJSON(player: Player): JsValue =
         Json.obj(
             "player" -> Json.obj(
-            // "player" -> player.name,
                 "name" -> player.name,
                 "playersHand" -> cardListToJSON(player.hand)
             )

@@ -22,7 +22,7 @@ class CardSpec extends AnyWordSpec {
           assert(card.text.isInstanceOf[String])
           assert(card.text == "A Card Text")
         }
-        "Have a Stringreperesentation" in {
+        "Have a String-reperesentation" in {
           assert(card.toString == "[A Card Text]\n")
         }
         "Have a reveal function" in {

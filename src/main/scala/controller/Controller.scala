@@ -22,6 +22,7 @@ import akka.http.scaladsl.model.MediaTypes
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 import akka.http.scaladsl.unmarshalling.Unmarshal
+import model.fileIOComponent.Impl.FileIOAsJSON
 
 class Controller(var table: Table) extends Observable{
 
@@ -37,6 +38,7 @@ class Controller(var table: Table) extends Observable{
 
   val undoManager = new UndoManager
   val fileIOAsXML = new FileIOAsXML
+  val fileIOAsJSON = new FileIOAsJSON
 
 
   def createTestTable(noOfPlayers:Int): Unit = {
@@ -77,6 +79,14 @@ class Controller(var table: Table) extends Observable{
     table = fileIOAsXML.load
     notifyObservers()
   }
+
+  def saveGameJSON(): Unit = fileIOAsJSON.save(table)
+
+  def loadGameJSON(): Unit= {
+    table = fileIOAsJSON.load
+    notifyObservers()
+  }
+
 
   def saveGameViaRestAsXML(): Unit = {
     val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
