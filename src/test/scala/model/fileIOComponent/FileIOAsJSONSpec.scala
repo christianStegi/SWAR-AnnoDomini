@@ -36,10 +36,6 @@ class FileInOutSpec extends AnyWordSpec:
     // printObjectsToBeAbleToCompareLaterOutput
 
     "A FileIO object" when {
-        // "saving" should {
-        //     "be able to write a card object as JSON object" in {}
-        //     "be able to write a cardList as JSON object" in {}
-        // }
 
         "calling cardToJson" should {
             val cardAsJson = fileIO.cardToJSON(card1)
@@ -55,11 +51,7 @@ class FileInOutSpec extends AnyWordSpec:
                 (year.toString.toInt) should be (card1.year)
                 
                 /* Test the text */
-                println("card1.text: " + card1.text)
                 val text = (card \ "text").get
-                // val testStr: String = "hello1"
-                // (testStr) should be ("hello")
-                // (text.toString) should be (card1.text)
                 (text.toString) should include (card1.text)
             }
         }
@@ -75,50 +67,13 @@ class FileInOutSpec extends AnyWordSpec:
     }
 
     /* 
-    
     should have the permission to write to a savefile
     
     should be able to write a Table object as JSON object
-
-        Therefor, it should be able to...
-
-            should be able to write a playerList as JSON object
-
-            should be able to write a tablesTable object as JSON object
-
-            should be able to write a Deck object as JSON object
-
-            should be able to write a punishmentCard object as JSON object
-
-            should be able to write a cardList as JSON object
-
-            should be able to write a card object as JSON object
-
-            should be able to write a Player object as JSON object
-
-
 
     should have the permission to read from a savefile
 
     should be able to read a json object from a (json) savefile
 
     should be able to read a table from a (json) savefile
-
-
-/* subprocedures von load */
-
-    should be able to contruct a table
-    from a playerlist, tablestable, deck, punishmentcards
-
-    should be able to construct a playersList
-    from several single players
-
-    should be able to construct a cardList from single cards
-
-    should be able to construct a hand for a player
-
-    should be able to 
-    
-    
-    
      */

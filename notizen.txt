@@ -34,5 +34,9 @@ mongosh
 db.version()
 
 ---------------------------------------------------
+Einen einzelnen Test ausführen:
 
+sbt
+testOnly *FileInOutSpec
 
+---------------------------------------------------

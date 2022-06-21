@@ -1,4 +1,4 @@
-package model.fileIOComponentSpecs
+package model.fileIOComponent
 
 class FileIOXMLSpec {
 
