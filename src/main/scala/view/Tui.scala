@@ -67,6 +67,11 @@ class Tui(controller: Controller) extends Observer{
 
       case "rl" => doAMove(loadGameViaRest())
       case "rs" => doAMove(saveGameViaRest())
+
+      case "ml" => doAMove(loadGameFromMongoDB())
+      case "ms" => doAMove(saveGameToMongoDB())
+
+      case "m" => doAMove(doMongoStuff())
       
       case _ => wrongInput()
     }
@@ -91,8 +96,12 @@ class Tui(controller: Controller) extends Observer{
       "\n lj = load game - JSON" +
       "\n rs = save game - REST" +
       "\n rl = load game - REST" +      
+      "\n ml = load game - MongoDB" +
+      "\n ms = save game - MongoDB" +
+      "\n a = look at all Players" + 
       "\n q = quit game" +
-      "\n a = look at all Players")
+      "\n m = do some MongoDB Stuff"
+      )
   }
 
   def placeCard(): Unit = {
@@ -154,6 +163,22 @@ class Tui(controller: Controller) extends Observer{
     println("loading game the REST way...")
     controller.loadGameViaRestAsXML()
   }
+
+  def loadGameFromMongoDB(): Unit={
+    println("loading game from MongoDB...")
+    controller.loadGameWithMongoDB()
+  }
+
+  def saveGameToMongoDB(): Unit={
+    println("saving game with MongoDB...")
+    controller.saveGameWithMongoDB()
+  }
+
+  def doMongoStuff(): Unit =
+    println("doMongoStuff was called...")
+    controller.doMongoStuff()
+
+  
 
   def confirmWinner(): Unit = {
     println(controller.confirmWinner)

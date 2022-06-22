@@ -19,7 +19,8 @@ class DAOMongoDBImpl() extends DAOInterface:
         //  observerInsertion(firstColl.insertOne(firstDoc))
         val client_init = initializeDB()
         // doFirstCreationStuff(client)
-        val client = createGameCollection(client_init)
+        // val client = createGameCollection(client_init)
+        val client = createTableCollection(client_init)
         
 
     override def read: String =
@@ -32,6 +33,11 @@ class DAOMongoDBImpl() extends DAOInterface:
 
     override def delete: Unit =
         ???
+
+
+    def show(tableAsString: String): Unit =
+        println("tableAsString:")
+        println(tableAsString)
 
     def initializeDB(): MongoClient = 
         /* INITIALIZATION */
@@ -46,7 +52,20 @@ class DAOMongoDBImpl() extends DAOInterface:
         MongoClient(uri)
 
 
-    /* add collection game with documents player1, player2, table.  */        
+
+
+    /* add collection game with document tabe */
+    def createTableCollection(client: MongoClient) : MongoClient = 
+        /* getDatabase gets Database if already existing, else creates it. */
+        val db_anno: MongoDatabase = client.getDatabase("AnnoDomini")
+        /* getDatabase gets collection if already existing, else creates it. */
+        val coll_game: MongoCollection[Document] = db_anno.getCollection("game") 
+        val doc_table: Document = Document("_id" -> "table", "name" -> "table")
+        insertOneObserver(coll_game.insertOne(doc_table))
+        client
+
+
+    /* add collection game with documents playerList1, player2, table.  */        
     def createGameCollection(client: MongoClient) : MongoClient = 
         // getDatabase gets Database if already existing, else creates it.
         val db_anno: MongoDatabase = client.getDatabase("AnnoDomini")

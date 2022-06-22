@@ -13,20 +13,42 @@ class DAOMongoDBImplSpec extends AnyWordSpec:
     val mongoDBImpl = DAOMongoDBImpl()
 
     def doFirstTests: Unit = 
-        "A MongoDB instance" when {
+        "Our MongoDB instance" when {
             "started" should {
 
+                val mongoClient = mongoDBImpl.initializeDB()
+
                 "be reachable" in {
-                    val mongoDbClient = mongoDBImpl.initializeDB()
+                    val oneDefaultDB: String = "config"
+                    val db = mongoClient.getDatabase(oneDefaultDB)
+                    val dataTypeOfResult = db.getClass.toString
+                    dataTypeOfResult should be ("class org.mongodb.scala.MongoDatabase")
                 }
 
-                "be able to return it's databases" in {}
+                "have a database called \"AnnoDomini\"" in {
+                    val dbToSearch: String = "AnnoDomini"
+                    val dbList = mongoClient.listDatabaseNames()
+                    var isTestSuccessful: Boolean = false
+                    
+                    for (elem <- dbList) 
+                        if(elem.toString().contains(dbToSearch)) 
+                        then isTestSuccessful = true
 
-                "be able to select a database" in {}
+                    Thread.sleep(500) //
+                    if (!isTestSuccessful) {
+                        fail()
+                    }
 
+                }
+                
                 "be able to insert a value" in {}
 
                 "be able to get a demanded value" in {}
+
+                "DO JUST SOME FUNCTION CALLING FOR DEVELOPMENT:" in {
+                    mongoDBImpl.create
+
+                }
 
             }
 

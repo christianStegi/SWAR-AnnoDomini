@@ -23,6 +23,8 @@ import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import model.fileIOComponent.Impl.FileIOAsJSON
+import model.dbComponent.impl.DAOMongoDBImpl
+import play.api.libs.json.Json
 
 class Controller(var table: Table) extends Observable{
 
@@ -30,6 +32,8 @@ class Controller(var table: Table) extends Observable{
 //AKKA STUFF (REST)
   val fileIoHost: String = "localhost"
   val fileIoPort: Int = 8081
+  val mongoDBHost: String = "localhost"
+  val mongoDBPort: Int = 8082
   val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
   given ActorSystem[Any] = system
   val executionContext: ExecutionContextExecutor = system.executionContext
@@ -39,7 +43,7 @@ class Controller(var table: Table) extends Observable{
   val undoManager = new UndoManager
   val fileIOAsXML = new FileIOAsXML
   val fileIOAsJSON = new FileIOAsJSON
-
+  val mongoImpl = DAOMongoDBImpl()
 
   def createTestTable(noOfPlayers:Int): Unit = {
     val tb = TableGenerator(noOfPlayers, 40)
@@ -82,6 +86,7 @@ class Controller(var table: Table) extends Observable{
 
   def saveGameJSON(): Unit = fileIOAsJSON.save(table)
 
+
   def loadGameJSON(): Unit= {
     table = fileIOAsJSON.load
     notifyObservers()
@@ -109,8 +114,7 @@ class Controller(var table: Table) extends Observable{
 
   }
 
-
-  // nur zum Abschauen
+  
   def loadGameViaRestAsXML(): Future[Boolean] = {
     val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
     given ActorSystem[Any] = system
@@ -159,5 +163,82 @@ class Controller(var table: Table) extends Observable{
     return Future(false)
   }
 
+
+  def saveGameWithMongoDB(): Unit = {
+    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
+    given ActorSystem[Any] = system
+    val executionContext: ExecutionContextExecutor = system.executionContext
+    given ExecutionContextExecutor = executionContext
+
+    // val tableAsXml = fileIOAsXML.tableToXML(table)
+    // val xmlAsString = tableAsXml.toString
+    val tableAsJSON = fileIOAsJSON.tableToJson(table)
+    val jsonAsString = Json.prettyPrint(tableAsJSON)
+
+    println("jsonAsString:\n")
+    println(jsonAsString)
+    
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(
+      HttpRequest(
+        method =  HttpMethods.PUT,
+        uri = s"http://$mongoDBHost:$mongoDBPort/mongodb/save",
+        entity = HttpEntity(ContentTypes.`text/xml(UTF-8)`, jsonAsString)
+      ))
+
+  }
+
+
+  def loadGameWithMongoDB(): Future[Boolean] = {
+    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
+    given ActorSystem[Any] = system
+    val executionContext: ExecutionContextExecutor = system.executionContext
+    given ExecutionContextExecutor = executionContext
+
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(
+      HttpRequest(
+        uri = s"http://$mongoDBHost:$mongoDBPort/mongodb/load"
+      ))
+
+    responseFuture
+      .onComplete {
+
+        case Success(value) =>
+
+          println("%%%%%%%% jetzt in load on complete Success(value) %%%%%%%%")
+          
+          val tableAsString = Unmarshal(value.entity).to[String]
+          // ergibt folgendes Element:  //val tableAsString = value.entity.toString   //HttpEntity.Strict(text/xml; charset=UTF-8,2363 bytes total)
+
+          tableAsString.onComplete {
+            case Success(value) =>
+              // println("tableAsString:")
+              // println(tableAsString)   
+              println("value:")
+              println(value)             
+              // val nowAsXML = scala.xml.XML.loadString(value.toString)
+              val nowAsJSON = scala.xml.XML.loadString(value.toString)
+              println("nowAsJSON:")
+              println(nowAsJSON.toString)
+
+              table = fileIOAsXML.tableFromXML(nowAsJSON)
+
+              println("table:")
+              println(table)
+              notifyObservers()
+              return Future(true)
+            case Failure(exception) =>
+              return Future(false)
+          }
+
+        case Failure(exception) =>
+          println("%%%%%%%% Failure in Controller.loadGameViaRestAsXML -  REST-loading did not work. %%%%%%%%")
+          return Future(false)
+      }
+    return Future(false)
+  }
+
+
+  def doMongoStuff(): Unit = 
+      mongoImpl.create
 
 }
