@@ -62,15 +62,15 @@ class Tui(controller: Controller) extends Observer{
       case "l" => doAMove(loadGame())
       case "s" => doAMove(saveGame())
 
-      case "lj" => doAMove(loadGameJSON())
-      case "sj" => doAMove(saveGameJSON())
+      case "lj" => doAMove(loadGameFromJSON())
+      case "sj" => doAMove(saveGameAsJSON())
 
       case "rl" => doAMove(loadGameViaRest())
       case "rs" => doAMove(saveGameViaRest())
 
       case "ml" => doAMove(loadGameFromMongoDB())
       case "ms" => doAMove(saveGameToMongoDB())
-
+      case "md" => doAMove(deleteAllDocumentsInMongoDB())
       case "m" => doAMove(doMongoStuff())
       
       case _ => wrongInput()
@@ -90,17 +90,18 @@ class Tui(controller: Controller) extends Observer{
       "\n d = doubt" +
       "\n u = undo recent step" +
       "\n r = redo"+
-      "\n s = save game" +
-      "\n l = load game" +
-      "\n sj = save game - JSON" +
-      "\n lj = load game - JSON" +
-      "\n rs = save game - REST" +
-      "\n rl = load game - REST" +      
+      "\n s = save game - XML" +
+      "\n l = load game - XML" +
+      "\n sj = save game -JSON" +
+      "\n lj = load game -JSON" +
+      "\n rs = save game - FileIO per RestAPI" +
+      "\n rl = load game - FileIO per RestAPI" +      
       "\n ml = load game - MongoDB" +
       "\n ms = save game - MongoDB" +
+      "\n md = delete everything in MongoDB collection" +
+      "\n m = do some MongoDB Stuff" + 
       "\n a = look at all Players" + 
-      "\n q = quit game" +
-      "\n m = do some MongoDB Stuff"
+      "\n q = quit game"
       )
   }
 
@@ -136,31 +137,33 @@ class Tui(controller: Controller) extends Observer{
   def showAllPlayers(): Unit = {
     println(controller.showAllPlayers())
   }
+
   def saveGame(): Unit ={
-    controller.saveGame()
+    controller.saveGameAsXML()
     println("saved game")
   }
   def loadGame(): Unit={
-    controller.loadGame()
+    controller.loadGameFromXML()
     println("game loaded")
   }
 
-  def saveGameJSON(): Unit ={
-    controller.saveGameJSON()
-    println("saved game")
+  def saveGameAsJSON(): Unit ={
+    controller.saveGameAsJSON()
+    println("game saved")
   }
-  def loadGameJSON(): Unit={
-    controller.loadGameJSON()
+
+  def loadGameFromJSON(): Unit={
+    controller.loadGameFromJSON()
     println("game loaded")
   }
   
   def saveGameViaRest(): Unit ={
-    println("saving game the REST way...")
+    println("saving game as XML using REST-API...")
     controller.saveGameViaRestAsXML()
   }
 
   def loadGameViaRest(): Unit={
-    println("loading game the REST way...")
+    println("loading game from XML using REST-API...")
     controller.loadGameViaRestAsXML()
   }
 
@@ -174,12 +177,15 @@ class Tui(controller: Controller) extends Observer{
     controller.saveGameWithMongoDB()
   }
 
+  def deleteAllDocumentsInMongoDB(): Unit = 
+    println("controller calling delete call for mongoDB" )
+    controller.deleteMongoDocuments()
+
   def doMongoStuff(): Unit =
     println("doMongoStuff was called...")
     controller.doMongoStuff()
 
   
-
   def confirmWinner(): Unit = {
     println(controller.confirmWinner)
   }

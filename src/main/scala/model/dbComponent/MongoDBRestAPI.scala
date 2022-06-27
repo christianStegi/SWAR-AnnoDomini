@@ -1,5 +1,7 @@
 package model.dbComponent
 
+// import scala.language.postfixOps
+
 import akka.http.scaladsl.server.Route
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
@@ -21,64 +23,83 @@ import model.dbComponent.impl.DAOMongoDBImpl
 
 object MongoDBRestAPI {
 
-  val host = "localhost"
-  val port = 8082
+    val host = "localhost"
+    val port = 8082
 
-  val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
-  given ActorSystem[Any] = system
-  val executionContext: ExecutionContextExecutor = system.executionContext
-  given ExecutionContextExecutor = executionContext
+    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "my-system")
+    given ActorSystem[Any] = system
+    val executionContext: ExecutionContextExecutor = system.executionContext
+    given ExecutionContextExecutor = executionContext
 
-  val jsonHelper = FileIOAsJSON()
-//   val xmlHelper = FileIORestXml_SMALL()
+    val jsonHelper = FileIOAsJSON()
     val mongoDbImpl = DAOMongoDBImpl()
 
     @main def run(): Unit = {
 
-    println("\n============== MongoDBRestAPI server running now...  ==============\n")
+        println("\n============== MongoDBRestAPI server running now...  ==============\n")
 
-    val route = concat(
-      path("mongodb" / "load") {
+        val route = concat(
+        path("mongodb" / "init") {
+            get {
 
-        get {
-          Try(mongoDbImpl.read) match {
-            case Success(table) => {
-            //   complete(HttpEntity(ContentTypes.`text/xml(UTF-8)`, table))
-              complete(HttpEntity(ContentTypes.`application/json`, table))
+                    complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "init call to MongoDB was successful"))       
             }
-            case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be loaded")
-          }
-        }
-      },
-      path("mongodb" / "save") {
-        put {
-
-          entity(as[String]) { table =>
-            // xmlHelper.saveFromString(table)
             
-            mongoDbImpl.show(table)
-            // mongoDbImpl.save(table)
+        },            
+        path("mongodb" / "load") {
+            get {
+                // Try(mongoDbImpl.read) match {
+                //     case Success(table) => {
+                    //   complete(HttpEntity(ContentTypes.`text/xml(UTF-8)`, table))
+                    // complete(HttpEntity(ContentTypes.`application/json`, table))
+                    complete(StatusCodes.OK, "table was saved")
+                    // }
+                    // case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be loaded")
+                // }
+            }
+        },
+        path("mongodb" / "save") {
+            put {
+                entity(as[String]) { table =>
 
-            complete(StatusCodes.OK, "table was saved")
-            // Try() match {
-            // // Try(xmlHelper.load) match {
-            //   case Success(table) => complete(StatusCodes.OK, "table was saved")
-            //   case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be saved")
-            // }
-          }
-        }
-      }
-    )
+                    mongoDbImpl.delete
+                    complete(StatusCodes.OK, "table was saved")
+                    // Try() match {
+                    // // Try(xmlHelper.load) match {
+                    //   case Success(table) => complete(StatusCodes.OK, "table was saved")
+                    //   case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be saved")
+                    // }
+                }
+            }
+        },
+        path("mongodb" / "deleteAllDocuments") {
+            put {
+                entity(as[String]) { message =>
 
-    val bindingFuture = Http().newServerAt(host, port).bind(route)
+                    mongoDbImpl.show(message)
+                    mongoDbImpl.delete
+                    complete(StatusCodes.OK, "table was saved")
+                    // Try() match {
+                    // // Try(xmlHelper.load) match {
+                    //   case Success(table) => complete(StatusCodes.OK, "table was saved")
+                    //   case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be saved")
+                    // }
+                }
+            }
+        })
+
+        val bindingFuture = Http().newServerAt(host, port).bind(route)
 
 
-    println(s"Server now online. You can also visit the corresponding URL in a browser. Press RETURN to stop...")
-    StdIn.readLine() // let it run until user presses return
-    bindingFuture
-      .flatMap(_.unbind()) // trigger unbinding from the port
-      .onComplete(_ => system.terminate()) // and shutdown when done
+        mongoDbImpl.create        
 
-  }
+
+        println(s"Server now online. You can also visit the corresponding URL in a browser. Press RETURN to stop...")
+        StdIn.readLine() // let it run until user presses return
+        bindingFuture
+        .flatMap(_.unbind()) // trigger unbinding from the port
+        .onComplete(_ => system.terminate()) // and shutdown when done
+
+    }
 
 }

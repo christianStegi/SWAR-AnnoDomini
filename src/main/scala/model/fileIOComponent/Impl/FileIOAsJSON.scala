@@ -200,5 +200,7 @@ def (fieldName: String): Seq[JsValue]
             )
         )
 
+    def tableToJsonString(table: Table): String =
+        Json.prettyPrint(tableToJson(table))
 
 }
