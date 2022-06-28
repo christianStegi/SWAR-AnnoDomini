@@ -1,10 +1,6 @@
-package model.dbComponent
+package dbComponent
 
 import akka.http.scaladsl.server.Route
-
-import scala.concurrent.{ExecutionContextExecutor, Future}
-import scala.io.StdIn
-
 import akka.http.scaladsl.server.Directives.*
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
@@ -12,11 +8,14 @@ import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.model.StatusCodes
 
+// import scala.concurrent.ExecutionContextExecutor
+import scala.concurrent.{ExecutionContextExecutor, Future}
 import scala.io.StdIn
-import scala.concurrent.ExecutionContextExecutor
 import scala.util.{Failure, Success, Try}
-import model.fileIOComponent.Impl.FileIOAsJSON
-import model.dbComponent.impl.DAOMongoDBImpl
+
+// import model.fileIOComponent.Impl.FileIOAsJSON
+// import model.dbComponent.impl.DAOMongoDBImpl
+import dbComponent.impl.DAOMongoDBImpl
 
 
 object MongoDBRestAPI {
@@ -29,7 +28,7 @@ object MongoDBRestAPI {
     val executionContext: ExecutionContextExecutor = system.executionContext
     given ExecutionContextExecutor = executionContext
 
-    val jsonHelper = FileIOAsJSON()
+    // val jsonHelper = FileIOAsJSON()
     val mongoDbImpl = DAOMongoDBImpl()
 
     @main def run(): Unit = {

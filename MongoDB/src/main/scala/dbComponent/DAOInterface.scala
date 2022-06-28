@@ -1,4 +1,4 @@
-package model.dbComponent
+package dbComponent
 
 trait DAOInterface {
     

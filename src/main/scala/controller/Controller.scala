@@ -4,6 +4,8 @@ import model.gameComponent.{Card, Table, TableGenerator}
 import model.fileIOComponent.Impl.FileIOAsXML
 import util.{Observable, UndoManager}
 import controller.commands.{DoubtCommand, PlaceCardCommand}
+import model.fileIOComponent.Impl.FileIOAsJSON
+// import model.dbComponent.impl.DAOMongoDBImpl
 
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
@@ -11,20 +13,19 @@ import akka.http.scaladsl.server.Directives.*
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.http.scaladsl.server.Route
-
-import scala.concurrent.{ExecutionContextExecutor, Future}
-import scala.io.StdIn
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.model.HttpMethods
 import akka.protobufv3.internal.compiler.PluginProtos.CodeGeneratorResponse.File
 import akka.http.scaladsl.model.MediaTypes
+import akka.http.scaladsl.unmarshalling.Unmarshal
+
+import play.api.libs.json.Json
+
+import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.io.StdIn
 import scala.language.postfixOps
 import scala.util.{Failure, Success, Try}
-import akka.http.scaladsl.unmarshalling.Unmarshal
-import model.fileIOComponent.Impl.FileIOAsJSON
-import model.dbComponent.impl.DAOMongoDBImpl
-import play.api.libs.json.Json
 
 
 class Controller(var table: Table) extends Observable{
@@ -42,7 +43,7 @@ class Controller(var table: Table) extends Observable{
   val undoManager = UndoManager()
   val fileIOAsXML = FileIOAsXML()
   val fileIOAsJSON = FileIOAsJSON()
-  val mongoImpl = DAOMongoDBImpl()
+  // val mongoImpl = DAOMongoDBImpl()
 
 
   def createTestTable(noOfPlayers:Int): Unit = {
@@ -228,8 +229,6 @@ class Controller(var table: Table) extends Observable{
           tableAsString.onComplete {
             case Success(value) =>
               val nowAsJSON = Json.parse(value)
-              // println("nowAsJSON:")
-              // println(nowAsJSON.toString)
               table = fileIOAsJSON.buildTableFromJSON(nowAsJSON)
 
               println("table:")

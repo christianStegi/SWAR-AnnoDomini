@@ -1,17 +1,20 @@
-package model.dbComponent.impl
-
-import model.dbComponent.DAOInterface
+package dbComponent.impl
 
 import org.mongodb.scala._
+
+import dbComponent.DAOInterface
+
+
 import org.mongodb.scala.model.Updates.set
 import org.mongodb.scala.model.Filters.*
 import org.mongodb.scala.result.{DeleteResult, InsertOneResult, UpdateResult}
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+
 import scala.concurrent.Await
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 import scala.concurrent.ExecutionContext.Implicits.global
-import play.api.libs.json.JsValue
-import play.api.libs.json.Json
 import scala.util.Try
 import scala.util.Failure
 import scala.util.Success
