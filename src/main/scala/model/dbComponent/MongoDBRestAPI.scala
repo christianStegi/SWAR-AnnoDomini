@@ -39,56 +39,55 @@ object MongoDBRestAPI {
         println("\n============== MongoDBRestAPI server running now...  ==============\n")
 
         val route = concat(
-        path("mongodb" / "init") {
-            get {
-                    complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "init call to MongoDB was successful"))       
-            }
-        },            
-        path("mongodb" / "load") {
-            get {
-                Try(mongoDbImpl.read) match {
-                    case Success(table) => {
-                        // complete(HttpEntity(ContentTypes.`application/json`, table))
-                        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, table))       
 
+            path("mongodb" / "create") {
+                put {
+                    // entity(as[String]) { table =>
+                    //     mongoDbImpl.create
+                    //     complete(StatusCodes.OK, "document was created")
+                    // }
+                    mongoDbImpl.create
+                    complete(StatusCodes.OK, "document was created")
+                }
+            },
+            path("mongodb" / "load") {
+                get {
+                    Try(mongoDbImpl.read) match {
+                        case Success(table) => {
+                            // complete(HttpEntity(ContentTypes.`application/json`, table))
+                            complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, table))       
+                        }
+                        case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be loaded")
                     }
-                    case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be loaded")
                 }
-            }
-        },
-        path("mongodb" / "save") {
-            put {
-                entity(as[String]) { table =>
+            },
+            path("mongodb" / "save") {
+                put {
+                    entity(as[String]) { table =>
 
-                    mongoDbImpl.update(table)
-                    complete(StatusCodes.OK, "table was saved")
-                    // Try() match {
-                    // // Try(xmlHelper.load) match {
-                    //   case Success(table) => complete(StatusCodes.OK, "table was saved")
-                    //   case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be saved")
-                    // }
+                        mongoDbImpl.update(table)
+                        complete(StatusCodes.OK, "table was saved")
+                        // Try() match {
+                        // // Try(xmlHelper.load) match {
+                        //   case Success(table) => complete(StatusCodes.OK, "table was saved")
+                        //   case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be saved")
+                        // }
+                    }
                 }
-            }
-        },
-        path("mongodb" / "deleteAllDocuments") {
-            put {
-                entity(as[String]) { message =>
-
-                    mongoDbImpl.show(message)
-                    mongoDbImpl.delete
-                    complete(StatusCodes.OK, "table was saved")
-                    // Try() match {
-                    // // Try(xmlHelper.load) match {
-                    //   case Success(table) => complete(StatusCodes.OK, "table was saved")
-                    //   case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be saved")
-                    // }
+            },
+            path("mongodb" / "deleteAllDocuments") {
+                put {
+                    entity(as[String]) { message =>
+                        mongoDbImpl.delete
+                        complete(StatusCodes.OK, "document was deleted")
+                    }
                 }
-            }
-        })
+            })
 
 
         val bindingFuture = Http().newServerAt(host, port).bind(route)
 
+        mongoDbImpl.delete
         mongoDbImpl.create        
 
         println(s"Server now online. You can also visit the corresponding URL in a browser. Press RETURN to stop...")
@@ -96,7 +95,6 @@ object MongoDBRestAPI {
         bindingFuture
         .flatMap(_.unbind()) // trigger unbinding from the port
         .onComplete(_ => system.terminate()) // and shutdown when done
-
     }
 
 }

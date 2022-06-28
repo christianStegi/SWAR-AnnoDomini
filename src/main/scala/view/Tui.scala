@@ -68,10 +68,10 @@ class Tui(controller: Controller) extends Observer{
       case "rl" => doAMove(loadGameViaRest())
       case "rs" => doAMove(saveGameViaRest())
 
+      case "mc" => doAMove(createEmptyGameDocForMongoDB())
       case "ml" => doAMove(loadGameFromMongoDB())
       case "ms" => doAMove(saveGameToMongoDB())
       case "md" => doAMove(deleteAllDocumentsInMongoDB())
-      case "m" => doAMove(doMongoStuff())
       
       case _ => wrongInput()
     }
@@ -99,7 +99,6 @@ class Tui(controller: Controller) extends Observer{
       "\n ml = load game - MongoDB" +
       "\n ms = save game - MongoDB" +
       "\n md = delete everything in MongoDB collection" +
-      "\n m = do some MongoDB Stuff" + 
       "\n a = look at all Players" + 
       "\n q = quit game"
       )
@@ -181,15 +180,15 @@ class Tui(controller: Controller) extends Observer{
     println("controller calling delete call for mongoDB" )
     controller.deleteMongoDocuments()
 
-  def doMongoStuff(): Unit =
-    println("doMongoStuff was called...")
-    controller.doMongoStuff()
-
-  
   def confirmWinner(): Unit = {
     println(controller.confirmWinner)
   }
+
+  def createEmptyGameDocForMongoDB(): Unit =
+    println("controller calling create for mongoDB")
+    controller.createEmptyMongoDocument()
   
+    
   override def update(): Unit = println(controller.tableToString)
 
 

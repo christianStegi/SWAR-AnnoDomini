@@ -2,7 +2,6 @@ package model.dbComponent.impl
 
 import model.dbComponent.DAOInterface
 
-// import org.bson._
 import org.mongodb.scala._
 import org.mongodb.scala.model.Updates.set
 import org.mongodb.scala.model.Filters.*
@@ -18,139 +17,76 @@ import scala.util.Failure
 import scala.util.Success
 
 
-// import org.mongodb.scala._
-// import scala.collection.JavaConverters._
-
 class DAOMongoDBImpl() extends DAOInterface:
 
     /* INITIALIZATION */
     val db_pw = sys.env.getOrElse("MONGO_INITDB_ROOT_PASSWORD", "1234").toString
     val db_user = sys.env.getOrElse("MONGO_INITDB_ROOT_USERNAME", "admin").toString
     val port = 27017
-    // val uri: String = s"mongodb://$db_user:$db_pw@localhost:$port/?authSource=admin"
-    // val uri: String = s"mongodb://localhost:$port"
     val mongoURI: String = s"mongodb://localhost:$port/?authSource=admin"
 
     /* CREATE DATABASE OBJECTS */
     val client = MongoClient(mongoURI)
-
     val db_anno: MongoDatabase = client.getDatabase("AnnoDomini")
     /* getDatabase gets collection if already existing, else creates it. */
     val coll_game: MongoCollection[Document] = db_anno.getCollection("game") 
-    
-    // val doc_table: Document = Document("_id" -> "table", "table" -> "nothingSavedYet")
-    // insertOneObserver(coll_game.insertOne(doc_table))
 
   
     override def create: Unit =
-        val firstDoc: Document = Document("_id" -> "gameDoc", "game" -> "nothingInYet")
+        val firstDoc: Document = Document("_id" -> "gameDoc", "table" -> "nothingInYet")
         insertOneObserver(coll_game.insertOne(firstDoc))
-        // observerInsertion(firstColl.insertOne(firstDoc))
-        // doFirstCreationStuff(client)
-        // val client = createGameCollection(client_init)
-        
-        // val client_init = initializeDB()
-        // val client = createTableCollection(client_init)
 
-
-    /* NOT USED AT THE MOMENT, MAYBE TO BE DELETED LATER (code ist jetzt am anfang der Klasse*/
-    def initializeDB(): MongoClient = 
-        /* INITIALIZATION */
-        val db_pw = sys.env.getOrElse("MONGO_INITDB_ROOT_PASSWORD", "1234").toString
-        val db_user = sys.env.getOrElse("MONGO_INITDB_ROOT_USERNAME", "admin").toString
-        val port = 27017
-        // val uri: String = s"mongodb://$db_user:$db_pw@localhost:$port/?authSource=admin"
-        // val uri: String = s"mongodb://localhost:$port"
-        val mongoURI: String = s"mongodb://localhost:$port/?authSource=admin"
-
-        /* CREATE DATABASE OBJECTS */
-        MongoClient(mongoURI)
-        
 
     override def read: String =
         val docFromDB: Document = Await.result(coll_game.find(equal("_id", "gameDoc")).first().head(), Duration.Inf)
         val table = docFromDB("table").asString().getValue.toString
-        println("table in read:")
-        println(table)
         table.toString
-        // val parsedAsJson: JsValue = Json.parse(readFromDB)
 
 
     override def update(input: String): Unit =
         println("DAOMongoDBImpl.update was called")
 
         val tableAsJson: JsValue = Json.parse(input)
-        //pretty printen?
+
         val tableContent = (tableAsJson \ "table").get.toString
         println("tableContent:")
         println(tableContent)
         
         Try({
-        // observerUpdate(coll_game.updateOne(equal("_id","gameDoc"), set("_id","gridDocument")))
-        updateOneObserver(coll_game.updateOne(equal("_id", "gameDoc"), set("table", tableContent)))
+            updateOneObserver(coll_game.updateOne(equal("_id", "gameDoc"), set("table", tableContent)))
         }) match {
-        case Success(_) =>
-        case Failure(exception) => println(exception);
+            case Success(_) =>
+            case Failure(exception) => println(exception);
         }
 
 
-
-
     override def delete: Unit =
-        Await.result(deleteGameColl(), Duration.Inf)
+        Await.result(deleteSomeDocuments(), Duration.Inf)
         
 
-    def deleteGameColl(): Future[String] =
+    def deleteSomeDocuments(): Future[String] =
         coll_game.deleteMany(equal("_id", "gameDoc")).subscribe(
-            (dr: DeleteResult) => println(s"Deleted gridDocument"),
+            (dr: DeleteResult) => println(s"Deleted document gameDoc"),
             (e: Throwable) => println(s"Error while trying to delete gridDocument: $e")
         )
+        // coll_game.deleteMany(equal("_id", "table")).subscribe(
+        //     (dr: DeleteResult) => println(s"Deleted document table"),
+        //     (e: Throwable) => println(s"Error while trying to delete table: $e")
+        // )
         
         Future { 
             "Finished deleting!"
         }
 
 
-
+    /* method just for testing if service is available and responding */
     def show(tableAsString: String): Unit =
         println("tableAsString:")
         println(tableAsString)
 
 
-    def init(): Unit =
-        println("in methode init")
-        initializeDB()
-
-
-    /* NOT USED AT THE MOMENT, MAYBE TO BE DELETED LATER (code ist jetzt am anfang der Klasse*/
-    /* add collection game with document table */
-    def createTableCollection(client: MongoClient) : MongoClient = 
-        /* getDatabase gets Database if already existing, else creates it. */
-        val db_anno: MongoDatabase = client.getDatabase("AnnoDomini")
-        /* getDatabase gets collection if already existing, else creates it. */
-        val coll_game: MongoCollection[Document] = db_anno.getCollection("game") 
-        val doc_table: Document = Document("_id" -> "table", "table" -> "nothingSavedYet")
-        insertOneObserver(coll_game.insertOne(doc_table))
-        client
-
-
-    /* NOT USED AT THE MOMENT, MAYBE TO BE DELETED LATER (code ist jetzt am anfang der Klasse*/
-    /* add collection game with documents playerList1, player2, table.  */        
-    def createGameCollection(client: MongoClient) : MongoClient = 
-        // getDatabase gets Database if already existing, else creates it.
-        val db_anno: MongoDatabase = client.getDatabase("AnnoDomini")
-        // getDatabase gets collection if already existing, else creates it.
-        val coll_game: MongoCollection[Document] = db_anno.getCollection("game") 
-        val doc_player1: Document = Document("_id" -> "player1", "name" -> "player1")
-        val doc_player2: Document = Document("_id" -> "player2", "name" -> "player2")
-        val doc_table: Document = Document("_id" -> "table", "name" -> "table")
-
-        insertOneObserver(coll_game.insertOne(doc_player1))
-        insertOneObserver(coll_game.insertOne(doc_player2))
-        insertOneObserver(coll_game.insertOne(doc_table))
- 
-        client
-
+    /*  the FOLLOWING OBSERVER-METHODS are needed for being able to insert values into a mongodb. If an document gets inserted, it 
+        also has to be registered (=subscribed), else insertion is not completed and it will not show up in the database */
 
     /* Observer Methods for Handling Insertions, Updates and so on */
     private def insertOneObserver(insertObservable: SingleObservable[InsertOneResult]): Unit = {

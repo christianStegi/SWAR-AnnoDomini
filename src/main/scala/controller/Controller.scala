@@ -26,10 +26,10 @@ import model.fileIOComponent.Impl.FileIOAsJSON
 import model.dbComponent.impl.DAOMongoDBImpl
 import play.api.libs.json.Json
 
+
 class Controller(var table: Table) extends Observable{
 
-
-//AKKA STUFF (REST)
+  //AKKA STUFF (for REST)
   val fileIoHost: String = "localhost"
   val fileIoPort: Int = 8081
   val mongoDBHost: String = "localhost"
@@ -39,11 +39,11 @@ class Controller(var table: Table) extends Observable{
   val executionContext: ExecutionContextExecutor = system.executionContext
   given ExecutionContextExecutor = executionContext
 
-
-  val undoManager = new UndoManager
-  val fileIOAsXML = new FileIOAsXML
-  val fileIOAsJSON = new FileIOAsJSON
+  val undoManager = UndoManager()
+  val fileIOAsXML = FileIOAsXML()
+  val fileIOAsJSON = FileIOAsJSON()
   val mongoImpl = DAOMongoDBImpl()
+
 
   def createTestTable(noOfPlayers:Int): Unit = {
     val tb = TableGenerator(noOfPlayers, 40)
@@ -86,7 +86,6 @@ class Controller(var table: Table) extends Observable{
 
   def saveGameAsJSON(): Unit = fileIOAsJSON.save(table)
 
-
   def loadGameFromJSON(): Unit= {
     table = fileIOAsJSON.load
     notifyObservers()
@@ -111,7 +110,6 @@ class Controller(var table: Table) extends Observable{
         uri = s"http://$fileIoHost:$fileIoPort/fileIO/xml/save",
         entity = HttpEntity(ContentTypes.`text/xml(UTF-8)`, xmlAsString)
       ))
-
   }
 
   
@@ -132,23 +130,14 @@ class Controller(var table: Table) extends Observable{
 
         case Success(value) =>
 
-          println("%%%%%%%% jetzt in load on complete Success(value) %%%%%%%%")
+          println("%%%%%%%% loadGameViaRestAsXML: in load on complete Success(value) %%%%%%%%")
           
           val tableAsString = Unmarshal(value.entity).to[String]
-          // ergibt folgendes Element:  //val tableAsString = value.entity.toString   //HttpEntity.Strict(text/xml; charset=UTF-8,2363 bytes total)
 
           tableAsString.onComplete {
             case Success(value) =>
-              println("tableAsString:")
-              println(tableAsString)   
-              println("value:")
-              println(value)             
               val nowAsXml = scala.xml.XML.loadString(value.toString)
-              println("nowAsXml:")
-              println(nowAsXml.toString)
-
               table = fileIOAsXML.tableFromXML(nowAsXml)
-
               println("table:")
               println(table)
               notifyObservers()
@@ -163,6 +152,21 @@ class Controller(var table: Table) extends Observable{
       }
     return Future(false)
   }
+
+  
+  def createEmptyMongoDocument(): Unit = 
+    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
+    given ActorSystem[Any] = system
+    val executionContext: ExecutionContextExecutor = system.executionContext
+    given ExecutionContextExecutor = executionContext
+
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(
+      HttpRequest(
+        method =  HttpMethods.PUT,
+        uri = s"http://$mongoDBHost:$mongoDBPort/mongodb/create",
+        entity = HttpEntity(ContentTypes.`text/plain(UTF-8)`, "creating empty game document...")
+      )
+    )
 
 
   def deleteMongoDocuments(): Unit = 
@@ -185,15 +189,10 @@ class Controller(var table: Table) extends Observable{
     given ActorSystem[Any] = system
     val executionContext: ExecutionContextExecutor = system.executionContext
     given ExecutionContextExecutor = executionContext
-
-    // val tableAsXml = fileIOAsXML.tableToXML(table)
-    // val xmlAsString = tableAsXml.toString
     val tableAsJSON = fileIOAsJSON.tableToJson(table)
     val tableAsJSONString = fileIOAsJSON.tableToJsonString(table)
-    // val jsonAsString = Json.prettyPrint(tableAsJSON)
-
-    println("tableAsJSONString:\n")
-    println(tableAsJSONString)
+    // println("tableAsJSONString:\n")
+    // println(tableAsJSONString)
     
     val responseFuture: Future[HttpResponse] = Http().singleRequest(
       HttpRequest(
@@ -222,18 +221,20 @@ class Controller(var table: Table) extends Observable{
 
         case Success(value) =>
 
-          println("%%%%%%%% jetzt in load on complete Success(value) %%%%%%%%")
+          println("%%%%%%%% loadGameWithMongoDB: in load on complete Success(value) %%%%%%%%")
           
           val tableAsString = Unmarshal(value.entity).to[String]
-          // ergibt folgendes Element:  //val tableAsString = value.entity.toString   //HttpEntity.Strict(text/xml; charset=UTF-8,2363 bytes total)
 
           tableAsString.onComplete {
             case Success(value) =>
-              println("value:")
-              println(value)             
-              val nowAsJSON = scala.xml.XML.loadString(value.toString)
-              println("nowAsJSON:")
-              println(nowAsJSON.toString)
+              val nowAsJSON = Json.parse(value)
+              // println("nowAsJSON:")
+              // println(nowAsJSON.toString)
+              table = fileIOAsJSON.buildTableFromJSON(nowAsJSON)
+
+              println("table:")
+              println(table)
+              notifyObservers()
 
               notifyObservers()
               return Future(true)
@@ -247,81 +248,5 @@ class Controller(var table: Table) extends Observable{
       }
     return Future(false)
   }
-
-/* 
-  def initMongoDB(): Unit = {
-    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
-    given ActorSystem[Any] = system
-    val executionContext: ExecutionContextExecutor = system.executionContext
-    given ExecutionContextExecutor = executionContext
-
-    val tableAsJSON = fileIOAsJSON.tableToJson(table)
-    val jsonAsString = Json.prettyPrint(tableAsJSON)
-
-    println("jsonAsString:\n")
-    println(jsonAsString)
-    
-    val responseFuture: Future[HttpResponse] = Http().singleRequest(
-      HttpRequest(
-        method =  HttpMethods.PUT,
-        uri = s"http://$mongoDBHost:$mongoDBPort/mongodb/init",
-        entity = HttpEntity(ContentTypes.`text/xml(UTF-8)`, jsonAsString)
-      ))
-
-  }
- */
-
-
-
-
-  def initMongoDB(): Unit = {
-    val system: ActorSystem[Any] = ActorSystem(Behaviors.empty, "SingleRequest")
-    given ActorSystem[Any] = system
-    val executionContext: ExecutionContextExecutor = system.executionContext
-    given ExecutionContextExecutor = executionContext
-
-    val responseFuture: Future[HttpResponse] = Http().singleRequest(
-      HttpRequest(
-        uri = s"http://$mongoDBHost:$mongoDBPort/mongodb/init"
-      ))
-
-    responseFuture
-      .onComplete {
-
-        case Success(value) =>
-
-          println("%%%%%%%% jetzt in load on complete Success(value) %%%%%%%%")
-          
-          val tableAsString = Unmarshal(value.entity).to[String]
-          // ergibt folgendes Element:  //val tableAsString = value.entity.toString   //HttpEntity.Strict(text/xml; charset=UTF-8,2363 bytes total)
-
-          tableAsString.onComplete {
-            case Success(value) =>
-              // println("tableAsString:")
-              // println(tableAsString)   
-              println("value:")
-              println(value)             
-
-
-              println("succccceeesssss:")
-
-              notifyObservers()
-              return Future(true)
-            case Failure(exception) =>
-              return Future(false)
-          }
-
-        case Failure(exception) =>
-          println("%%%%%%%% Failure in Controller.loadGameViaRestAsXML -  REST-loading did not work. %%%%%%%%")
-          return Future(false)
-      }
-    return Future(false)
-  }
-
-
-
-  def doMongoStuff(): Unit = 
-      // mongoImpl.create
-      mongoImpl.init()
 
 }
