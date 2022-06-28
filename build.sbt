@@ -75,3 +75,10 @@ val commonDependencies = Seq(
 
 //clears terminal output from sl4j logging error messages coming from sl4j not from our code
 libraryDependencies += "org.slf4j" % "slf4j-nop" % "2.0.0-alpha7"
+
+
+enablePlugins(GatlingPlugin)
+val gatlingVersion = "3.7.6"
+// val gatlingVersion = "4.1.6"
+libraryDependencies += "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion % "test,it"
+libraryDependencies += "io.gatling"            % "gatling-test-framework"    % gatlingVersion % "test,it"
