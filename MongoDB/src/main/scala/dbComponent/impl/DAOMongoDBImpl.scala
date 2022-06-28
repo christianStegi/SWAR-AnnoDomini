@@ -72,10 +72,6 @@ class DAOMongoDBImpl() extends DAOInterface:
             (dr: DeleteResult) => println(s"Deleted document gameDoc"),
             (e: Throwable) => println(s"Error while trying to delete gridDocument: $e")
         )
-        // coll_game.deleteMany(equal("_id", "table")).subscribe(
-        //     (dr: DeleteResult) => println(s"Deleted document table"),
-        //     (e: Throwable) => println(s"Error while trying to delete table: $e")
-        // )
         
         Future { 
             "Finished deleting!"
@@ -94,20 +90,20 @@ class DAOMongoDBImpl() extends DAOInterface:
     /* Observer Methods for Handling Insertions, Updates and so on */
     private def insertOneObserver(insertObservable: SingleObservable[InsertOneResult]): Unit = {
         insertObservable.subscribe(new Observer[InsertOneResult] {
-            override def onNext(result: InsertOneResult): Unit = println(s"inserted: $result")
+            override def onNext(result: InsertOneResult): Unit = println(s"inserted this here: $result")
 
             override def onError(e: Throwable): Unit = println(s"insert onError: $e")
 
-            override def onComplete(): Unit = println("completed insert")
+            override def onComplete(): Unit = println("insert completed.")
         })
     }
 
     private def updateOneObserver(insertObservable: SingleObservable[UpdateResult]): Unit = {
         insertObservable.subscribe(new Observer[UpdateResult] {
-            override def onNext(result: UpdateResult): Unit = println(s"updated: $result")
+            override def onNext(result: UpdateResult): Unit = println(s"updated with: $result")
 
             override def onError(e: Throwable): Unit = println(s"update onError: $e")
 
-            override def onComplete(): Unit = println("completed update")
+            override def onComplete(): Unit = println("update completed.")
         })
     }
