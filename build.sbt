@@ -8,6 +8,10 @@ lazy val FileIO = (project in file("FileIO"))
 //   // .dependsOn(model)
 //   // .dependsOn(root)
 
+lazy val MongoDB = (project in file("MongoDB"))
+  .settings(libraryDependencies ++= commonDependencies)
+//   // .dependsOn(model)
+//   // .dependsOn(root)
 
 lazy val root = (project in file("."))
   // .dependsOn(model, controller)

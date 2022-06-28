@@ -62,8 +62,8 @@ class Tui(controller: Controller) extends Observer{
       case "l" => doAMove(loadGame())
       case "s" => doAMove(saveGame())
 
-      case "lj" => doAMove(loadGameFromJSON())
-      case "sj" => doAMove(saveGameAsJSON())
+      case "jl" => doAMove(loadGameFromJSON())
+      case "js" => doAMove(saveGameAsJSON())
 
       case "rl" => doAMove(loadGameViaRest())
       case "rs" => doAMove(saveGameViaRest())
@@ -92,12 +92,13 @@ class Tui(controller: Controller) extends Observer{
       "\n r = redo"+
       "\n s = save game - XML" +
       "\n l = load game - XML" +
-      "\n sj = save game -JSON" +
-      "\n lj = load game -JSON" +
+      "\n js = save game -JSON" +
+      "\n jl = load game -JSON" +
       "\n rs = save game - FileIO per RestAPI" +
       "\n rl = load game - FileIO per RestAPI" +      
-      "\n ml = load game - MongoDB" +
       "\n ms = save game - MongoDB" +
+      "\n ml = load game - MongoDB" +
+      "\n mc = create empty document in MongoDB collection" +
       "\n md = delete everything in MongoDB collection" +
       "\n a = look at all Players" + 
       "\n q = quit game"

@@ -1,7 +1,5 @@
 package model.dbComponent
 
-// import scala.language.postfixOps
-
 import akka.http.scaladsl.server.Route
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
