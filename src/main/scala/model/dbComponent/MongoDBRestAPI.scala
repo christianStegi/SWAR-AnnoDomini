@@ -41,28 +41,26 @@ object MongoDBRestAPI {
         val route = concat(
         path("mongodb" / "init") {
             get {
-
                     complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, "init call to MongoDB was successful"))       
             }
-            
         },            
         path("mongodb" / "load") {
             get {
-                // Try(mongoDbImpl.read) match {
-                //     case Success(table) => {
-                    //   complete(HttpEntity(ContentTypes.`text/xml(UTF-8)`, table))
-                    // complete(HttpEntity(ContentTypes.`application/json`, table))
-                    complete(StatusCodes.OK, "table was saved")
-                    // }
-                    // case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be loaded")
-                // }
+                Try(mongoDbImpl.read) match {
+                    case Success(table) => {
+                        // complete(HttpEntity(ContentTypes.`application/json`, table))
+                        complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, table))       
+
+                    }
+                    case Failure(exception) => complete(StatusCodes.BadRequest, "table could not be loaded")
+                }
             }
         },
         path("mongodb" / "save") {
             put {
                 entity(as[String]) { table =>
 
-                    mongoDbImpl.delete
+                    mongoDbImpl.update(table)
                     complete(StatusCodes.OK, "table was saved")
                     // Try() match {
                     // // Try(xmlHelper.load) match {
@@ -88,11 +86,10 @@ object MongoDBRestAPI {
             }
         })
 
+
         val bindingFuture = Http().newServerAt(host, port).bind(route)
 
-
         mongoDbImpl.create        
-
 
         println(s"Server now online. You can also visit the corresponding URL in a browser. Press RETURN to stop...")
         StdIn.readLine() // let it run until user presses return

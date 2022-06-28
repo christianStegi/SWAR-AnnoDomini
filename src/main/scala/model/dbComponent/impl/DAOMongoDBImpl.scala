@@ -11,6 +11,11 @@ import scala.concurrent.Await
 import scala.concurrent.Future
 import scala.concurrent.duration.Duration
 import scala.concurrent.ExecutionContext.Implicits.global
+import play.api.libs.json.JsValue
+import play.api.libs.json.Json
+import scala.util.Try
+import scala.util.Failure
+import scala.util.Success
 
 
 // import org.mongodb.scala._
@@ -63,11 +68,33 @@ class DAOMongoDBImpl() extends DAOInterface:
         
 
     override def read: String =
-        ???
+        // val player1Document: Document = Await.result(coll_game.find(equal("_id", "player1Document")).first().head(), Duration.Inf)
+        val docFromDB: Document = Await.result(coll_game.find(equal("_id", "gameDoc")).first().head(), Duration.Inf)
+        val table = docFromDB("table").asString()
+        println("table in read:")
+        println(table)
+        table.toString
+        // val parsedAsJson: JsValue = Json.parse(readFromDB)
 
 
     override def update(input: String): Unit =
         println("DAOMongoDBImpl.update was called")
+
+        val tableAsJson: JsValue = Json.parse(input)
+        //pretty printen?
+        val tableContent = (tableAsJson \ "table").get.toString
+        println("tableContent:")
+        println(tableContent)
+        
+        Try({
+        // observerUpdate(coll_game.updateOne(equal("_id","gameDoc"), set("_id","gridDocument")))
+        updateOneObserver(coll_game.updateOne(equal("_id", "gameDoc"), set("table", tableContent)))
+        }) match {
+        case Success(_) =>
+        case Failure(exception) => println(exception);
+        }
+
+
 
 
     override def delete: Unit =
