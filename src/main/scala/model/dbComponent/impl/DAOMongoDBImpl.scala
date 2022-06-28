@@ -68,9 +68,8 @@ class DAOMongoDBImpl() extends DAOInterface:
         
 
     override def read: String =
-        // val player1Document: Document = Await.result(coll_game.find(equal("_id", "player1Document")).first().head(), Duration.Inf)
         val docFromDB: Document = Await.result(coll_game.find(equal("_id", "gameDoc")).first().head(), Duration.Inf)
-        val table = docFromDB("table").asString()
+        val table = docFromDB("table").asString().getValue.toString
         println("table in read:")
         println(table)
         table.toString
