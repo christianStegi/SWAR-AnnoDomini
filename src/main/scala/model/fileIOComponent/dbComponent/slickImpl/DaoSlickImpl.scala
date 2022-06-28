@@ -1,7 +1,7 @@
-package model.persistenceComponent.dbComponent.slickImpl
+package model.fileIOComponent.dbComponent.slickImpl
 
 import model.gameComponent.{Card, Deck, Deckgenerator, Player, Table}
-import model.persistenceComponent.dbComponent.DaoInterface
+import model.fileIOComponent.dbComponent.DaoInterface
 
 
 class DaoSlickImpl extends DaoInterface{

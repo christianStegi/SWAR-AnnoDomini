@@ -1,4 +1,4 @@
-package model.persistenceComponent.dbComponent.slickImpl
+package model.fileIOComponent.dbComponent.slickImpl
 
 // import slick.jdbc.MySQLProfile.api.*
 

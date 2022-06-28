@@ -1,4 +1,4 @@
-package model.persistenceComponent
+package model.fileIOComponent
 import model.gameComponent.Table
 
 trait FileIOInterface {
