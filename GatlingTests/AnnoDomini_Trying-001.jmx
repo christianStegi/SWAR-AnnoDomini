@@ -297,7 +297,7 @@
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Save-Test2" enabled="true">
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="Save-Test2" enabled="false">
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
@@ -316,7 +316,254 @@
             <collectionProp name="Arguments.arguments">
               <elementProp name="table" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">[{&quot;playerList&quot;:[{&quot;player&quot;:{&quot;name&quot;:&quot;Player 4&quot;,&quot;playersHand&quot;:{&quot;hand&quot;:[{&quot;card&quot;:{&quot;year&quot;:39,&quot;text&quot;:&quot;Card No. 39&quot;}},{&quot;card&quot;:{&quot;year&quot;:9,&quot;text&quot;:&quot;Card No. 9&quot;}},{&quot;card&quot;:{&quot;year&quot;:24,&quot;text&quot;:&quot;Card No. 24&quot;}},{&quot;card&quot;:{&quot;year&quot;:6,&quot;text&quot;:&quot;Card No. 6&quot;}}]}}},{&quot;player&quot;:{&quot;name&quot;:&quot;Player 3&quot;,&quot;playersHand&quot;:{&quot;hand&quot;:[{&quot;card&quot;:{&quot;year&quot;:33,&quot;text&quot;:&quot;Card No. 33&quot;}},{&quot;card&quot;:{&quot;year&quot;:7,&quot;text&quot;:&quot;Card No. 7&quot;}},{&quot;card&quot;:{&quot;year&quot;:30,&quot;text&quot;:&quot;Card No. 30&quot;}},{&quot;card&quot;:{&quot;year&quot;:29,&quot;text&quot;:&quot;Card No. 29&quot;}}]}}},{&quot;player&quot;:{&quot;name&quot;:&quot;Player 2&quot;,&quot;playersHand&quot;:{&quot;hand&quot;:[{&quot;card&quot;:{&quot;year&quot;:28,&quot;text&quot;:&quot;Card No. 28&quot;}},{&quot;card&quot;:{&quot;year&quot;:4,&quot;text&quot;:&quot;Card No. 4&quot;}},{&quot;card&quot;:{&quot;year&quot;:22,&quot;text&quot;:&quot;Card No. 22&quot;}},{&quot;card&quot;:{&quot;year&quot;:27,&quot;text&quot;:&quot;Card No. 27&quot;}}]}}},{&quot;player&quot;:{&quot;name&quot;:&quot;Player 1&quot;,&quot;playersHand&quot;:{&quot;hand&quot;:[{&quot;card&quot;:{&quot;year&quot;:13,&quot;text&quot;:&quot;Card No. 13&quot;}},{&quot;card&quot;:{&quot;year&quot;:12,&quot;text&quot;:&quot;Card No. 12&quot;}},{&quot;card&quot;:{&quot;year&quot;:31,&quot;text&quot;:&quot;Card No. 31&quot;}},{&quot;card&quot;:{&quot;year&quot;:32,&quot;text&quot;:&quot;Card No. 32&quot;}}]}}}]},{&quot;tablesTable&quot;:{&quot;hand&quot;:[{&quot;card&quot;:{&quot;year&quot;:25,&quot;text&quot;:&quot;Card No. 25&quot;}},{&quot;card&quot;:{&quot;year&quot;:15,&quot;text&quot;:&quot;Card No. 15&quot;}},{&quot;card&quot;:{&quot;year&quot;:40,&quot;text&quot;:&quot;Card No. 40&quot;}},{&quot;card&quot;:{&quot;year&quot;:18,&quot;text&quot;:&quot;Card No. 18&quot;}},{&quot;card&quot;:{&quot;year&quot;:10,&quot;text&quot;:&quot;Card No. 10&quot;}}]}},{&quot;deck&quot;:{&quot;hand&quot;:[{&quot;card&quot;:{&quot;year&quot;:25,&quot;text&quot;:&quot;Card No. 25&quot;}},{&quot;card&quot;:{&quot;year&quot;:2,&quot;text&quot;:&quot;Card No. 2&quot;}},{&quot;card&quot;:{&quot;year&quot;:8,&quot;text&quot;:&quot;Card No. 8&quot;}},{&quot;card&quot;:{&quot;year&quot;:21,&quot;text&quot;:&quot;Card No. 21&quot;}},{&quot;card&quot;:{&quot;year&quot;:1,&quot;text&quot;:&quot;Card No. 1&quot;}},{&quot;card&quot;:{&quot;year&quot;:23,&quot;text&quot;:&quot;Card No. 23&quot;}},{&quot;card&quot;:{&quot;year&quot;:19,&quot;text&quot;:&quot;Card No. 19&quot;}},{&quot;card&quot;:{&quot;year&quot;:36,&quot;text&quot;:&quot;Card No. 36&quot;}},{&quot;card&quot;:{&quot;year&quot;:14,&quot;text&quot;:&quot;Card No. 14&quot;}},{&quot;card&quot;:{&quot;year&quot;:17,&quot;text&quot;:&quot;Card No. 17&quot;}},{&quot;card&quot;:{&quot;year&quot;:38,&quot;text&quot;:&quot;Card No. 38&quot;}},{&quot;card&quot;:{&quot;year&quot;:20,&quot;text&quot;:&quot;Card No. 20&quot;}},{&quot;card&quot;:{&quot;year&quot;:5,&quot;text&quot;:&quot;Card No. 5&quot;}},{&quot;card&quot;:{&quot;year&quot;:35,&quot;text&quot;:&quot;Card No. 35&quot;}},{&quot;card&quot;:{&quot;year&quot;:26,&quot;text&quot;:&quot;Card No. 26&quot;}},{&quot;card&quot;:{&quot;year&quot;:16,&quot;text&quot;:&quot;Card No. 16&quot;}},{&quot;card&quot;:{&quot;year&quot;:37,&quot;text&quot;:&quot;Card No. 37&quot;}},{&quot;card&quot;:{&quot;year&quot;:11,&quot;text&quot;:&quot;Card No. 11&quot;}},{&quot;card&quot;:{&quot;year&quot;:34,&quot;text&quot;:&quot;Card No. 34&quot;}},{&quot;card&quot;:{&quot;year&quot;:3,&quot;text&quot;:&quot;Card No. 3&quot;}}]}},{&quot;punishmentCards&quot;:&quot;3&quot;}]</stringProp>
+                <stringProp name="Argument.value">{
+  &quot;table&quot; : [ {
+    &quot;playerList&quot; : [ {
+      &quot;player&quot; : {
+        &quot;name&quot; : &quot;Player 4&quot;,
+        &quot;playersHand&quot; : {
+          &quot;hand&quot; : [ {
+            &quot;card&quot; : {
+              &quot;year&quot; : 39,
+              &quot;text&quot; : &quot;Card No. 39&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 9,
+              &quot;text&quot; : &quot;Card No. 9&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 24,
+              &quot;text&quot; : &quot;Card No. 24&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 6,
+              &quot;text&quot; : &quot;Card No. 6&quot;
+            }
+          } ]
+        }
+      }
+    }, {
+      &quot;player&quot; : {
+        &quot;name&quot; : &quot;Player 3&quot;,
+        &quot;playersHand&quot; : {
+          &quot;hand&quot; : [ {
+            &quot;card&quot; : {
+              &quot;year&quot; : 33,
+              &quot;text&quot; : &quot;Card No. 33&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 7,
+              &quot;text&quot; : &quot;Card No. 7&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 30,
+              &quot;text&quot; : &quot;Card No. 30&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 29,
+              &quot;text&quot; : &quot;Card No. 29&quot;
+            }
+          } ]
+        }
+      }
+    }, {
+      &quot;player&quot; : {
+        &quot;name&quot; : &quot;Player 2&quot;,
+        &quot;playersHand&quot; : {
+          &quot;hand&quot; : [ {
+            &quot;card&quot; : {
+              &quot;year&quot; : 28,
+              &quot;text&quot; : &quot;Card No. 28&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 4,
+              &quot;text&quot; : &quot;Card No. 4&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 22,
+              &quot;text&quot; : &quot;Card No. 22&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 27,
+              &quot;text&quot; : &quot;Card No. 27&quot;
+            }
+          } ]
+        }
+      }
+    }, {
+      &quot;player&quot; : {
+        &quot;name&quot; : &quot;Player 1&quot;,
+        &quot;playersHand&quot; : {
+          &quot;hand&quot; : [ {
+            &quot;card&quot; : {
+              &quot;year&quot; : 13,
+              &quot;text&quot; : &quot;Card No. 13&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 12,
+              &quot;text&quot; : &quot;Card No. 12&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 31,
+              &quot;text&quot; : &quot;Card No. 31&quot;
+            }
+          }, {
+            &quot;card&quot; : {
+              &quot;year&quot; : 32,
+              &quot;text&quot; : &quot;Card No. 32&quot;
+            }
+          } ]
+        }
+      }
+    } ]
+  }, {
+    &quot;tablesTable&quot; : {
+      &quot;hand&quot; : [ {
+        &quot;card&quot; : {
+          &quot;year&quot; : 25,
+          &quot;text&quot; : &quot;Card No. 25&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 15,
+          &quot;text&quot; : &quot;Card No. 15&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 40,
+          &quot;text&quot; : &quot;Card No. 40&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 18,
+          &quot;text&quot; : &quot;Card No. 18&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 10,
+          &quot;text&quot; : &quot;Card No. 10&quot;
+        }
+      } ]
+    }
+  }, {
+    &quot;deck&quot; : {
+      &quot;hand&quot; : [ {
+        &quot;card&quot; : {
+          &quot;year&quot; : 25,
+          &quot;text&quot; : &quot;Card No. 25&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 2,
+          &quot;text&quot; : &quot;Card No. 2&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 8,
+          &quot;text&quot; : &quot;Card No. 8&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 21,
+          &quot;text&quot; : &quot;Card No. 21&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 1,
+          &quot;text&quot; : &quot;Card No. 1&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 23,
+          &quot;text&quot; : &quot;Card No. 23&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 19,
+          &quot;text&quot; : &quot;Card No. 19&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 36,
+          &quot;text&quot; : &quot;Card No. 36&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 14,
+          &quot;text&quot; : &quot;Card No. 14&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 17,
+          &quot;text&quot; : &quot;Card No. 17&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 38,
+          &quot;text&quot; : &quot;Card No. 38&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 20,
+          &quot;text&quot; : &quot;Card No. 20&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 5,
+          &quot;text&quot; : &quot;Card No. 5&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 35,
+          &quot;text&quot; : &quot;Card No. 35&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 26,
+          &quot;text&quot; : &quot;Card No. 26&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 16,
+          &quot;text&quot; : &quot;Card No. 16&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 37,
+          &quot;text&quot; : &quot;Card No. 37&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 11,
+          &quot;text&quot; : &quot;Card No. 11&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 34,
+          &quot;text&quot; : &quot;Card No. 34&quot;
+        }
+      }, {
+        &quot;card&quot; : {
+          &quot;year&quot; : 3,
+          &quot;text&quot; : &quot;Card No. 3&quot;
+        }
+      } ]
+    }
+  }, {
+    &quot;punishmentCards&quot; : &quot;3&quot;
+  } ]
+}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">table</stringProp>
@@ -496,6 +743,20 @@
         </ResultCollector>
         <hashTree/>
       </hashTree>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="RecordingTestGroup" enabled="true">
+        <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
+        <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
+          <boolProp name="LoopController.continue_forever">false</boolProp>
+          <stringProp name="LoopController.loops">1</stringProp>
+        </elementProp>
+        <stringProp name="ThreadGroup.num_threads">1</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">1</stringProp>
+        <boolProp name="ThreadGroup.scheduler">false</boolProp>
+        <stringProp name="ThreadGroup.duration"></stringProp>
+        <stringProp name="ThreadGroup.delay"></stringProp>
+        <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+      </ThreadGroup>
+      <hashTree/>
     </hashTree>
   </hashTree>
 </jmeterTestPlan>

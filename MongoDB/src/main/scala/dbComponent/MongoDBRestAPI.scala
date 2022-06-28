@@ -76,7 +76,8 @@ object MongoDBRestAPI {
 
         val bindingFuture = Http().newServerAt(host, port).bind(route)
 
-        mongoDbImpl.delete
+        // delete now gets called in .create method for now
+        // mongoDbImpl.delete
         mongoDbImpl.create        
 
         println(s"Server now online. You can also visit the corresponding URL in a browser. Press RETURN to stop...")

@@ -36,6 +36,7 @@ class DAOMongoDBImpl() extends DAOInterface:
 
   
     override def create: Unit =
+        delete
         val firstDoc: Document = Document("_id" -> "gameDoc", "table" -> "nothingInYet")
         insertOneObserver(coll_game.insertOne(firstDoc))
 
@@ -49,10 +50,13 @@ class DAOMongoDBImpl() extends DAOInterface:
     override def update(input: String): Unit =
         println("DAOMongoDBImpl.update was called")
 
+        println("in update: input:")
+        println(input)
+
         val tableAsJson: JsValue = Json.parse(input)
 
         val tableContent = (tableAsJson \ "table").get.toString
-        println("tableContent:")
+        println("in update: tableContent:")
         println(tableContent)
         
         Try({

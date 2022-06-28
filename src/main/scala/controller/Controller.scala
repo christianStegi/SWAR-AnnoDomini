@@ -192,15 +192,15 @@ class Controller(var table: Table) extends Observable{
     given ExecutionContextExecutor = executionContext
     val tableAsJSON = fileIOAsJSON.tableToJson(table)
     val tableAsJSONString = fileIOAsJSON.tableToJsonString(table)
-    // println("tableAsJSONString:\n")
-    // println(tableAsJSONString)
+    println("tableAsJSONString:\n")
+    println(tableAsJSONString)
     
     val responseFuture: Future[HttpResponse] = Http().singleRequest(
       HttpRequest(
         method =  HttpMethods.PUT,
         uri = s"http://$mongoDBHost:$mongoDBPort/mongodb/save",
-        // entity = HttpEntity(ContentTypes.`text/plain(UTF-8)`, tableAsJSONString)
-        entity = HttpEntity(ContentTypes.`application/json`, tableAsJSONString)
+        entity = HttpEntity(ContentTypes.`text/plain(UTF-8)`, tableAsJSONString)
+        // entity = HttpEntity(ContentTypes.`application/json`, tableAsJSONString)
       ))
 
   }
