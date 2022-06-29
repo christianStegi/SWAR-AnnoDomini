@@ -36,7 +36,8 @@ class DAOMongoDBImpl() extends DAOInterface:
 
   
     override def create: Unit =
-        delete
+        // delete
+        Await.result(deleteSomeDocuments(), Duration.Inf)
         val firstDoc: Document = Document("_id" -> "gameDoc", "table" -> "nothingInYet")
         insertOneObserver(coll_game.insertOne(firstDoc))
 

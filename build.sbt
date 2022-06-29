@@ -3,15 +3,15 @@ ThisBuild / version      := "2.0"
 ThisBuild / scalaVersion := "3.1.1"
 
 
-lazy val FileIO = (project in file("FileIO"))
-  .settings(libraryDependencies ++= commonDependencies)
-//   // .dependsOn(model)
-//   // .dependsOn(root)
+// lazy val FileIO = (project in file("FileIO"))
+//   .settings(libraryDependencies ++= commonDependencies)
+// //   // .dependsOn(model)
+// //   // .dependsOn(root)
 
-lazy val MongoDB = (project in file("MongoDB"))
-  .settings(libraryDependencies ++= commonDependencies)
-//   // .dependsOn(model)
-//   // .dependsOn(root)
+// lazy val MongoDB = (project in file("MongoDB"))
+//   .settings(libraryDependencies ++= commonDependencies)
+// //   // .dependsOn(model)
+// //   // .dependsOn(root)
 
 lazy val root = (project in file("."))
   // .dependsOn(model, controller)
